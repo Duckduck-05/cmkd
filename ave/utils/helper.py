@@ -121,7 +121,7 @@ def train_network_distill(stu_type, tea_model, epochs, loader, net, device, opti
     model_best = net
     criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
     criterion4 = torch.nn.KLDivLoss(reduction='none')
-    # wandb.init(project="my-project")
+    wandb.init(key = "", project="my-project")
     iter = 0
     net.train()
     tea.train()
@@ -212,8 +212,8 @@ def train_network_distill(stu_type, tea_model, epochs, loader, net, device, opti
             val_loss_t, val_acc_t = evaluate(loader['val'], device, tea_model, int(1-stu_type))
             test_loss_t, test_acc_t = evaluate(loader['test'], device, tea_model, int(1-stu_type))
 
-            # wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc,\
-            #            'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+            wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc,\
+                       'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
         else:
             _, train_acc = 0, 0
             val_loss, val_acc = 0, 0
@@ -230,10 +230,10 @@ def train_network_distill(stu_type, tea_model, epochs, loader, net, device, opti
             val_best_acc_t = val_acc_t
             test_best_acc_t = test_acc_t
 
-        # wandb.log({'loss1': tmp1, 'loss2': tmp2})
-        # wandb.log({'loss1': tmp1, 'loss2': tmp2, 'KRC': corr_num / len(loader['train'])})
-        # wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
-        #            'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        wandb.log({'loss1': tmp1, 'loss2': tmp2})
+        wandb.log({'loss1': tmp1, 'loss2': tmp2, 'KRC': corr_num / len(loader['train'])})
+        wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
+                   'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
         print(f"Epoch | All epochs: {epoch} | {epochs}")
         print(f"corr {corr_mean / len(loader['train']):.3f}| num: {corr_num / len(loader['train']):.3f}")
         print(

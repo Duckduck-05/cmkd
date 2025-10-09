@@ -76,14 +76,14 @@ class videoReader(object):
                         count += 1
 
     def video2frame_update_SE(self, frame_save_path, min_save_frame=3, start_t=0, end_t=10):
-        self.frame_save_path = frame_save_path
+        self.frame_save_path = frame_save_path #path
 
         count = 0
         save_count = 0
-        frame_interval = int(self.fps / self.frame_kept_per_second)
+        frame_interval = int(self.fps / self.frame_kept_per_second) # 30
 
         num_count = 0
-        while count < self.video_frames:
+        while count < self.video_frames: #300
             ret, image = self.vid.read()
             if not ret:
                 break
@@ -123,7 +123,7 @@ class videoReader(object):
                         count += 1
 
 class AVE_dataset(object):
-    def __init__(self, path_to_dataset=r'D:\yunfeng\data\AVE_Dataset', frame_interval=1, frame_kept_per_second=1):
+    def __init__(self, path_to_dataset=r'/home/ducca/C2KD/ave/utils/data/AVE_Dataset', frame_interval=1, frame_kept_per_second=1):
         self.path_to_video = os.path.join(path_to_dataset, 'AVE')
         self.path_to_audio = os.path.join(path_to_dataset, 'Audios')
         self.frame_kept_per_second = frame_kept_per_second
@@ -230,5 +230,5 @@ class AVE_dataset(object):
 
 
 cramed = AVE_dataset()
-cramed.extractImage_SE()
-# cramed.extractWav_SE()
+# cramed.extractImage_SE()
+cramed.extractWav_SE()

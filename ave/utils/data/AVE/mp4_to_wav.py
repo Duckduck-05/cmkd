@@ -59,8 +59,8 @@ def extract_audio(videos_file_path):
 
 
 
-all_videos = r'D:\yunfeng\data\AVE_Dataset\Annotations.txt'
-all_audio_dir = r'D:\yunfeng\data\AVE_Dataset\Audios'
+all_videos = r'/home/ducca/C2KD/ave/utils/data/AVE_Dataset/Annotations.txt'
+all_audio_dir = r'/home/ducca/C2KD/ave/utils/data/AVE_Dataset/Audios'
 if not os.path.exists(all_audio_dir):
     os.makedirs(all_audio_dir)
 
@@ -74,7 +74,7 @@ for i, item in enumerate(files[1:]):
         print('{}/{}'.format(i, len(files)))
         print('*******************************************')
     item = item.split('&')
-    mp4_filename = os.path.join(r'D:\yunfeng\data\AVE_Dataset\AVE', item[1] + '.mp4')
+    mp4_filename = os.path.join(r'/home/ducca/C2KD/ave/utils/data/AVE_Dataset/AVE', item[1] + '.mp4')
     wav_filename = os.path.join(all_audio_dir, item[1]+'.wav')
     if os.path.exists(wav_filename):
         pass
