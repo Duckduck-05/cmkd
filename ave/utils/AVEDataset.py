@@ -22,11 +22,11 @@ class AVEDataset(Dataset):
         self.mode = mode
         classes = []
 
-        self.data_root = '/home/hfs/d/multimodal/AVE_Dataset'
+        self.data_root = '/home/ducca/C2KD/ave/utils/data/AVE_Dataset'
         # class_dict = {'NEU':0, 'HAP':1, 'SAD':2, 'FEA':3, 'DIS':4, 'ANG':5}
 
-        self.visual_feature_path = '/home/hfs/d/multimodal/AVE_Dataset'
-        self.audio_feature_path = '/home/hfs/d/multimodal/AVE_Dataset/Audio-1004-SE'
+        self.visual_feature_path = '/home/ducca/C2KD/ave/utils/data/AVE_Dataset'
+        self.audio_feature_path = '/home/ducca/C2KD/ave/utils/data/AVE_Dataset/Audio-1004-SE'
 
         self.train_txt = os.path.join(self.data_root + '/trainSet.txt')
         self.test_txt = os.path.join(self.data_root + '/testSet.txt')
