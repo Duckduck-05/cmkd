@@ -1,3 +1,5 @@
-/C2KD/ave/utils/data/AVE_Dataset
-/C2KD/ave/results
-/C2KD/ave/wandb
+/C2KD/ave/utils/data/AVE_Dataset/
+/C2KD/ave/results/
+/C2KD/ave/wandb/
+
+/MFH/ravdess/data/
