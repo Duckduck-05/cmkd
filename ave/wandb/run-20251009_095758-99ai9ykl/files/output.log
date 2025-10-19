@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/home/ducca/C2KD/ave/main_overlap_tag.py", line 82, in <module>
+    log_np[run, :] = eval_overlap_tag(loader, device, args)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/C2KD/ave/main_overlap_tag.py", line 43, in eval_overlap_tag
+    acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/C2KD/ave/utils/helper.py", line 144, in train_network_distill
+    for i, data in enumerate(loader['train']):
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+           ^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1328, in _next_data
+    idx, data = self._get_data()
+                ^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1284, in _get_data
+    success, data = self._try_get_data()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/utils/data/dataloader.py", line 1132, in _try_get_data
+    data = self._data_queue.get(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/queue.py", line 180, in get
+    self.not_empty.wait(remaining)
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/threading.py", line 331, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

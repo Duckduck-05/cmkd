@@ -4,7 +4,7 @@ import torch
 import argparse
 import numpy as np
 import random
-from utils.helper import gen_data, train_network_distill, pre_train
+from utils.helper import gen_data, train_network_distill, train_network_distill2, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -26,6 +26,7 @@ def eval_overlap_tag(loader, device, args):
         arch = args.audio_arch
         print(f'teacher:audio ({args.audio_arch}); student:image({args.image_arch})')
     tea_model.load_state_dict(
+        #change
         torch.load('./results/teacher_mod_' + str(tea_type) + '_' + arch + '_' + str(args.num_frame) + '_overlap.pkl',
                    map_location={"cuda:0": "cpu"}), strict=False)
     print(f'Finish Loading teacher model')
@@ -40,7 +41,7 @@ def eval_overlap_tag(loader, device, args):
             {'params': stu.parameters()},
         ], lr=args.lr, momentum=0.9)
 
-    acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 

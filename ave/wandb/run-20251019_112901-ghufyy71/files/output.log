@@ -1,0 +1,28 @@
+/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/conv.py:459: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+torch.Size([64, 256, 14, 14])
+torch.Size([64, 256, 14, 14])
+torch.Size([64, 256, 14, 14])
+Traceback (most recent call last):
+  File "/home/ducca/C2KD/ave/main_overlap_tag.py", line 83, in <module>
+    log_np[run, :] = eval_overlap_tag(loader, device, args)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/C2KD/ave/main_overlap_tag.py", line 44, in eval_overlap_tag
+    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/C2KD/ave/utils/helper.py", line 318, in train_network_distill2
+    FA_loss = wasserstein_distance(stu_f.detach().reshape(-1).cpu().numpy(), tea_f.detach().reshape(-1).cpu().numpy())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/scipy/stats/_stats_py.py", line 9855, in wasserstein_distance
+    return _cdf_distance(1, u_values, v_values, u_weights, v_weights)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/scipy/stats/_stats_py.py", line 9992, in _cdf_distance
+    v_sorter = np.argsort(v_values)
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 1133, in argsort
+    return _wrapfunc(a, 'argsort', axis=axis, kind=kind, order=order)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 59, in _wrapfunc
+    return bound(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

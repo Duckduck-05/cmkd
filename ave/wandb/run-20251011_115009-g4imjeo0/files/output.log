@@ -1,0 +1,41 @@
+/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/conv.py:459: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+Epoch | All epochs: 0 | 100
+corr 0.322| num: 0.146
+Train Loss: 7.553 | temp1 Loss 3.759 | temp2 Loss 3.794 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+teacher: Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+Best Val | Test Accuracy | 0.000 | 0.000
+Best Teacher Val | Test Accuracy | 0.000 | 0.000
+ ----------------------------------------------------------------------
+Epoch | All epochs: 1 | 100
+corr 0.663| num: 0.325
+Train Loss: 13.768 | temp1 Loss 6.527 | temp2 Loss 7.241 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+teacher: Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+Best Val | Test Accuracy | 0.000 | 0.000
+Best Teacher Val | Test Accuracy | 0.000 | 0.000
+ ----------------------------------------------------------------------
+Epoch | All epochs: 2 | 100
+corr 1.025| num: 0.519
+Train Loss: 19.660 | temp1 Loss 9.079 | temp2 Loss 10.581 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+teacher: Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+Best Val | Test Accuracy | 0.000 | 0.000
+Best Teacher Val | Test Accuracy | 0.000 | 0.000
+ ----------------------------------------------------------------------
+Epoch | All epochs: 3 | 100
+corr 1.380| num: 0.721
+Train Loss: 25.345 | temp1 Loss 11.475 | temp2 Loss 13.870 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+teacher: Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+Best Val | Test Accuracy | 0.000 | 0.000
+Best Teacher Val | Test Accuracy | 0.000 | 0.000
+ ----------------------------------------------------------------------
+Epoch | All epochs: 4 | 100
+corr 1.742| num: 0.937
+Train Loss: 30.950 | temp1 Loss 13.807 | temp2 Loss 17.142 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+teacher: Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+Best Val | Test Accuracy | 0.000 | 0.000
+Best Teacher Val | Test Accuracy | 0.000 | 0.000
