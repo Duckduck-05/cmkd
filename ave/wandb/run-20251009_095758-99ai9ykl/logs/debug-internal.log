@@ -1,0 +1,176 @@
+2025-10-09 09:57:58,073 INFO    StreamThr :2707880 [internal.py:wandb_internal():88] W&B internal server running at pid: 2707880, started at: 2025-10-09 09:57:58.072153
+2025-10-09 09:57:58,076 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: status
+2025-10-09 09:57:58,078 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: status
+2025-10-09 09:57:58,081 DEBUG   SenderThread:2707880 [sender.py:send():301] send: header
+2025-10-09 09:57:58,081 DEBUG   SenderThread:2707880 [sender.py:send():301] send: run
+2025-10-09 09:57:58,082 INFO    WriterThread:2707880 [datastore.py:open_for_write():75] open: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/run-99ai9ykl.wandb
+2025-10-09 09:57:58,653 INFO    SenderThread:2707880 [dir_watcher.py:__init__():216] watching files in: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files
+2025-10-09 09:57:58,653 INFO    SenderThread:2707880 [sender.py:_start_run_threads():912] run started: 99ai9ykl with start time 1760003878.06734
+2025-10-09 09:57:58,655 DEBUG   SenderThread:2707880 [sender.py:send():301] send: summary
+2025-10-09 09:57:58,655 INFO    SenderThread:2707880 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2025-10-09 09:57:58,656 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: check_version
+2025-10-09 09:57:58,657 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: check_version
+2025-10-09 09:57:59,656 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_created():275] file/dir created: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/wandb-summary.json
+2025-10-09 09:58:01,698 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: run_start
+2025-10-09 09:58:01,726 DEBUG   HandlerThread:2707880 [meta.py:__init__():34] meta init
+2025-10-09 09:58:01,726 DEBUG   HandlerThread:2707880 [meta.py:__init__():49] meta init done
+2025-10-09 09:58:01,726 DEBUG   HandlerThread:2707880 [meta.py:probe():215] probe
+2025-10-09 09:58:01,732 DEBUG   HandlerThread:2707880 [meta.py:_setup_git():205] setup git
+2025-10-09 09:58:01,741 DEBUG   HandlerThread:2707880 [meta.py:_setup_git():212] setup git done
+2025-10-09 09:58:01,741 DEBUG   HandlerThread:2707880 [meta.py:_save_pip():53] save pip
+2025-10-09 09:58:01,741 DEBUG   HandlerThread:2707880 [meta.py:_save_pip():67] save pip done
+2025-10-09 09:58:01,741 DEBUG   HandlerThread:2707880 [meta.py:_save_conda():74] save conda
+2025-10-09 09:58:01,744 ERROR   HandlerThread:2707880 [meta.py:_save_conda():83] Error saving conda packages
+Traceback (most recent call last):
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/wandb/sdk/internal/meta.py", line 79, in _save_conda
+    subprocess.call(
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/subprocess.py", line 389, in call
+    with Popen(*popenargs, **kwargs) as p:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'conda'
+2025-10-09 09:58:01,745 DEBUG   HandlerThread:2707880 [meta.py:_save_conda():84] save conda done
+2025-10-09 09:58:01,745 DEBUG   HandlerThread:2707880 [meta.py:probe():253] probe done
+2025-10-09 09:58:01,748 DEBUG   SenderThread:2707880 [sender.py:send():301] send: files
+2025-10-09 09:58:01,749 INFO    SenderThread:2707880 [sender.py:_save_file():1155] saving file wandb-metadata.json with policy now
+2025-10-09 09:58:01,757 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: stop_status
+2025-10-09 09:58:01,758 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: stop_status
+2025-10-09 09:58:02,655 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_created():275] file/dir created: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/conda-environment.yaml
+2025-10-09 09:58:02,655 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_created():275] file/dir created: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/wandb-metadata.json
+2025-10-09 09:58:02,655 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_created():275] file/dir created: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/requirements.txt
+2025-10-09 09:58:02,953 DEBUG   SenderThread:2707880 [sender.py:send():301] send: telemetry
+2025-10-09 09:58:03,081 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:03,081 DEBUG   SenderThread:2707880 [sender.py:send():301] send: exit
+2025-10-09 09:58:03,081 INFO    SenderThread:2707880 [sender.py:send_exit():437] handling exit code: 255
+2025-10-09 09:58:03,081 INFO    SenderThread:2707880 [sender.py:send_exit():439] handling runtime: 1
+2025-10-09 09:58:03,083 INFO    SenderThread:2707880 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2025-10-09 09:58:03,083 INFO    SenderThread:2707880 [sender.py:send_exit():445] send defer
+2025-10-09 09:58:03,083 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:03,084 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:03,084 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 0
+2025-10-09 09:58:03,084 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:03,084 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 0
+2025-10-09 09:58:03,084 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 1
+2025-10-09 09:58:03,084 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:03,084 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 1
+2025-10-09 09:58:03,197 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:03,197 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:03,199 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 1
+2025-10-09 09:58:03,199 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 2
+2025-10-09 09:58:03,199 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:03,200 DEBUG   SenderThread:2707880 [sender.py:send():301] send: stats
+2025-10-09 09:58:03,201 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:03,201 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 2
+2025-10-09 09:58:03,201 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:03,201 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 2
+2025-10-09 09:58:03,201 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 3
+2025-10-09 09:58:03,202 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:03,202 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 3
+2025-10-09 09:58:03,202 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:03,202 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 3
+2025-10-09 09:58:03,202 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 4
+2025-10-09 09:58:03,202 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:03,202 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 4
+2025-10-09 09:58:03,202 DEBUG   SenderThread:2707880 [sender.py:send():301] send: summary
+2025-10-09 09:58:03,203 INFO    SenderThread:2707880 [sender.py:_save_file():1155] saving file wandb-summary.json with policy end
+2025-10-09 09:58:03,203 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:03,203 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 4
+2025-10-09 09:58:03,203 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 5
+2025-10-09 09:58:03,203 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:03,203 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 5
+2025-10-09 09:58:03,203 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:03,203 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 5
+2025-10-09 09:58:03,302 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:03,327 INFO    Thread-16 :2707880 [upload_job.py:push():139] Uploaded file /tmp/tmpa1cu7h7dwandb/8t1yxp37-wandb-metadata.json
+2025-10-09 09:58:03,453 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 6
+2025-10-09 09:58:03,453 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:03,455 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:03,455 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 6
+2025-10-09 09:58:03,455 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:03,455 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 6
+2025-10-09 09:58:03,557 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:03,655 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/config.yaml
+2025-10-09 09:58:03,656 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/wandb-summary.json
+2025-10-09 09:58:03,656 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_created():275] file/dir created: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/output.log
+2025-10-09 09:58:05,081 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 7
+2025-10-09 09:58:05,081 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:05,082 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:05,083 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 7
+2025-10-09 09:58:05,083 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:05,083 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 7
+2025-10-09 09:58:05,083 INFO    SenderThread:2707880 [dir_watcher.py:finish():362] shutting down directory watcher
+2025-10-09 09:58:05,184 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:05,657 INFO    Thread-12 :2707880 [dir_watcher.py:_on_file_modified():292] file/dir modified: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/output.log
+2025-10-09 09:58:05,658 INFO    SenderThread:2707880 [dir_watcher.py:finish():392] scan: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files
+2025-10-09 09:58:05,658 INFO    SenderThread:2707880 [dir_watcher.py:finish():406] scan save: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/config.yaml config.yaml
+2025-10-09 09:58:05,658 INFO    SenderThread:2707880 [dir_watcher.py:finish():406] scan save: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/wandb-summary.json wandb-summary.json
+2025-10-09 09:58:05,658 INFO    SenderThread:2707880 [dir_watcher.py:finish():406] scan save: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/requirements.txt requirements.txt
+2025-10-09 09:58:05,663 INFO    SenderThread:2707880 [dir_watcher.py:finish():406] scan save: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/conda-environment.yaml conda-environment.yaml
+2025-10-09 09:58:05,663 INFO    SenderThread:2707880 [dir_watcher.py:finish():406] scan save: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/wandb-metadata.json wandb-metadata.json
+2025-10-09 09:58:05,663 INFO    SenderThread:2707880 [dir_watcher.py:finish():406] scan save: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/output.log output.log
+2025-10-09 09:58:05,663 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 8
+2025-10-09 09:58:05,663 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:05,669 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:05,669 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 8
+2025-10-09 09:58:05,673 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:05,673 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 8
+2025-10-09 09:58:05,673 INFO    SenderThread:2707880 [file_pusher.py:finish():168] shutting down file pusher
+2025-10-09 09:58:05,777 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:05,778 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:05,880 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:05,881 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:05,983 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:05,984 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,087 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:06,087 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,190 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:06,190 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,293 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:06,293 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,297 INFO    Thread-19 :2707880 [upload_job.py:push():139] Uploaded file /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/requirements.txt
+2025-10-09 09:58:06,358 INFO    Thread-17 :2707880 [upload_job.py:push():139] Uploaded file /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/config.yaml
+2025-10-09 09:58:06,373 INFO    Thread-20 :2707880 [upload_job.py:push():139] Uploaded file /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/output.log
+2025-10-09 09:58:06,396 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:06,396 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,426 INFO    Thread-18 :2707880 [upload_job.py:push():139] Uploaded file /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/files/wandb-summary.json
+2025-10-09 09:58:06,498 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:06,499 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,601 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:06,602 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,627 INFO    Thread-11 (_thread_body):2707880 [sender.py:transition_state():458] send defer: 9
+2025-10-09 09:58:06,628 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:06,628 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 9
+2025-10-09 09:58:06,628 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:06,628 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 9
+2025-10-09 09:58:06,704 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:06,907 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 10
+2025-10-09 09:58:06,908 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:06,909 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:06,910 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 10
+2025-10-09 09:58:06,910 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:06,910 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 10
+2025-10-09 09:58:06,910 INFO    SenderThread:2707880 [sender.py:transition_state():458] send defer: 11
+2025-10-09 09:58:06,911 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: defer
+2025-10-09 09:58:06,911 INFO    HandlerThread:2707880 [handler.py:handle_request_defer():161] handle defer: 11
+2025-10-09 09:58:06,912 DEBUG   SenderThread:2707880 [sender.py:send():301] send: final
+2025-10-09 09:58:06,912 DEBUG   SenderThread:2707880 [sender.py:send():301] send: footer
+2025-10-09 09:58:06,912 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: defer
+2025-10-09 09:58:06,912 INFO    SenderThread:2707880 [sender.py:send_request_defer():454] handle sender defer: 11
+2025-10-09 09:58:07,013 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: poll_exit
+2025-10-09 09:58:07,013 DEBUG   SenderThread:2707880 [sender.py:send_request():315] send_request: poll_exit
+2025-10-09 09:58:07,014 INFO    SenderThread:2707880 [file_pusher.py:join():173] waiting for file pusher
+2025-10-09 09:58:10,521 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: sampled_history
+2025-10-09 09:58:10,523 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: get_summary
+2025-10-09 09:58:10,524 INFO    MainThread:2707880 [wandb_run.py:_footer_history_summary_info():3321] rendering history
+2025-10-09 09:58:10,524 INFO    MainThread:2707880 [wandb_run.py:_footer_history_summary_info():3353] rendering summary
+2025-10-09 09:58:10,524 INFO    MainThread:2707880 [wandb_run.py:_footer_sync_info():3277] logging synced files
+2025-10-09 09:58:10,525 DEBUG   HandlerThread:2707880 [handler.py:handle_request():138] handle_request: shutdown
+2025-10-09 09:58:10,525 INFO    HandlerThread:2707880 [handler.py:finish():807] shutting down handler
+2025-10-09 09:58:10,912 INFO    WriterThread:2707880 [datastore.py:close():279] close: /home/ducca/C2KD/ave/wandb/run-20251009_095758-99ai9ykl/run-99ai9ykl.wandb
+2025-10-09 09:58:11,419 INFO    SenderThread:2707880 [sender.py:finish():1315] shutting down sender
+2025-10-09 09:58:11,420 INFO    SenderThread:2707880 [file_pusher.py:finish():168] shutting down file pusher
+2025-10-09 09:58:11,421 INFO    SenderThread:2707880 [file_pusher.py:join():173] waiting for file pusher
+2025-10-09 09:58:11,528 INFO    MainThread:2707880 [internal.py:handle_exit():78] Internal process exited

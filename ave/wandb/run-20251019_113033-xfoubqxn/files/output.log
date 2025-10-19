@@ -1,0 +1,22 @@
+/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/conv.py:459: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+torch.Size([64, 512])
+torch.Size([64, 512])
+torch.Size([64, 512])
+torch.Size([64, 512])
+torch.Size([64, 512])
+Traceback (most recent call last):
+torch.Size([64, 512])
+torch.Size([64, 512])
+torch.Size([64, 512])
+torch.Size([64, 512])
+  File "/home/ducca/C2KD/ave/main_overlap_tag.py", line 83, in <module>
+    log_np[run, :] = eval_overlap_tag(loader, device, args)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/C2KD/ave/main_overlap_tag.py", line 44, in eval_overlap_tag
+    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/C2KD/ave/utils/helper.py", line 325, in train_network_distill2
+    train_loss += loss.item()
+                  ^^^^^^^^^^^
+KeyboardInterrupt
