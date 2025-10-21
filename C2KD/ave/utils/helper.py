@@ -18,7 +18,8 @@ from torch.utils.data import DataLoader
 import math
 import wandb
 from scipy.stats.stats import kendalltau
-from scipy.stats import wasserstein_distance
+# from scipy.stats import wasserstein_distance
+import ot
 
 
 
@@ -271,12 +272,12 @@ def train_network_distill2(stu_type, tea_model, epochs, loader, net, device, opt
     net.train()
     tea.train()
     stu.train()
-    tea_model.train()
-    # tea_model.eval()
-    # for name, param in tea_model.named_parameters():
-    #     if 'layer4' not in name and 'layer4' not in name and 'fc' not in name:
-    #     # if 'fc' not in name:
-    #         param.requires_grad = False
+    # tea_model.train()
+    tea_model.eval()
+    for name, param in tea_model.named_parameters():
+        # if 'layer4' not in name and 'layer4' not in name and 'fc' not in name:
+        # if 'fc' not in name:
+            param.requires_grad = False
 
 
     for epoch in range(epochs):
@@ -315,7 +316,7 @@ def train_network_distill2(stu_type, tea_model, epochs, loader, net, device, opt
 
             # print(stu_f.shape)
             CE_loss = F.cross_entropy(outputs, labels, reduction='none')
-            FA_loss = wasserstein_distance(stu_f.detach().reshape(-1).cpu().numpy(), tea_f.detach().reshape(-1).cpu().numpy())
+            FA_loss = ot.wasserstein_1d(stu_f.reshape(-1), tea_f.reshape(-1))
             # print(FA_loss)
             LA_loss = criterion3(F.log_softmax(pseu_label, -1), F.softmax(outputs.detach(), dim=-1))
 
@@ -372,7 +373,7 @@ def train_network_distill2(stu_type, tea_model, epochs, loader, net, device, opt
     print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
 
     if save_model:
-        os.makedirs('results', exist_ok=True)
+        os.makedirs('results/our', exist_ok=True)
         model_path = os.path.join('results', 'our', 'distillednet_mod_' + str(stu_type) + '_' + str(
             args.num_frame) + '_kdweight' + str(args.weight) + '_stu_acc_' + str(round(test_best_acc, 2)) + '_tea_acc_' \
                                   + str(round(test_best_acc_t, 2)) + '.pkl')
