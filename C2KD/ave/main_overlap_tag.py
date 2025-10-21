@@ -54,7 +54,7 @@ if __name__ == '__main__':
     parser.add_argument('--stu-type', type=int, default=0, help='the modality of student unimodal network, 0 for image, 1 for audio')
     parser.add_argument('--num-runs', type=int, default=1, help='num runs')
     parser.add_argument('--num-epochs', type=int, default=100, help='num epochs')
-    parser.add_argument('--batch-size', type=int, default=64, help='batch size')
+    parser.add_argument('--batch-size', type=int, default=4, help='batch size')
     parser.add_argument('--batch-size2', type=int, default=512, help='batch size for calculating the overlap tag')
     parser.add_argument('--num-workers', type=int, default=16, help='dataloader workers')
     parser.add_argument('--lr', type=float, default=1e-2, help='lr')
