@@ -2,4 +2,8 @@
 /C2KD/ave/results/
 /C2KD/ave/wandb/
 
-# /MFH/ravdess/
+/MFH/ravdess/results/
+/MFH/ravdess/credentials.json
+/MFH/ravdess/token.json
+/MFH/ravdess/download.py
+/MFH/ravdess/download1.py

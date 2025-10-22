@@ -10,6 +10,7 @@ from utils.model import FuseNet, ImageNet, AudioNet
 from utils.dist_utils import *
 import matplotlib.pyplot as plt
 import time
+import wandb
 
 epoch_for_tag = 50
 epoch_for_retrain = 50
@@ -246,6 +247,10 @@ def train_network_distill(stu_type, tea_model, epochs, loader, net, weight, devi
 
 
 def train_network_for_overlap_tag(stu_type, tea_type, dist_loss, loader, epochs, learning_rate, device, save_model=False):
+
+    wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
+    wandb.init(entity= "cmkd" ,project="MFH-overlap_tag")
+
     criterion = torch.nn.CrossEntropyLoss()
     tea_model = ImageNet().to(device) if tea_type == 0 else AudioNet().to(device)
     stu_model = ImageNet().to(device) if stu_type == 0 else AudioNet().to(device)
@@ -281,11 +286,13 @@ def train_network_for_overlap_tag(stu_type, tea_type, dist_loss, loader, epochs,
             # train_loss += loss.item()
         print(f"Epoch {epoch} | loss1 {loss1 / len(loader['train']):.4f} | loss2 {loss2 / len(loader['train']):.4f} | "
               f"dist loss {loss3 / len(loader['train']):.4f}")
+        wandb.log({loss1 : loss1 / len(loader['train']), loss2 : loss2 / len(loader['train']), "dist loss": loss3 / len(loader['train'])})
 
         _, train_acc = evaluate(loader['train'], device, tea_model, tea_type)
         _, train_acc_s = evaluate(loader['train'], device, stu_model, stu_type)
         print(f'teacher model train acc {train_acc:.2f} | student model {train_acc_s:.2f}')
         print('-' * 60)
+        wandb.log({"teacher model train acc": train_acc, "student model": train_acc_s})
 
     print('Finish training for overlap tag')
 

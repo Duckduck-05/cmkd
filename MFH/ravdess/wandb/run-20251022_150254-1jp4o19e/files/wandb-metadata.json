@@ -1,0 +1,31 @@
+{
+    "os": "Linux-5.4.0-212-generic-x86_64-with-glibc2.35",
+    "python": "3.10.0",
+    "heartbeatAt": "2025-10-22T06:02:58.709161",
+    "startedAt": "2025-10-22T06:02:54.895279",
+    "docker": null,
+    "gpu": "NVIDIA RTX A6000",
+    "gpu_count": 4,
+    "cpu_count": 48,
+    "cuda": null,
+    "args": [
+        "--place",
+        "5",
+        "--num-permute",
+        "10",
+        "--first-time",
+        "--cal_tag"
+    ],
+    "state": "running",
+    "program": "/home/ducca/CMKD/cmkd/MFH/ravdess/main_overlap_tag.py",
+    "codePath": "MFH/ravdess/main_overlap_tag.py",
+    "git": {
+        "remote": "https://Duckduck-05:@github.com/Duckduck-05/cmkd.git",
+        "commit": "1a86971b0d161bf30a74517d1dcab8750ccb346d"
+    },
+    "email": "thanhnguyen200399@gmail.com",
+    "root": "/home/ducca/CMKD/cmkd",
+    "host": "acd48f0a9729",
+    "username": "root",
+    "executable": "/root/anaconda3/envs/c2kd/bin/python"
+}
