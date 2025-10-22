@@ -82,9 +82,9 @@ if __name__ == '__main__':
     print(args)
 
     device = torch.device("cpu") if args.gpu < 0 else torch.device("cuda:" + str(args.gpu))
-    loader = gen_data('./data', args.batch_size, args.num_workers)
+    loader = gen_data('/workdir/carrot/ravvdess', args.batch_size, args.num_workers)
     if args.cal_tag:
-        loader_fb = gen_data('./data', args.batch_size2, args.num_workers)
+        loader_fb = gen_data('/workdir/carrot/ravvdess', args.batch_size2, args.num_workers)
         cal_overlap_tag(args.stu_type, loader, loader_fb, args.num_epochs, args.lr, device, args.num_permute, args.place, args.first_time)
 
     if args.eval_tag:
