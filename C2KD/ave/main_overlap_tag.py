@@ -43,8 +43,14 @@ def eval_overlap_tag(loader, device, args):
         ], lr=args.lr, momentum=0.9)
 
     net.fc
-
-    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 1:
+        acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 2:
+        acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 3:
+        acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 4:
+        acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
@@ -70,6 +76,7 @@ if __name__ == '__main__':
     parser.add_argument('--cmkd', default=1, help='crossmodal knowledge distillation')
     parser.add_argument('--group', type=str, default='c2kd', help='group of experiments')
     parser.add_argument('--run_name', type=str, default='a2v', help='prefix run name of the experiment')
+    parser.add_argument('--distill_type', type=int, default=2)
 
     args = parser.parse_args()
 
