@@ -4,10 +4,13 @@ import torch
 import argparse
 import numpy as np
 import random
-from utils.helper import gen_data, train_network_distill4, pre_train
+from utils.helper import gen_data, train_network_distill2, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
+
+import wandb
+
 def set_random_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -41,7 +44,7 @@ def eval_overlap_tag(loader, device, args):
             {'params': stu.parameters()},
         ], lr=args.lr, momentum=0.9)
 
-    acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
@@ -57,7 +60,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', type=int, default=4, help='batch size')
     parser.add_argument('--batch-size2', type=int, default=512, help='batch size for calculating the overlap tag')
     parser.add_argument('--num-workers', type=int, default=16, help='dataloader workers')
-    parser.add_argument('--lr', type=float, default=1e-2, help='lr')
+    parser.add_argument('--lr', type=float, default=1e-3, help='lr')
     parser.add_argument('--num_frame', type=int, default=1)
     parser.add_argument('--weight', type=float, default=1)
     parser.add_argument('--audio_arch', type=str, default='resnet18')
@@ -67,6 +70,12 @@ if __name__ == '__main__':
     parser.add_argument('--cmkd', default=1, help='crossmodal knowledge distillation')
 
     args = parser.parse_args()
+
+    wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
+    wandb.init(entity= "cmkd" ,project="c2kd-ours",
+                name=f"{args.run_name}_lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
+                config=vars(args), group=args.group)
+
     print(args)
 
     device = torch.device("cpu") if args.gpu < 0 else torch.device("cuda:" + str(args.gpu))

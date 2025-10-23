@@ -136,6 +136,13 @@ def train_network_distill(stu_type, tea_model, epochs, loader, net, device, opti
     criterion4 = torch.nn.KLDivLoss(reduction='none')
     wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
     wandb.init(entity= "cmkd" ,project="c2kd")
+    
+    # wandb.init(project='Difformer',
+    #            group=group,
+    #            name=f"Diffusion {args.run_name}: seed_{args.seed}_lr_{args.lr}_pretrained_seed_{args.pretrained_seed}_ksvd_layers_{args.ksvd_layers}_lambda_mean_{args.lambda_mean}_var_{args.lambda_var}_ce_{args.lambda_ce}_batchsize_{args.batch_size}_epochs_{args.nb_epochs}",
+    #         #    name=f"Diffusion {args.run_name}: seed_{args.seed}_lr_{args.lr}_clip_{args.clip}_pretrained_seed_{args.pretrained_seed}_mlp_dropout_{args.mlp_dropout}_ksvd_layers_{args.ksvd_layers}_lambda_mean_{args.lambda_mean}_var_{args.lambda_var}_ce_{args.lambda_ce}_batchsize_{args.batch_size}_architecture_{args.mlp_hdim1}_{args.mlp_hdim2}_{args.mlp_hdim3}_epochs_{args.nb_epochs}_adversarial_noise_{args.adversarial_noise}_adversarial_samples_{args.adversarial_samples}_rnn_hidden_{args.rnn_hidden}_rnn_num_layers_{args.rnn_num_layers}_rnn_dropout_{args.rnn_dropout}",
+    #            config=vars(args))
+
     iter = 0
     net.train()
     tea.train()
@@ -277,8 +284,6 @@ def train_network_distill2(stu_type, tea_model, epochs, loader, net, device, opt
     model_best = net
     criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
     criterion4 = torch.nn.KLDivLoss(reduction='none')
-    wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
-    wandb.init(entity= "cmkd" ,project="c2kd-ours")
     iter = 0
     net.train()
     tea.train()
@@ -329,7 +334,7 @@ def train_network_distill2(stu_type, tea_model, epochs, loader, net, device, opt
             CE_loss = F.cross_entropy(outputs, labels, reduction='none')
             FA_loss = ot.wasserstein_1d(stu_f.reshape(-1), tea_f.reshape(-1))
             # print(FA_loss)
-            LA_loss = criterion3(F.log_softmax(pseu_label, -1), F.softmax(outputs.detach(), dim=-1))
+            LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax(pseu_label, dim=-1))
 
             loss = CE_loss.mean() + FA_loss + LA_loss
             loss.backward()
@@ -342,7 +347,7 @@ def train_network_distill2(stu_type, tea_model, epochs, loader, net, device, opt
 
 
 
-        if epoch >= 80:
+        if epoch >= 1:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
@@ -401,8 +406,6 @@ def train_network_distill3(stu_type, tea_model, epochs, loader, net, device, opt
     model_best = net
     criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
     criterion4 = torch.nn.KLDivLoss(reduction='none')
-    wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
-    wandb.init(entity= "cmkd" ,project="c2kd-ours")
     iter = 0
     net.train()
     tea.train()
@@ -467,7 +470,7 @@ def train_network_distill3(stu_type, tea_model, epochs, loader, net, device, opt
 
             tea_ch_label = net.fc(pseu_label_128_aligned)
 
-            LA_loss = criterion3(F.log_softmax(pseu_label, -1), F.softmax(tea_ch_label, dim=-1))
+            LA_loss = criterion3(F.log_softmax(tea_ch_label, -1), F.softmax( pseu_label, dim=-1))
 
             loss = CE_loss.mean() + FA_loss + LA_loss
             # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
@@ -481,7 +484,7 @@ def train_network_distill3(stu_type, tea_model, epochs, loader, net, device, opt
 
 
 
-        if epoch >= 80:
+        if epoch >= 1:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
@@ -540,8 +543,8 @@ def train_network_distill4(stu_type, tea_model, epochs, loader, net, device, opt
     model_best = net
     criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
     criterion4 = torch.nn.KLDivLoss(reduction='none')
-    wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
-    wandb.init(entity= "cmkd" ,project="c2kd-ours")
+    # wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
+    # wandb.init(entity= "cmkd" ,project="c2kd-ours")
     iter = 0
     net.train()
     tea.train()
@@ -600,7 +603,6 @@ def train_network_distill4(stu_type, tea_model, epochs, loader, net, device, opt
             # feature from teacher come to classification head of student
             # ví dụ: match mean/std theo student feature trong batch
             
-            # feel that no work
             # with torch.no_grad():
             #     m_s = stu_f.mean(dim=0, keepdim=True)
             #     s_s = stu_f.std(dim=0, keepdim=True).clamp_min(1e-6)
@@ -612,8 +614,10 @@ def train_network_distill4(stu_type, tea_model, epochs, loader, net, device, opt
 
             # tea_ch_label = net.fc(pseu_label_128_aligned)
 
+            # LA_loss = criterion3(F.log_softmax(tea_ch_label, -1), F.softmax( pseu_label, dim=-1))
+
             # LA_loss = criterion3(F.log_softmax(pseu_label, -1), F.softmax(tea_ch_label, dim=-1))
-            LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax(pseu_label.detach(), dim=-1))
+            LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax(pseu_label, dim=-1))
 
 
             loss = CE1_loss.mean() + CE2_loss.mean() + FA_loss + LA_loss + kl_loss_px_t
@@ -630,7 +634,7 @@ def train_network_distill4(stu_type, tea_model, epochs, loader, net, device, opt
 
 
 
-        if epoch >= 80:
+        if epoch >= 1:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)

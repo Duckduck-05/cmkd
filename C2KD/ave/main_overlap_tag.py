@@ -4,7 +4,8 @@ import torch
 import argparse
 import numpy as np
 import random
-from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill3, pre_train
+import wandb
+from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill3, train_network_distill4, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -43,7 +44,7 @@ def eval_overlap_tag(loader, device, args):
 
     net.fc
 
-    acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
@@ -55,11 +56,11 @@ if __name__ == '__main__':
     parser.add_argument('--gpu', type=int, default=0, help='gpu id')
     parser.add_argument('--stu-type', type=int, default=0, help='the modality of student unimodal network, 0 for image, 1 for audio')
     parser.add_argument('--num-runs', type=int, default=1, help='num runs')
-    parser.add_argument('--num-epochs', type=int, default=100, help='num epochs')
+    parser.add_argument('--num-epochs', type=int, default=00, help='num epochs')
     parser.add_argument('--batch-size', type=int, default=4, help='batch size')
     parser.add_argument('--batch-size2', type=int, default=512, help='batch size for calculating the overlap tag')
     parser.add_argument('--num-workers', type=int, default=16, help='dataloader workers')
-    parser.add_argument('--lr', type=float, default=1e-2, help='lr')
+    parser.add_argument('--lr', type=float, default=1e-3, help='lr')
     parser.add_argument('--num_frame', type=int, default=1)
     parser.add_argument('--weight', type=float, default=1)
     parser.add_argument('--audio_arch', type=str, default='resnet18')
@@ -67,8 +68,16 @@ if __name__ == '__main__':
     parser.add_argument('--krc', type=float, default=0.0)
     parser.add_argument('--pre_train', default=0, help='pre_train student and teacher models')
     parser.add_argument('--cmkd', default=1, help='crossmodal knowledge distillation')
+    parser.add_argument('--group', type=str, default='c2kd', help='group of experiments')
+    parser.add_argument('--run_name', type=str, default='a2v', help='prefix run name of the experiment')
 
     args = parser.parse_args()
+
+    wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
+    wandb.init(entity= "cmkd" ,project="c2kd-ours",
+                name=f"{args.run_name}_lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
+                config=vars(args), group=args.group)
+
     print(args)
 
     device = torch.device("cpu") if args.gpu < 0 else torch.device("cuda:" + str(args.gpu))

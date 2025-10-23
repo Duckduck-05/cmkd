@@ -4,7 +4,7 @@ import torch
 import argparse
 import numpy as np
 import random
-from utils.helper import gen_data, train_network_distill, pre_train
+from utils.helper import gen_data, train_network_distill3, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -41,7 +41,7 @@ def eval_overlap_tag(loader, device, args):
             {'params': stu.parameters()},
         ], lr=args.lr, momentum=0.9)
 
-    acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # the parameters you might need to change
-    parser.add_argument('--gpu', type=int, default=0, help='gpu id')
+    parser.add_argument('--gpu', type=int, default=2, help='gpu id')
     parser.add_argument('--stu-type', type=int, default=0, help='the modality of student unimodal network, 0 for image, 1 for audio')
     parser.add_argument('--num-runs', type=int, default=1, help='num runs')
     parser.add_argument('--num-epochs', type=int, default=100, help='num epochs')
