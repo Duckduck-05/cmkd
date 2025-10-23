@@ -1,0 +1,149 @@
+asttokens @ file:///home/conda/feedstock_root/build_artifacts/asttokens_1733250440834/work
+audioread==3.0.1
+braceexpand==0.1.7
+brotlicffi @ file:///croot/brotlicffi_1736182461069/work
+cachetools==6.2.1
+certifi @ file:///home/task_175978569463913/conda-bld/certifi_1759786098575/work/certifi
+cffi==2.0.0
+charset-normalizer @ file:///croot/charset-normalizer_1721748349566/work
+click==8.3.0
+cmake==4.1.0
+comm @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_comm_1753453984/work
+contourpy==1.3.3
+cycler==0.12.1
+debugpy @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_debugpy_1758162063/work
+decorator==4.4.2
+docker-pycreds==0.4.0
+exceptiongroup @ file:///home/conda/feedstock_root/build_artifacts/exceptiongroup_1746947292760/work
+executing @ file:///home/conda/feedstock_root/build_artifacts/executing_1756729339227/work
+filelock==3.19.1
+fonttools==4.60.1
+fsspec==2025.9.0
+geomloss==0.2.6
+gh==0.0.4
+gitdb==4.0.12
+GitPython==3.1.45
+gmpy2 @ file:///croot/gmpy2_1738085463648/work
+google-api-core==2.26.0
+google-api-python-client==2.184.0
+google-auth==2.41.1
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.2
+googleapis-common-protos==1.70.0
+hf-xet==1.1.10
+httplib2==0.31.0
+huggingface-hub==0.35.3
+idna @ file:///croot/idna_1714398848350/work
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+importlib_metadata @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_importlib-metadata_1747934053/work
+ipykernel @ file:///home/conda/feedstock_root/build_artifacts/ipykernel_1754352855579/work
+ipython @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_ipython_1759151815/work
+ipython_pygments_lexers @ file:///home/conda/feedstock_root/build_artifacts/ipython_pygments_lexers_1737123620466/work
+jedi @ file:///home/conda/feedstock_root/build_artifacts/jedi_1733300866624/work
+Jinja2 @ file:///croot/jinja2_1741710844255/work
+joblib==1.5.2
+jupyter_client @ file:///home/conda/feedstock_root/build_artifacts/jupyter_client_1733440914442/work
+jupyter_core @ file:///home/conda/feedstock_root/build_artifacts/jupyter_core_1748333051527/work
+kiwisolver==1.4.9
+lazy_loader==0.4
+librosa==0.11.0
+lightning-utilities==0.15.2
+lit==18.1.8
+littleutils==0.2.4
+llvmlite==0.45.1
+MarkupSafe @ file:///croot/markupsafe_1738584038848/work
+matplotlib==3.10.6
+matplotlib-inline @ file:///home/conda/feedstock_root/build_artifacts/matplotlib-inline_1733416936468/work
+mkl-service==2.5.2
+mkl_fft @ file:///croot/mkl_fft_1751317925336/work
+mkl_random @ file:///croot/mkl_random_1751318527880/work
+moviepy==1.0.3
+mpmath @ file:///croot/mpmath_1690848262763/work
+msgpack==1.1.1
+multidict==6.7.0
+nest_asyncio @ file:///home/conda/feedstock_root/build_artifacts/nest-asyncio_1733325553580/work
+networkx @ file:///croot/networkx_1756709277056/work
+numba==0.62.1
+numpy @ file:///croot/numpy_and_numpy_base_1755590845055/work/dist/numpy-1.26.4-cp311-cp311-linux_x86_64.whl#sha256=f3e54aefc576bc7265202a826a4e3701a42fed06e36218192a45f04ea42987fb
+oauthlib==3.3.1
+ogb==1.3.6
+opencv-python==4.12.0.88
+outdated==0.2.2
+packaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1745345660/work
+pandas==2.3.3
+parso @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_parso_1755974222/work
+pathtools==0.1.2
+pexpect @ file:///home/conda/feedstock_root/build_artifacts/pexpect_1733301927746/work
+pickleshare @ file:///home/conda/feedstock_root/build_artifacts/pickleshare_1733327343728/work
+pillow @ file:///croot/pillow_1752524526621/work
+platformdirs @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_platformdirs_1756227402/work
+pooch==1.8.2
+POT==0.9.6.post1
+proglog==0.1.12
+promise==2.3
+prompt_toolkit @ file:///home/conda/feedstock_root/build_artifacts/prompt-toolkit_1756321756983/work
+proto-plus==1.26.1
+protobuf==3.20.3
+psutil @ file:///home/conda/feedstock_root/build_artifacts/psutil_1758169152457/work
+ptyprocess @ file:///home/conda/feedstock_root/build_artifacts/ptyprocess_1733302279685/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl#sha256=92c32ff62b5fd8cf325bec5ab90d7be3d2a8ca8c8a3813ff487a8d2002630d1f
+pure_eval @ file:///home/conda/feedstock_root/build_artifacts/pure_eval_1733569405015/work
+pyasn1==0.6.1
+pyasn1_modules==0.4.2
+pycparser @ file:///home/task_175749606196006/conda-bld/pycparser_1757496076770/work
+Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1750615794071/work
+pyparsing==3.2.5
+PySocks @ file:///work/ci_py311/pysocks_1676822712504/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-dateutil_1751104122/work
+python-dotenv==1.1.1
+pytz==2025.2
+PyYAML==6.0.3
+pyzmq @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pyzmq_1757387012/work
+regex==2025.9.18
+requests @ file:///croot/requests_1756709366904/work
+requests-oauthlib==2.0.0
+rsa==4.9.1
+scikit-learn==1.7.2
+scipy==1.16.2
+sentry-sdk==2.40.0
+setproctitle==1.3.7
+shortuuid==1.0.13
+six @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_six_1753199211/work
+smmap==5.0.2
+soundfile==0.13.1
+soxr==1.0.0
+stack_data @ file:///home/conda/feedstock_root/build_artifacts/stack_data_1733569443808/work
+sympy==1.13.1
+threadpoolctl==3.6.0
+tokenizers==0.13.3
+torch==2.0.1+cu118
+torchaudio==2.0.2+cu118
+torchmetrics==1.8.2
+torchprofile==0.0.4
+torchvision==0.15.2+cu118
+tornado==6.3.2
+tqdm==4.67.1
+traitlets==5.9.0
+transformers==4.26.0
+triton==2.0.0
+typeguard==2.13.3
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_typing_extensions_1756220668/work
+tzdata==2025.2
+uri-template==1.2.0
+uritemplate==4.2.0
+urllib3 @ file:///croot/urllib3_1750775463400/work
+wandb==0.13.3
+wcwidth==0.2.6
+webcolors==1.13
+webdataset==0.2.48
+webencodings==0.5.1
+websocket-client==1.5.2
+Werkzeug==2.2.3
+widgetsnbextension==4.0.7
+wilds==2.0.0
+wrapt==1.14.1
+xmltodict==0.13.0
+yacs==0.1.8
+yapf==0.29.0
+yarl==1.9.2
+zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1749421620841/work

@@ -43,14 +43,14 @@ def eval_overlap_tag(loader, device, args):
         ], lr=args.lr, momentum=0.9)
 
     net.fc
-    if args.distill_type == 1:
-        acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 2:
-        acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 3:
-        acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 4:
-        acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    # if args.distill_type == 1:
+    #     acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    # if args.distill_type == 2:
+    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    # if args.distill_type == 3:
+    #     acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    # if args.distill_type == 4:
+    #     acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
