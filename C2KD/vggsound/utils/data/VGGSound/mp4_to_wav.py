@@ -1,12 +1,27 @@
 import os
 
+root_fol = "/workdir/carrot/VGGSound/extracted"
 
-train_videos = '/data/users/xiaokang_peng/VGGsound/train-videos/train_video_list.txt'
-test_videos = '/data/users/xiaokang_peng/VGGsound/test-videos/test_video_list.txt'
+train_videos = '/home/ducca/CMKD/cmkd/C2KD/vggsound/train.csv'
+test_videos = '/home/ducca/CMKD/cmkd/C2KD/vggsound/test.csv'
 
-train_audio_dir = '/data/users/xiaokang_peng/VGGsound/train-audios/train-set'
-test_audio_dir = '/data/users/xiaokang_peng/VGGsound/test-audios/test-set'
+train_video_dir = '/workdir/carrot/VGGSound/C2KD/train-videos/train-set'
+test_video_dir = '/workdir/carrot/VGGSound/C2KD/test-videos/test-set'
 
+train_audio_dir = '/workdir/carrot/VGGSound/C2KD/train-audios/train-set'
+test_audio_dir = '/workdir/carrot/VGGSound/C2KD/test-audios/test-set'
+
+if not os.path.exists(train_audio_dir):
+    os.makedirs(train_audio_dir)
+
+if not os.path.exists(test_audio_dir):
+    os.makedirs(test_audio_dir)
+
+if not os.path.exists(train_video_dir):
+    os.makedirs(train_video_dir)
+
+if not os.path.exists(test_video_dir):
+    os.makedirs(test_video_dir)
 
 # test set processing
 with open(test_videos, 'r') as f:
@@ -17,7 +32,7 @@ for i, item in enumerate(files):
         print('*******************************************')
         print('{}/{}'.format(i, len(files)))
         print('*******************************************')
-    mp4_filename = os.path.join('/data/users/xiaokang_peng/VGGsound/test-videos/test-set/', item[:-1])
+    mp4_filename = os.path.join(test_video_dir, item[:-1])
     wav_filename = os.path.join(test_audio_dir, item[:-5]+'.wav')
     if os.path.exists(wav_filename):
         pass
