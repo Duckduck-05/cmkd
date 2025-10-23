@@ -19,7 +19,7 @@
 #             --stu-type $st
 #     done
 # done
-# CUDA_VISIBLE_DEVICES=0 python main_overlap_tag.py --gpu 0 --batch-size 4 --num-epochs 100 --lr 1e-3 --stu-type 0 \
- CUDA_VISIBLE_DEVICES=1 python main_overlap_tag.py --gpu 0 --batch-size 4 --num-epochs 100 --lr 3e-4 --stu-type 0 
+CUDA_VISIBLE_DEVICES=0 python main_overlap_tag.py --gpu 0 --batch-size 4 --num-epochs 100 --lr 1e-3 --stu-type 0 --distill_type 2 \
+&  CUDA_VISIBLE_DEVICES=1 python main_overlap_tag.py --gpu 0 --batch-size 4 --num-epochs 100 --lr 1e-2 --stu-type 0 --distill_type 2
 # CUDA_VISIBLE_DEVICES=0 python main_overlap_tag.py --gpu 0 --batch-size 4 --num-epochs 100 --lr 5e-4 --stu-type 0
 #  CUDA_VISIBLE_DEVICES=1 python main_overlap_tag.py --gpu 0 --batch-size 4 --num-epochs 100 --lr 1e-2 --stu-type 0
