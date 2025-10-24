@@ -334,7 +334,8 @@ def train_network_distill2(stu_type, tea_model, epochs, loader, net, device, opt
             CE_loss = F.cross_entropy(outputs, labels, reduction='none')
             FA_loss = ot.wasserstein_1d(stu_f.reshape(-1), tea_f.reshape(-1))
             # print(FA_loss)
-            LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax(pseu_label, dim=-1))
+            # LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax(pseu_label, dim=-1))
+            LA_loss = criterion3(F.log_softmax(pseu_label, -1), F.softmax(outputs.detach(), dim=-1))
 
             loss = CE_loss.mean() + FA_loss + LA_loss
             loss.backward()

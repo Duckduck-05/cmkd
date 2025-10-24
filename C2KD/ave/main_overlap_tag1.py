@@ -4,13 +4,11 @@ import torch
 import argparse
 import numpy as np
 import random
-from utils.helper import gen_data, train_network_distill2, pre_train
+import wandb
+from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill3, train_network_distill4, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
-
-import wandb
-
 def set_random_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -31,12 +29,12 @@ def eval_overlap_tag(loader, device, args):
     tea_model.load_state_dict(
         #change
         torch.load('./results/teacher_mod_' + str(tea_type) + '_' + arch + '_' + str(args.num_frame) + '_overlap.pkl',
-                   map_location={"cuda:0": "cuda:1"}), strict=False)
+                   map_location={"cuda:0": "cpu"}), strict=False)
     print(f'Finish Loading teacher model')
 
     net = ImageNet(args).to(device) if stu_type == 0 else AudioNet(args).to(device)
-    tea = Tea().to(device)
-    stu = Stu().to(device)
+    tea = Tea().cuda()
+    stu = Stu().cuda()
     optimizer = torch.optim.SGD([
             {'params': net.parameters()},
             {'params': tea_model.parameters()},
@@ -44,7 +42,15 @@ def eval_overlap_tag(loader, device, args):
             {'params': stu.parameters()},
         ], lr=args.lr, momentum=0.9)
 
-    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+
+    if args.distill_type == 1:
+        acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 2:
+        acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 3:
+        acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 4:
+        acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
@@ -53,10 +59,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # the parameters you might need to change
-    parser.add_argument('--gpu', type=int, default=1, help='gpu id')
+    parser.add_argument('--gpu', type=int, default=0, help='gpu id')
     parser.add_argument('--stu-type', type=int, default=0, help='the modality of student unimodal network, 0 for image, 1 for audio')
     parser.add_argument('--num-runs', type=int, default=1, help='num runs')
-    parser.add_argument('--num-epochs', type=int, default=100, help='num epochs')
+    parser.add_argument('--num-epochs', type=int, default=00, help='num epochs')
     parser.add_argument('--batch-size', type=int, default=4, help='batch size')
     parser.add_argument('--batch-size2', type=int, default=512, help='batch size for calculating the overlap tag')
     parser.add_argument('--num-workers', type=int, default=16, help='dataloader workers')
@@ -68,6 +74,9 @@ if __name__ == '__main__':
     parser.add_argument('--krc', type=float, default=0.0)
     parser.add_argument('--pre_train', default=0, help='pre_train student and teacher models')
     parser.add_argument('--cmkd', default=1, help='crossmodal knowledge distillation')
+    parser.add_argument('--group', type=str, default='c2kd', help='group of experiments')
+    parser.add_argument('--run_name', type=str, default='a2v', help='prefix run name of the experiment')
+    parser.add_argument('--distill_type', type=int, default=2)
 
     args = parser.parse_args()
 
