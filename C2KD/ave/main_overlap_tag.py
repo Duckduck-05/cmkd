@@ -5,7 +5,7 @@ import argparse
 import numpy as np
 import random
 import wandb
-from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill3, train_network_distill4, pre_train
+from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill3, train_network_distill4, train_network_distill5, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -46,7 +46,7 @@ def eval_overlap_tag(loader, device, args):
     # if args.distill_type == 1:
     #     acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     # if args.distill_type == 2:
-    acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    acc = train_network_distill5(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     # if args.distill_type == 3:
     #     acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     # if args.distill_type == 4:
