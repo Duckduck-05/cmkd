@@ -5,7 +5,7 @@ import argparse
 import numpy as np
 import random
 import wandb
-from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill3, train_network_distill4, train_network_distill5, pre_train
+from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill21, train_network_distill22, train_network_distill3, train_network_distill4, train_network_distill5, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -43,14 +43,20 @@ def eval_overlap_tag(loader, device, args):
         ], lr=args.lr, momentum=0.9)
 
     net.fc
-    # if args.distill_type == 1:
-    #     acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    # if args.distill_type == 2:
-    acc = train_network_distill5(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    # if args.distill_type == 3:
-    #     acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    # if args.distill_type == 4:
-    #     acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 1:
+        acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 2:
+        acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 3:
+        acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 4:
+        acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 5:
+        acc = train_network_distill5(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 21:
+        acc = train_network_distill21(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 22:
+        acc = train_network_distill22(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
@@ -82,7 +88,7 @@ if __name__ == '__main__':
 
     wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
     wandb.init(entity= "cmkd" ,project="c2kd-ours",
-                name=f"{args.run_name}_lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
+                name=f"{args.run_name}_lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}_distill_type_{args.distill_type}",
                 config=vars(args), group=args.group)
 
     print(args)
