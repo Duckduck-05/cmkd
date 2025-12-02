@@ -36,7 +36,12 @@ class AudioImageDataset(Dataset):
 
         img_name = os.path.join(self.image_dir, self.df.iloc[index, 1])
         image = cv2.imread(img_name)
-        image[:, :, [0, 2]] = image[:, :, [2, 0]]
+        # print(image.shape)
+        try:
+            image[:, :, [0, 2]] = image[:, :, [2, 0]]
+        except Exception:
+            print(img_name)
+
         image = self.img_transform(image)
 
         sample = {'audio': audio, 'image': image, 'label': self.df.iloc[index, 2]}

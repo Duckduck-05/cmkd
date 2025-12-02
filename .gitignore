@@ -3,8 +3,8 @@
 /C2KD/ave/wandb/
 
 /MFH/ravdess/results/
-/MFH/ravdess/credentials.json
-/MFH/ravdess/token.json
-/MFH/ravdess/download.py
-/MFH/ravdess/download1.py
+# /MFH/ravdess/credentials.json
+# /MFH/ravdess/token.json
+# /MFH/ravdess/download.py
+# /MFH/ravdess/download1.py
 /MFH/ravdess/wandb/
