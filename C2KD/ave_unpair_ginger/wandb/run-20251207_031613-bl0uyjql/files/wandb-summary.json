@@ -1,0 +1,1 @@
+{"train_acc":36.56850961538461,"_step":298,"test_acc":24.62686567164179,"test_acc_t":52.7363184079602,"_runtime":2455,"LA_loss_total":0,"trainloss":27.943041920661926,"train_acc_t":100,"_wandb":{"runtime":2455},"val_acc_t":57.605985037406484,"FA_loss_total":0.2277906835079193,"val_acc":27.36318407960199,"CE_loss_total":27.715251922607422,"_timestamp":1.7650798295881753e+09}

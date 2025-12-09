@@ -2,14 +2,14 @@ import os
 
 root_fol = "/workdir/carrot/VGGSound/extracted"
 
-train_videos = '/home/ducca/CMKD/cmkd/C2KD/vggsound/train.csv'
-test_videos = '/home/ducca/CMKD/cmkd/C2KD/vggsound/test.csv'
+train_videos = '/home/ducca/CMKD/C2KD/vggsound/train.csv'
+test_videos = '/home/ducca/CMKD/C2KD/vggsound/test.csv'
 
-train_video_dir = '/workdir/carrot/VGGSound/C2KD/train-videos/train-set'
-test_video_dir = '/workdir/carrot/VGGSound/C2KD/test-videos/test-set'
+train_video_dir = '/home/ducca/CMKD/C2KD/vggsound/utils/data/VGGSound_dataset/train-videos/train-set'
+test_video_dir = '/home/ducca/CMKD/C2KD/vggsound/utils/data/VGGSound_dataset/test-videos/test-set'
 
-train_audio_dir = '/workdir/carrot/VGGSound/C2KD/train-audios/train-set'
-test_audio_dir = '/workdir/carrot/VGGSound/C2KD/test-audios/test-set'
+train_audio_dir = '/home/ducca/CMKD/C2KD/vggsound/utils/data/VGGSound_dataset/train-audios/train-set'
+test_audio_dir = '/home/ducca/CMKD/C2KD/vggsound/utils/data/VGGSound_dataset/test-audios/test-set'
 
 if not os.path.exists(train_audio_dir):
     os.makedirs(train_audio_dir)
@@ -49,7 +49,7 @@ for i, item in enumerate(files):
         print('*******************************************')
         print('{}/{}'.format(i, len(files)))
         print('*******************************************')
-    mp4_filename = os.path.join('/data/users/xiaokang_peng/VGGsound/train-videos/train-set/', item[:-1])
+    mp4_filename = os.path.join('/home/ducca/CMKD/C2KD/vggsound/utils/data/VGGSound_dataset/train-videos/train-set/', item[:-1])
     wav_filename = os.path.join(train_audio_dir, item[:-5]+'.wav')
     if os.path.exists(wav_filename):
         pass

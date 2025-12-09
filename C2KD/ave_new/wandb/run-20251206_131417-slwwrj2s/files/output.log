@@ -1,0 +1,49 @@
+Seed 1
+teacher:image (resnet18); student:audio(resnet18)
+Finish Loading teacher model
+/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/conv.py:459: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+Traceback (most recent call last):
+  File "/home/ducca/CMKD/C2KD/ave_new/main_overlap_tag.py", line 91, in <module>
+    log_np[run, :] = eval_overlap_tag(loader, device, args)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/CMKD/C2KD/ave_new/main_overlap_tag.py", line 45, in eval_overlap_tag
+    acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/CMKD/C2KD/ave_new/utils/helper.py", line 155, in train_network_distill
+    pseu_label, pseu_label_128, tea_fit = tea_model(img_inputs_cln)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/CMKD/C2KD/ave_new/utils/model_res.py", line 285, in forward
+    return self.backbone(x)
+           ^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/CMKD/C2KD/ave_new/utils/model_res.py", line 170, in forward
+    x = self.layer1(x)
+        ^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ducca/CMKD/C2KD/ave_new/utils/model_res.py", line 45, in forward
+    out = self.bn1(out)
+          ^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/batchnorm.py", line 171, in forward
+    return F.batch_norm(
+           ^^^^^^^^^^^^^
+  File "/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/functional.py", line 2450, in batch_norm
+    return torch.batch_norm(
+           ^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 50.00 MiB (GPU 0; 47.54 GiB total capacity; 7.85 GiB already allocated; 45.12 MiB free; 8.01 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF

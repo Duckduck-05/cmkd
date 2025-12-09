@@ -26,12 +26,14 @@
 #  CUDA_VISIBLE_DEVICES=1 python main_overlap_tag.py --gpu 0 --batch-size 4 --num-epochs 100 --lr 1e-2 --stu-type 0
 
 
-CUDA_VISIBLE_DEVICES=0 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 3e-4 --stu-type 0 --distill_type 2 &
+CUDA_VISIBLE_DEVICES=0 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 1e-3 --stu-type 0 --distill_type 0 &
+CUDA_VISIBLE_DEVICES=0 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 1e-3 --stu-type 1 --distill_type 0 &
 
 # Đợi 1 phút (60 giây) rồi chạy job 2
-sleep 60
-CUDA_VISIBLE_DEVICES=1 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 3e-4 --stu-type 0 --distill_type 21 &
+# sleep 60
+# CUDA_VISIBLE_DEVICES=1 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 3e-4 --stu-type 0 --distill_type 0 &
+# CUDA_VISIBLE_DEVICES=1 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 3e-4 --stu-type 1 --distill_type 0 &
 
 # Đợi thêm 1 phút nữa rồi chạy job 3
-sleep 60
-CUDA_VISIBLE_DEVICES=2 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 3e-4 --stu-type 0 --distill_type 22 &
+# sleep 60
+# CUDA_VISIBLE_DEVICES=4 python main_overlap_tag.py --gpu 0 --batch-size 64 --num-epochs 200 --lr 3e-4 --stu-type 0 --distill_type 0 &

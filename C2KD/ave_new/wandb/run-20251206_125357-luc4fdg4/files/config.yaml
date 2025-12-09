@@ -1,0 +1,102 @@
+_wandb:
+    value:
+        cli_version: 0.22.2
+        e:
+            ru59v7wq022431hoxkn57oyzzfsna5le:
+                args:
+                    - --stu-type
+                    - "0"
+                codePath: C2KD/ave_new/main_overlap_tag.py
+                codePathLocal: main_overlap_tag.py
+                cpu_count: 16
+                cpu_count_logical: 32
+                cudaVersion: "12.2"
+                disk:
+                    /:
+                        total: "515144417280"
+                        used: "509102608384"
+                email: duc.ca230081@sis.hust.edu.vn
+                executable: /home/anaconda3/envs/c2kd/bin/python
+                git:
+                    commit: 4b8ce1ed551b9105f2864993f49f36fefb503c0d
+                    remote: https://Duckduck-05:@github.com/Duckduck-05/cmkd.git
+                gpu: NVIDIA RTX A6000
+                gpu_count: 4
+                gpu_nvidia:
+                    - architecture: Ampere
+                      cudaCores: 10752
+                      memoryTotal: "51527024640"
+                      name: NVIDIA RTX A6000
+                      uuid: GPU-91e2cb2f-4121-1517-7f06-33ab972c4d32
+                    - architecture: Ampere
+                      cudaCores: 10752
+                      memoryTotal: "51527024640"
+                      name: NVIDIA RTX A6000
+                      uuid: GPU-1faa89d0-154c-c1a5-caad-4fec91ca1e4b
+                    - architecture: Ampere
+                      cudaCores: 10752
+                      memoryTotal: "51527024640"
+                      name: NVIDIA RTX A6000
+                      uuid: GPU-30868e46-406a-f5dd-4b76-936ed79bef9a
+                    - architecture: Ampere
+                      cudaCores: 10752
+                      memoryTotal: "51527024640"
+                      name: NVIDIA RTX A6000
+                      uuid: GPU-71299e84-f465-985e-a12e-acc26eb2331c
+                host: 117e8b92c718
+                memory:
+                    total: "269722968064"
+                os: Linux-5.15.0-100-generic-x86_64-with-glibc2.36
+                program: /home/ducca/CMKD/C2KD/ave_new/main_overlap_tag.py
+                python: CPython 3.11.13
+                root: /home/ducca/CMKD/C2KD/ave_new
+                startedAt: "2025-12-06T12:53:57.374109Z"
+                writerId: ru59v7wq022431hoxkn57oyzzfsna5le
+        m: []
+        python_version: 3.11.13
+        t:
+            "1":
+                - 1
+                - 41
+            "2":
+                - 1
+                - 41
+            "3":
+                - 13
+                - 16
+            "4": 3.11.13
+            "5": 0.22.2
+            "12": 0.22.2
+            "13": linux-x86_64
+audio_arch:
+    value: resnet18
+batch_size:
+    value: 64
+batch_size2:
+    value: 512
+cmkd:
+    value: 1
+gpu:
+    value: 0
+group:
+    value: c2kd
+image_arch:
+    value: resnet18
+krc:
+    value: 0
+lr:
+    value: 0.01
+num_epochs:
+    value: 100
+num_frame:
+    value: 1
+num_runs:
+    value: 1
+num_workers:
+    value: 16
+pre_train:
+    value: 0
+stu_type:
+    value: 0
+weight:
+    value: 1

@@ -12,6 +12,7 @@ from utils.dist_utils import *
 import time
 import torch.nn.functional as F
 import geomloss
+# from utils.AVEDataset import AVEDataset, AVEDataset_aud, AVEDataset_img
 from utils.AVEDataset import AVEDataset
 # from utils.VGGSoundDataset import VGGSound
 from torch.utils.data import DataLoader
@@ -89,6 +90,40 @@ def evaluate(loader, device, net, in_type):
     val_acc = 100 * correct / total
     return v_loss, val_acc
 
+def evaluate_unpair(loader, device, net, in_type):
+    # type == 0: image input; type == 1: audio input; type == 2: both input
+    correct, v_loss, total, logits = 0, 0, 0, 0
+    net.eval()
+    with torch.no_grad():
+        for i, (data_img, data_aud) in enumerate(zip(*loader)):
+            img_inputs_cln, labels_img = data_img['image'], data_img['label']
+            aud_inputs_cln, labels_aud = data_aud['audio'], data_aud['label']
+            img_inputs, aud_inputs, labels_img, labels_aud = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels_img.to(
+                device), labels_aud.to(device)
+
+            if in_type == 0:
+                labels = labels_img
+                outputs, _, _ = net(img_inputs)
+            elif in_type == 1:
+                outputs, _, _ = net(aud_inputs)
+                labels = labels_aud
+            elif in_type == 2:
+                outputs, _, _ = net(img_inputs, aud_inputs)
+            else:
+                raise ValueError('the value of element in in_type_list should be 0,1,2\n')
+            total += labels.size(0)
+
+            logits = torch.Tensor([F.softmax(outputs, dim=-1)[i][labels[i]] for i in range(outputs.size(0))]).sum()
+            _, predicted = torch.max(outputs.detach(), 1)
+            correct += (predicted == labels).sum().item()
+            criterion = torch.nn.CrossEntropyLoss()
+            loss = criterion(outputs, labels)  # fix to CE loss
+            v_loss += loss.item()
+    logits = logits / len(loader)
+    v_loss = v_loss / len(loader)
+    val_acc = 100 * correct / total
+    return v_loss, val_acc
+
 
 def evaluate_allacc(loader, device, net, in_type):
     _, train_acc = evaluate(loader['train'], device, net, in_type)
@@ -99,12 +134,30 @@ def evaluate_allacc(loader, device, net, in_type):
 
 def gen_data(data_dir, batch_size, num_workers, args):
 
+    # train_dataset_img = AVEDataset_img(args, mode='train')
+    # train_dataset_aud = AVEDataset_aud(args, mode='train')
+    # val_dataset_img = AVEDataset_img(args, mode='val')
+    # val_dataset_aud = AVEDataset_aud(args, mode='val')
+    # test_dataset_img = AVEDataset_img(args, mode='test')
+    # test_dataset_aud = AVEDataset_aud(args, mode='test')
+    # train_dataloader_img = DataLoader(train_dataset_img, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True)  # 计算机的内存充足的时候，可以设置pin_memory=True
+    # train_dataloader_aud = DataLoader(train_dataset_aud, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True)  # 计算机的内存充足的时候，可以设置pin_memory=True
+    # test_dataloader_img = DataLoader(test_dataset_img, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
+    # test_dataloader_aud = DataLoader(test_dataset_aud, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
+    # val_dataloader_img = DataLoader(val_dataset_img, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
+    # val_dataloader_aud = DataLoader(val_dataset_aud, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
+
+
     train_dataset = AVEDataset(args, mode='train')
     test_dataset = AVEDataset(args, mode='test')
     val_dataset = AVEDataset(args, mode='val')
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True)  # 计算机的内存充足的时候，可以设置pin_memory=True
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
     val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
+
+    # loader = {'train': (train_dataloader_img, train_dataloader_aud),
+    #           'val': (val_dataloader_img, val_dataloader_aud),
+    #           'test': (test_dataloader_img, test_dataloader_aud)}
 
     loader = {'train': train_dataloader,
               'val': val_dataloader,
@@ -650,6 +703,130 @@ def train_network_distill22(stu_type, tea_model, epochs, loader, net, device, op
 
     return val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t
 
+# just ce
+def train_network_distill23(stu_type, tea_model, epochs, loader, net, device, optimizer, args, tea, stu):
+    save_model = True
+    val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t = 0, 0, 0, 0
+    model_best = net
+    criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
+    criterion4 = torch.nn.KLDivLoss(reduction='none')
+    iter = 0
+    net.train()
+    tea.train()
+    stu.train()
+    # tea_model.train()
+    tea_model.eval()
+    for name, param in tea_model.named_parameters():
+        # if 'layer4' not in name and 'layer4' not in name and 'fc' not in name:
+        # if 'fc' not in name:
+            param.requires_grad = False
+
+
+    for epoch in range(epochs):
+
+        train_loss = 0.0
+        CE_loss_total = 0.0
+        FA_loss_total = 0.0
+        LA_loss_total = 0.0
+
+        for i, data in enumerate(loader['train']):
+            iter = iter + 1
+            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
+                device)
+
+            # output and net == student
+            if stu_type == 0:
+                outputs, outputs_128, stu_fit = net(img_inputs_cln)
+                pseu_label, pseu_label_128, tea_fit = tea_model(aud_inputs_cln)
+
+                # Proxy
+                tea_logits = tea(tea_fit)
+                stu_logits = stu(stu_fit)
+            elif stu_type == 1:
+                outputs, outputs_128, stu_fit = net(aud_inputs_cln)
+                pseu_label, pseu_label_128, tea_fit = tea_model(img_inputs_cln)
+                tea_logits = tea(tea_fit)
+                stu_logits = stu(stu_fit)
+            else:
+                raise ValueError("Undefined training type in distilled training")
+
+            optimizer.zero_grad()
+
+            stu_f = outputs_128
+            tea_f = pseu_label_128
+
+            # print(stu_f.shape)
+            CE_loss = F.cross_entropy(outputs, labels, reduction='none')
+            # FA_loss = ot.wasserstein_1d(stu_f.reshape(-1), tea_f.reshape(-1))
+            # print(FA_loss)
+            # LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax(pseu_label, dim=-1))
+            # LA_loss = criterion3(F.log_softmax(pseu_label, -1), F.softmax(outputs.detach(), dim=-1))
+
+            # loss = CE_loss.mean() + FA_loss + LA_loss
+            loss = CE_loss.mean()
+            loss.backward()
+            optimizer.step()
+            lr = adjust_lr(iter=epoch, optimizer=optimizer)
+            train_loss += loss.item()
+            CE_loss_total += CE_loss.mean()
+            # FA_loss_total += FA_loss
+            # LA_loss_total += LA_loss
+
+
+
+        if epoch >= 1:
+            _, train_acc = evaluate(loader['train'], device, net, stu_type)
+            val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
+            test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
+            _, train_acc_t = evaluate(loader['train'], device, tea_model, int(1-stu_type))
+            val_loss_t, val_acc_t = evaluate(loader['val'], device, tea_model, int(1-stu_type))
+            test_loss_t, test_acc_t = evaluate(loader['test'], device, tea_model, int(1-stu_type))
+
+            wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc,\
+                       'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        else:
+            _, train_acc = 0, 0
+            val_loss, val_acc = 0, 0
+            test_loss, test_acc = 0, 0
+            _, train_acc_t = 0, 0
+            val_loss_t, val_acc_t = 0, 0
+            test_loss_t, test_acc_t = 0, 0
+
+        if val_acc >= val_best_acc:
+            val_best_acc = val_acc
+            test_best_acc = test_acc
+            model_best = deepcopy(net)
+        if val_acc_t >= val_best_acc_t:
+            val_best_acc_t = val_acc_t
+            test_best_acc_t = test_acc_t
+
+        wandb.log({'trainloss': train_loss / len(loader['train']), 'CE_loss_total': CE_loss_total / len(loader['train']), \
+                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train'])})
+        wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
+                   'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        print(f"Epoch | All epochs: {epoch} | {epochs}")
+        print(
+            f"Train Loss: {train_loss / len(loader['train']):.3f}")
+        print(f"Train | Val | Test Accuracy {train_acc:.3f} | {val_acc:.3f} | {test_acc:.3f}")
+        print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
+        print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
+        print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+
+    print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+    print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
+
+    if save_model:
+        os.makedirs('results/our', exist_ok=True)
+        model_path = os.path.join('results', 'our', 'distillednet_mod_' + str(stu_type) + '_' + str(
+            args.num_frame) + '_kdweight' + str(args.weight) + '_stu_acc_' + str(round(test_best_acc, 2)) + '_tea_acc_' \
+                                  + str(round(test_best_acc_t, 2)) + '.pkl')
+        torch.save(model_best.state_dict(), model_path)
+        print(
+            f'Saving best model to {model_path}, Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+
+    return val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t
+
 # unpaired data
 def train_network_distill3(stu_type, tea_model, epochs, loader, net, device, optimizer, args, tea, stu):
     save_model = True
@@ -719,9 +896,12 @@ def train_network_distill3(stu_type, tea_model, epochs, loader, net, device, opt
             pseu_label_128_norm = (pseu_label_128 - m_t) / s_t
             pseu_label_128_aligned = pseu_label_128_norm * s_s + m_s  # đưa về scale giống student
 
-            tea_ch_label = net.fc(pseu_label_128_aligned)
+            # nguoc lai
+            # tea_ch_label = net.fc(pseu_label_128_aligned)
+            # LA_loss = criterion3(F.log_softmax(tea_ch_label, -1), F.softmax( pseu_label, dim=-1))
 
-            LA_loss = criterion3(F.log_softmax(tea_ch_label, -1), F.softmax( pseu_label, dim=-1))
+            stu_ch_label = tea_model.fc(stu_f)
+            LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax( stu_ch_label, dim=-1))
 
             loss = CE_loss.mean() + FA_loss + LA_loss
             # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
@@ -742,6 +922,160 @@ def train_network_distill3(stu_type, tea_model, epochs, loader, net, device, opt
             _, train_acc_t = evaluate(loader['train'], device, tea_model, int(1-stu_type))
             val_loss_t, val_acc_t = evaluate(loader['val'], device, tea_model, int(1-stu_type))
             test_loss_t, test_acc_t = evaluate(loader['test'], device, tea_model, int(1-stu_type))
+
+            wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc,\
+                       'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        else:
+            _, train_acc = 0, 0
+            val_loss, val_acc = 0, 0
+            test_loss, test_acc = 0, 0
+            _, train_acc_t = 0, 0
+            val_loss_t, val_acc_t = 0, 0
+            test_loss_t, test_acc_t = 0, 0
+
+        if val_acc >= val_best_acc:
+            val_best_acc = val_acc
+            test_best_acc = test_acc
+            model_best = deepcopy(net)
+        if val_acc_t >= val_best_acc_t:
+            val_best_acc_t = val_acc_t
+            test_best_acc_t = test_acc_t
+
+        wandb.log({'trainloss': train_loss / len(loader['train']), 'CE_loss_total': CE_loss_total / len(loader['train']), \
+                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train'])})
+        wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
+                   'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        print(f"Epoch | All epochs: {epoch} | {epochs}")
+        print(
+            f"Train Loss: {train_loss / len(loader['train']):.3f}")
+        print(f"Train | Val | Test Accuracy {train_acc:.3f} | {val_acc:.3f} | {test_acc:.3f}")
+        print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
+        print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
+        print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+
+    print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+    print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
+
+    if save_model:
+        os.makedirs('results/our', exist_ok=True)
+        model_path = os.path.join('results', 'our', 'distillednet_mod_' + str(stu_type) + '_' + str(
+            args.num_frame) + '_kdweight' + str(args.weight) + '_stu_acc_' + str(round(test_best_acc, 2)) + '_tea_acc_' \
+                                  + str(round(test_best_acc_t, 2)) + '.pkl')
+        torch.save(model_best.state_dict(), model_path)
+        print(
+            f'Saving best model to {model_path}, Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+
+    return val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t
+
+
+#real unpair
+def train_network_distill31(stu_type, tea_model, epochs, loader, net, device, optimizer, args, tea, stu):
+    save_model = True
+    val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t = 0, 0, 0, 0
+    model_best = net
+    criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
+    criterion4 = torch.nn.KLDivLoss(reduction='none')
+    iter = 0
+    net.train()
+    tea.train()
+    stu.train()
+    # tea_model.train()
+    tea_model.eval()
+    for name, param in tea_model.named_parameters():
+        # if 'layer4' not in name and 'layer4' not in name and 'fc' not in name:
+        # if 'fc' not in name:
+            param.requires_grad = False
+
+
+    for epoch in range(epochs):
+
+        train_loss = 0.0
+        CE_loss_total = 0.0
+        FA_loss_total = 0.0
+        LA_loss_total = 0.0
+
+        for i, (data_img, data_aud) in enumerate(zip(*loader['train'])):
+            iter = iter + 1
+            img_inputs_cln, labels_img = data_img['image'], data_img['label']
+            aud_inputs_cln, labels_aud = data_aud['audio'], data_aud['label']
+            img_inputs_cln, aud_inputs_cln, labels_img, labels_aud = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels_img.to(
+                device), labels_aud.to(device)
+
+            # output and net == student
+            if stu_type == 0:
+                outputs, outputs_128, stu_fit = net(img_inputs_cln)
+                pseu_label, pseu_label_128, tea_fit = tea_model(aud_inputs_cln)
+                labels = labels_img
+                # Proxy
+                tea_logits = tea(tea_fit)
+                stu_logits = stu(stu_fit)
+            elif stu_type == 1:
+                outputs, outputs_128, stu_fit = net(aud_inputs_cln)
+                pseu_label, pseu_label_128, tea_fit = tea_model(img_inputs_cln)
+                labels = labels_aud
+                tea_logits = tea(tea_fit)
+                stu_logits = stu(stu_fit)
+            else:
+                raise ValueError("Undefined training type in distilled training")
+
+            optimizer.zero_grad()
+
+            stu_f = outputs_128
+            tea_f = pseu_label_128
+
+            # print(stu_f.shape)
+            CE_loss = F.cross_entropy(outputs, labels, reduction='none')
+            FA_loss = ot.wasserstein_1d(stu_f.reshape(-1), tea_f.reshape(-1))
+            # print(FA_loss)
+
+            # feature from teacher come to classification head of student
+            # ví dụ: match mean/std theo student feature trong batch
+            with torch.no_grad():
+                m_s = stu_f.mean(dim=0, keepdim=True)
+                s_s = stu_f.std(dim=0, keepdim=True).clamp_min(1e-6)
+                m_t = pseu_label_128.mean(dim=0, keepdim=True)
+                s_t = pseu_label_128.std(dim=0, keepdim=True).clamp_min(1e-6)
+
+            pseu_label_128_norm = (pseu_label_128 - m_t) / s_t
+            pseu_label_128_aligned = pseu_label_128_norm * s_s + m_s  # đưa về scale giống student
+
+            # nguoc lai
+            # tea_ch_label = net.fc(pseu_label_128_aligned)
+            # LA_loss = criterion3(F.log_softmax(tea_ch_label, -1), F.softmax( pseu_label, dim=-1))
+
+            with torch.no_grad():
+                m_s = stu_f.mean(dim=0, keepdim=True)
+                s_s = stu_f.std(dim=0, keepdim=True).clamp_min(1e-6)
+                m_t = pseu_label_128.mean(dim=0, keepdim=True)
+                s_t = pseu_label_128.std(dim=0, keepdim=True).clamp_min(1e-6)
+
+            # pseu_label_128_norm = (pseu_label_128 - m_t) / s_t
+            # pseu_label_128_aligned = pseu_label_128_norm * s_s + m_s  # đưa về scale giống student
+            stu_f_norm = (stu_f - m_s) / s_s
+            stu_f_aligned = stu_f_norm * s_t + m_t
+
+            stu_ch_label = tea_model.fc(stu_f_aligned)
+            LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax( stu_ch_label, dim=-1))
+
+            loss = CE_loss.mean() + FA_loss + LA_loss
+            # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
+            loss.backward()
+            optimizer.step()
+            lr = adjust_lr(iter=epoch, optimizer=optimizer)
+            train_loss += loss.item()
+            CE_loss_total += CE_loss.mean()
+            FA_loss_total += FA_loss
+            LA_loss_total += LA_loss
+
+
+
+        if epoch >= 1:
+            _, train_acc = evaluate_unpair(loader['train'], device, net, stu_type)
+            val_loss, val_acc = evaluate_unpair(loader['val'], device, net, stu_type)
+            test_loss, test_acc = evaluate_unpair(loader['test'], device, net, stu_type)
+            _, train_acc_t = evaluate_unpair(loader['train'], device, tea_model, int(1-stu_type))
+            val_loss_t, val_acc_t = evaluate_unpair(loader['val'], device, tea_model, int(1-stu_type))
+            test_loss_t, test_acc_t = evaluate_unpair(loader['test'], device, tea_model, int(1-stu_type))
 
             wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc,\
                        'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
@@ -1173,6 +1507,132 @@ def train_network_distill_highest(stu_type, tea_model, epochs, loader, net, devi
         print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
         print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
         print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+
+    print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+    print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
+
+    if save_model:
+        os.makedirs('results/our', exist_ok=True)
+        model_path = os.path.join('results', 'our', 'distillednet_mod_' + str(stu_type) + '_' + str(
+            args.num_frame) + '_kdweight' + str(args.weight) + '_stu_acc_' + str(round(test_best_acc, 2)) + '_tea_acc_' \
+                                  + str(round(test_best_acc_t, 2)) + '.pkl')
+        torch.save(model_best.state_dict(), model_path)
+        print(
+            f'Saving best model to {model_path}, Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+
+    return val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t
+
+# up to 31.59 don't change but change sth
+def train_network_distill_highest2(stu_type, tea_model, epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu):
+    save_model = True
+    val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t = 0, 0, 0, 0
+    model_best = net
+    criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
+    criterion4 = torch.nn.KLDivLoss(reduction='none')
+    iter = 0
+    net.train()
+    tea.train()
+    stu.train()
+    # tea_model.train()
+    tea_model.eval()
+    for name, param in tea_model.named_parameters():
+        # if 'layer4' not in name and 'layer4' not in name and 'fc' not in name:
+        # if 'fc' not in name:
+            param.requires_grad = False
+
+
+    for epoch in range(epochs):
+
+        train_loss = 0.0
+        CE_loss_total = 0.0
+        FA_loss_total = 0.0
+        LA_loss_total = 0.0
+
+        for i, data in enumerate(loader['train']):
+            iter = iter + 1
+            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
+                device)
+
+            # output and net == student
+            if stu_type == 0:
+                outputs, outputs_128, stu_fit = net(img_inputs_cln)
+                pseu_label, pseu_label_128, tea_fit = tea_model(aud_inputs_cln)
+
+                # Proxy
+                tea_logits = tea(tea_fit)
+                stu_logits = stu(stu_fit)
+            elif stu_type == 1:
+                outputs, outputs_128, stu_fit = net(aud_inputs_cln)
+                pseu_label, pseu_label_128, tea_fit = tea_model(img_inputs_cln)
+                tea_logits = tea(tea_fit)
+                stu_logits = stu(stu_fit)
+            else:
+                raise ValueError("Undefined training type in distilled training")
+
+            optimizer.zero_grad()
+
+            stu_f = outputs_128
+            tea_f = pseu_label_128
+
+            # print(stu_f.shape)
+            CE_loss = F.cross_entropy(outputs, labels, reduction='none')
+            FA_loss = ot.wasserstein_1d(stu_f.reshape(-1), tea_f.reshape(-1))
+            # print(FA_loss)
+            # LA_loss = criterion3(F.log_softmax(outputs, -1), F.softmax(pseu_label, dim=-1))
+            LA_loss = criterion3(F.log_softmax(pseu_label, -1), F.softmax(outputs.detach(), dim=-1))
+
+            loss = CE_loss.mean() + FA_loss + LA_loss
+            # loss = CE_loss.mean() + FA_loss
+            loss.backward()
+            optimizer.step()
+            # lr = adjust_lr(iter=epoch, optimizer=optimizer)
+            lr_scheduler.step()
+            train_loss += loss.item()
+            CE_loss_total += CE_loss.mean()
+            FA_loss_total += FA_loss
+            # LA_loss_total += LA_loss
+
+
+
+        if epoch >= 1:
+            _, train_acc = evaluate(loader['train'], device, net, stu_type)
+            val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
+            test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
+            _, train_acc_t = evaluate(loader['train'], device, tea_model, int(1-stu_type))
+            val_loss_t, val_acc_t = evaluate(loader['val'], device, tea_model, int(1-stu_type))
+            test_loss_t, test_acc_t = evaluate(loader['test'], device, tea_model, int(1-stu_type))
+
+            wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc,\
+                       'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        else:
+            _, train_acc = 0, 0
+            val_loss, val_acc = 0, 0
+            test_loss, test_acc = 0, 0
+            _, train_acc_t = 0, 0
+            val_loss_t, val_acc_t = 0, 0
+            test_loss_t, test_acc_t = 0, 0
+
+        if val_acc >= val_best_acc:
+            val_best_acc = val_acc
+            test_best_acc = test_acc
+            model_best = deepcopy(net)
+        if val_acc_t >= val_best_acc_t:
+            val_best_acc_t = val_acc_t
+            test_best_acc_t = test_acc_t
+
+        wandb.log({'trainloss': train_loss / len(loader['train']), 'CE_loss_total': CE_loss_total / len(loader['train']), \
+                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train'])})
+        wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
+                   'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        print(f"Epoch | All epochs: {epoch} | {epochs}")
+        print(
+            f"Train Loss: {train_loss / len(loader['train']):.3f}")
+        print(f"Train | Val | Test Accuracy {train_acc:.3f} | {val_acc:.3f} | {test_acc:.3f}")
+        print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
+        print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
+        print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+
 
     print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
     print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')

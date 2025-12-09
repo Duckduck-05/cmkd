@@ -1,0 +1,23 @@
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_setup.py:_flush():81] Current SDK version is 0.22.2
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_setup.py:_flush():81] Configure stats pid to 3475161
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_setup.py:_flush():81] Loading settings from /root/.config/wandb/settings
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_setup.py:_flush():81] Loading settings from /home/ducca/CMKD/C2KD/ave_new_unpair/wandb/settings
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_init.py:setup_run_log_directory():705] Logging user logs to /home/ducca/CMKD/C2KD/ave_new_unpair/wandb/run-20251206_132723-1486skgk/logs/debug.log
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_init.py:setup_run_log_directory():706] Logging internal logs to /home/ducca/CMKD/C2KD/ave_new_unpair/wandb/run-20251206_132723-1486skgk/logs/debug-internal.log
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_init.py:init():832] calling init triggers
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_init.py:init():837] wandb.init called with sweep_config: {}
+config: {'gpu': 0, 'stu_type': 1, 'num_runs': 1, 'num_epochs': 100, 'batch_size': 64, 'batch_size2': 512, 'num_workers': 16, 'lr': 0.01, 'num_frame': 1, 'weight': 1, 'audio_arch': 'resnet18', 'image_arch': 'resnet18', 'krc': 0.0, 'pre_train': 0, 'cmkd': 1, 'group': 'c2kd', 'weight_decay': 1e-05, 'min_lr': 1e-05, 'beta1': 0.9, 'beta2': 0.999, 'warmup_epoch': 5, '_wandb': {}}
+2025-12-06 13:27:23,292 INFO    MainThread:3475161 [wandb_init.py:init():880] starting backend
+2025-12-06 13:27:23,498 INFO    MainThread:3475161 [wandb_init.py:init():883] sending inform_init request
+2025-12-06 13:27:23,504 INFO    MainThread:3475161 [wandb_init.py:init():891] backend started and connected
+2025-12-06 13:27:23,505 INFO    MainThread:3475161 [wandb_init.py:init():961] updated telemetry
+2025-12-06 13:27:23,509 INFO    MainThread:3475161 [wandb_init.py:init():985] communicating run to backend with 90.0 second timeout
+2025-12-06 13:27:24,176 INFO    MainThread:3475161 [wandb_init.py:init():1036] starting run threads in backend
+2025-12-06 13:27:24,280 INFO    MainThread:3475161 [wandb_run.py:_console_start():2509] atexit reg
+2025-12-06 13:27:24,280 INFO    MainThread:3475161 [wandb_run.py:_redirect():2357] redirect: wrap_raw
+2025-12-06 13:27:24,280 INFO    MainThread:3475161 [wandb_run.py:_redirect():2426] Wrapping output streams.
+2025-12-06 13:27:24,280 INFO    MainThread:3475161 [wandb_run.py:_redirect():2449] Redirects installed.
+2025-12-06 13:27:24,283 INFO    MainThread:3475161 [wandb_init.py:init():1076] run started, returning control to user process
+2025-12-06 14:40:25,743 INFO    wandb-AsyncioManager-main:3475161 [service_client.py:_forward_responses():80] Reached EOF.
+2025-12-06 14:40:25,743 INFO    wandb-AsyncioManager-main:3475161 [mailbox.py:close():137] Closing mailbox, abandoning 1 handles.

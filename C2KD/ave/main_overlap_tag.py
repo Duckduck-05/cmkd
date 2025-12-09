@@ -5,7 +5,7 @@ import argparse
 import numpy as np
 import random
 import wandb
-from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill21, train_network_distill22, train_network_distill3, train_network_distill4, train_network_distill5, pre_train
+from utils.helper import gen_data, train_network_distill, train_network_distill2, train_network_distill21, train_network_distill22, train_network_distill23, train_network_distill3, train_network_distill4, train_network_distill5, train_network_distill_highest2, train_network_distill31, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -42,13 +42,31 @@ def eval_overlap_tag(loader, device, args):
             {'params': stu.parameters()},
         ], lr=args.lr, momentum=0.9)
 
-    net.fc
+    optimizer2 = torch.optim.Adam([
+            {'params': net.parameters()},
+            {'params': tea_model.parameters()},
+            {'params': tea.parameters()},
+            {'params': stu.parameters()},
+        ],
+        lr = args.lr, 
+        betas = (args.beta1, args.beta2),
+        weight_decay=args.weight_decay
+        )
+    
+    warmup_lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=args.min_lr / args.lr, end_factor=1.0, total_iters=args.warmup_epoch)
+    main_lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.num_epochs - args.warmup_epoch, eta_min=args.min_lr)
+    lr_scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, schedulers=[warmup_lr_scheduler, main_lr_scheduler], milestones=[args.warmup_epoch])
+
+    if args.distill_type == 0:
+        acc = train_network_distill_highest2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer2, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
     if args.distill_type == 1:
         acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     if args.distill_type == 2:
         acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     if args.distill_type == 3:
         acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 31:
+        acc = train_network_distill31(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer2, args, tea, stu)
     if args.distill_type == 4:
         acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     if args.distill_type == 5:
@@ -57,6 +75,8 @@ def eval_overlap_tag(loader, device, args):
         acc = train_network_distill21(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     if args.distill_type == 22:
         acc = train_network_distill22(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    if args.distill_type == 23:
+        acc = train_network_distill23(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
     return acc
 
 
@@ -83,6 +103,12 @@ if __name__ == '__main__':
     parser.add_argument('--group', type=str, default='c2kd', help='group of experiments')
     parser.add_argument('--run_name', type=str, default='a2v', help='prefix run name of the experiment')
     parser.add_argument('--distill_type', type=int, default=2)
+    # add
+    parser.add_argument('--weight-decay', default=1e-5, type=float, help='Weight decay')
+    parser.add_argument("--min-lr", default=1e-5, type=float)
+    parser.add_argument("--beta1", default=0.9, type=float)
+    parser.add_argument("--beta2", default=0.999, type=float)
+    parser.add_argument("--warmup-epoch", default=5, type=int)
 
     args = parser.parse_args()
 

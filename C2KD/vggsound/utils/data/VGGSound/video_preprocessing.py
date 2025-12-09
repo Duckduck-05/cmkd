@@ -48,14 +48,15 @@ class videoReader(object):
 
 
 class VGGSound_dataset(object):
-    def __init__(self, path_to_dataset = '/data/users/xiaokang_peng/VGGsound/', frame_interval=1, frame_kept_per_second=1):
-        self.path_to_video = os.path.join(path_to_dataset, 'test-videos/test-set/')
+    def __init__(self, path_to_dataset = '/workdir/carrot/VGGSound/extracted/scratch/shared/beegfs/hchen/train_data/VGGSound_final/video', frame_interval=1, frame_kept_per_second=1):
+        # self.path_to_video = os.path.join(path_to_dataset, 'test-videos/test-set/')
+        self.path_to_video = path_to_dataset
         self.frame_kept_per_second = frame_kept_per_second
-        self.path_to_save = os.path.join(path_to_dataset, 'test-videos/test-set-img/', 'Image-{:02d}-FPS'.format(self.frame_kept_per_second))
+        self.path_to_save = os.path.join("/home/ducca/CMKD/C2KD/vggsound/utils/data/VGGSound_dataset", 'train-videos/train-set-img/', 'Image-{:02d}-FPS'.format(self.frame_kept_per_second))
         if not os.path.exists(self.path_to_save):
             os.mkdir(self.path_to_save)
 
-        videos = '/data/users/xiaokang_peng/VGGsound/test-videos/test_video_list.txt'
+        videos = '/home/ducca/CMKD/C2KD/vggsound/train.csv'
         with open(videos, 'r') as f:
             self.file_list = f.readlines()
 
@@ -66,16 +67,16 @@ class VGGSound_dataset(object):
                 print('*******************************************')
                 print('Processing: {}/{}'.format(i, len(self.file_list)))
                 print('*******************************************')
-            video_dir = os.path.join(self.path_to_video, each_video[:-1])
+            video_dir = os.path.join(self.path_to_video, each_video[0])
             try:
                 self.videoReader = videoReader(video_path=video_dir, frame_kept_per_second=self.frame_kept_per_second)
 
-                save_dir = os.path.join(self.path_to_save, each_video[:-1])
+                save_dir = os.path.join(self.path_to_save, each_video[0])
                 if not os.path.exists(save_dir):
                     os.mkdir(save_dir)
                 self.videoReader.video2frame_update(frame_save_path=save_dir)
             except:
-                print('Fail @ {}'.format(each_video[:-1]))
+                print('Fail @ {}'.format(each_video[0]))
 
 
 vggsound = VGGSound_dataset()

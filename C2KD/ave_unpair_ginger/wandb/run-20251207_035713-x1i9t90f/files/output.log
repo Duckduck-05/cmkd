@@ -1,0 +1,706 @@
+Seed 3
+teacher:audio (resnet18); student:image(resnet18)
+Finish Loading teacher model
+Epoch | All epochs: 0 | 100
+Train Loss: 59.831
+Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+teacher: Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+Best Val | Test Accuracy | 0.000 | 0.000
+Best Teacher Val | Test Accuracy | 0.000 | 0.000
+ ----------------------------------------------------------------------
+Epoch | All epochs: 1 | 100
+Train Loss: 48.317
+Train | Val | Test Accuracy 6.611 | 7.214 | 7.214
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 7.214 | 7.214
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 2 | 100
+Train Loss: 50.946
+Train | Val | Test Accuracy 4.267 | 3.980 | 3.731
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 7.214 | 7.214
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 3 | 100
+Train Loss: 47.877
+Train | Val | Test Accuracy 6.671 | 6.468 | 5.473
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 7.214 | 7.214
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 4 | 100
+Train Loss: 47.172
+Train | Val | Test Accuracy 8.023 | 6.716 | 6.965
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 7.214 | 7.214
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 5 | 100
+Train Loss: 46.257
+Train | Val | Test Accuracy 7.392 | 5.473 | 5.721
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 7.214 | 7.214
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 6 | 100
+Train Loss: 45.169
+Train | Val | Test Accuracy 9.555 | 8.955 | 7.463
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 7.463
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 7 | 100
+Train Loss: 44.430
+Train | Val | Test Accuracy 8.924 | 7.214 | 7.214
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 7.463
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 8 | 100
+Train Loss: 43.890
+Train | Val | Test Accuracy 7.812 | 5.970 | 8.209
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 7.463
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 9 | 100
+Train Loss: 43.942
+Train | Val | Test Accuracy 7.873 | 7.463 | 7.214
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 7.463
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 10 | 100
+Train Loss: 44.588
+Train | Val | Test Accuracy 10.246 | 7.463 | 8.209
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 7.463
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 11 | 100
+Train Loss: 43.020
+Train | Val | Test Accuracy 10.637 | 8.209 | 8.458
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 7.463
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 12 | 100
+Train Loss: 42.978
+Train | Val | Test Accuracy 9.495 | 7.214 | 8.955
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 7.463
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 13 | 100
+Train Loss: 42.087
+Train | Val | Test Accuracy 11.208 | 8.955 | 9.204
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 8.955 | 9.204
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 14 | 100
+Train Loss: 43.135
+Train | Val | Test Accuracy 11.959 | 9.453 | 10.199
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 9.453 | 10.199
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 15 | 100
+Train Loss: 42.643
+Train | Val | Test Accuracy 10.306 | 8.209 | 7.214
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 9.453 | 10.199
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 16 | 100
+Train Loss: 42.466
+Train | Val | Test Accuracy 12.200 | 12.189 | 6.468
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 12.189 | 6.468
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 17 | 100
+Train Loss: 42.161
+Train | Val | Test Accuracy 12.500 | 10.945 | 11.194
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 12.189 | 6.468
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 18 | 100
+Train Loss: 42.769
+Train | Val | Test Accuracy 15.294 | 16.667 | 11.940
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 16.667 | 11.940
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 19 | 100
+Train Loss: 40.747
+Train | Val | Test Accuracy 14.303 | 12.438 | 12.189
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 16.667 | 11.940
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 20 | 100
+Train Loss: 40.390
+Train | Val | Test Accuracy 10.667 | 12.935 | 10.448
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 16.667 | 11.940
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 21 | 100
+Train Loss: 41.415
+Train | Val | Test Accuracy 13.912 | 10.199 | 10.945
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 16.667 | 11.940
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 22 | 100
+Train Loss: 40.809
+Train | Val | Test Accuracy 16.556 | 13.433 | 12.935
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 16.667 | 11.940
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 23 | 100
+Train Loss: 40.322
+Train | Val | Test Accuracy 15.054 | 13.433 | 10.448
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 16.667 | 11.940
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 24 | 100
+Train Loss: 39.910
+Train | Val | Test Accuracy 16.166 | 14.925 | 9.204
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 16.667 | 11.940
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 25 | 100
+Train Loss: 38.762
+Train | Val | Test Accuracy 14.393 | 17.662 | 16.169
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 17.662 | 16.169
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 26 | 100
+Train Loss: 39.475
+Train | Val | Test Accuracy 15.655 | 15.423 | 14.925
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 17.662 | 16.169
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 27 | 100
+Train Loss: 40.047
+Train | Val | Test Accuracy 16.346 | 16.418 | 13.184
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 17.662 | 16.169
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 28 | 100
+Train Loss: 39.816
+Train | Val | Test Accuracy 16.526 | 13.930 | 15.920
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 17.662 | 16.169
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 29 | 100
+Train Loss: 39.043
+Train | Val | Test Accuracy 16.076 | 15.920 | 13.930
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 17.662 | 16.169
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 30 | 100
+Train Loss: 39.508
+Train | Val | Test Accuracy 19.651 | 15.174 | 14.179
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 17.662 | 16.169
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 31 | 100
+Train Loss: 38.634
+Train | Val | Test Accuracy 18.299 | 17.910 | 14.925
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 17.910 | 14.925
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 32 | 100
+Train Loss: 38.932
+Train | Val | Test Accuracy 17.458 | 20.398 | 13.930
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 20.398 | 13.930
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 33 | 100
+Train Loss: 38.604
+Train | Val | Test Accuracy 18.690 | 16.418 | 17.910
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 20.398 | 13.930
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 34 | 100
+Train Loss: 38.367
+Train | Val | Test Accuracy 16.707 | 16.418 | 15.174
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 20.398 | 13.930
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 35 | 100
+Train Loss: 38.073
+Train | Val | Test Accuracy 16.677 | 17.164 | 15.174
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 20.398 | 13.930
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 36 | 100
+Train Loss: 37.842
+Train | Val | Test Accuracy 18.810 | 18.408 | 16.169
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 20.398 | 13.930
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 37 | 100
+Train Loss: 37.509
+Train | Val | Test Accuracy 18.930 | 14.428 | 16.169
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 20.398 | 13.930
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 38 | 100
+Train Loss: 37.604
+Train | Val | Test Accuracy 20.012 | 17.910 | 17.662
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 20.398 | 13.930
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 39 | 100
+Train Loss: 37.599
+Train | Val | Test Accuracy 21.124 | 22.139 | 16.915
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 40 | 100
+Train Loss: 37.062
+Train | Val | Test Accuracy 19.111 | 15.672 | 14.179
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 41 | 100
+Train Loss: 36.817
+Train | Val | Test Accuracy 19.561 | 19.154 | 16.169
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 42 | 100
+Train Loss: 36.729
+Train | Val | Test Accuracy 20.523 | 19.154 | 14.677
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 43 | 100
+Train Loss: 36.331
+Train | Val | Test Accuracy 19.321 | 17.910 | 15.174
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 44 | 100
+Train Loss: 36.596
+Train | Val | Test Accuracy 19.832 | 17.662 | 14.179
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 45 | 100
+Train Loss: 36.522
+Train | Val | Test Accuracy 20.523 | 19.403 | 18.657
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 46 | 100
+Train Loss: 36.106
+Train | Val | Test Accuracy 20.192 | 17.413 | 13.433
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 47 | 100
+Train Loss: 35.365
+Train | Val | Test Accuracy 21.875 | 19.403 | 16.667
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 48 | 100
+Train Loss: 35.720
+Train | Val | Test Accuracy 21.424 | 19.652 | 15.920
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 49 | 100
+Train Loss: 35.435
+Train | Val | Test Accuracy 22.266 | 21.642 | 13.682
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 50 | 100
+Train Loss: 35.626
+Train | Val | Test Accuracy 22.806 | 20.149 | 17.164
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 51 | 100
+Train Loss: 35.486
+Train | Val | Test Accuracy 22.746 | 21.144 | 19.403
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 52 | 100
+Train Loss: 35.440
+Train | Val | Test Accuracy 21.154 | 19.900 | 16.667
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 22.139 | 16.915
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 53 | 100
+Train Loss: 36.096
+Train | Val | Test Accuracy 23.347 | 23.383 | 18.159
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 23.383 | 18.159
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 54 | 100
+Train Loss: 34.958
+Train | Val | Test Accuracy 22.476 | 20.896 | 18.657
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 23.383 | 18.159
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 55 | 100
+Train Loss: 35.256
+Train | Val | Test Accuracy 22.266 | 20.149 | 16.169
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 23.383 | 18.159
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 56 | 100
+Train Loss: 34.753
+Train | Val | Test Accuracy 24.369 | 20.647 | 18.657
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 23.383 | 18.159
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 57 | 100
+Train Loss: 34.275
+Train | Val | Test Accuracy 23.017 | 25.124 | 17.662
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 25.124 | 17.662
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 58 | 100
+Train Loss: 34.133
+Train | Val | Test Accuracy 22.867 | 21.393 | 15.672
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 25.124 | 17.662
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 59 | 100
+Train Loss: 33.927
+Train | Val | Test Accuracy 22.987 | 22.139 | 18.159
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 25.124 | 17.662
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 60 | 100
+Train Loss: 33.773
+Train | Val | Test Accuracy 25.541 | 27.612 | 19.403
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 61 | 100
+Train Loss: 33.867
+Train | Val | Test Accuracy 23.918 | 20.149 | 15.920
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 62 | 100
+Train Loss: 33.724
+Train | Val | Test Accuracy 24.669 | 26.119 | 20.896
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 63 | 100
+Train Loss: 33.829
+Train | Val | Test Accuracy 25.060 | 22.637 | 17.662
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 64 | 100
+Train Loss: 34.058
+Train | Val | Test Accuracy 22.927 | 22.139 | 17.910
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 65 | 100
+Train Loss: 33.440
+Train | Val | Test Accuracy 23.648 | 23.134 | 19.900
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 66 | 100
+Train Loss: 33.178
+Train | Val | Test Accuracy 22.987 | 22.388 | 17.164
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 67 | 100
+Train Loss: 33.614
+Train | Val | Test Accuracy 25.992 | 20.149 | 17.164
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 68 | 100
+Train Loss: 32.738
+Train | Val | Test Accuracy 24.129 | 21.144 | 17.413
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 69 | 100
+Train Loss: 32.437
+Train | Val | Test Accuracy 28.395 | 21.144 | 19.900
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 70 | 100
+Train Loss: 32.731
+Train | Val | Test Accuracy 26.623 | 22.139 | 18.905
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 71 | 100
+Train Loss: 33.130
+Train | Val | Test Accuracy 23.858 | 19.900 | 17.910
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 72 | 100
+Train Loss: 32.541
+Train | Val | Test Accuracy 26.052 | 22.637 | 18.657
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 73 | 100
+Train Loss: 32.516
+Train | Val | Test Accuracy 26.142 | 19.900 | 18.408
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 74 | 100
+Train Loss: 32.347
+Train | Val | Test Accuracy 25.721 | 22.139 | 18.159
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 75 | 100
+Train Loss: 31.746
+Train | Val | Test Accuracy 28.966 | 22.637 | 19.154
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 76 | 100
+Train Loss: 31.458
+Train | Val | Test Accuracy 28.305 | 25.622 | 20.149
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 77 | 100
+Train Loss: 31.691
+Train | Val | Test Accuracy 26.953 | 22.886 | 19.900
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 78 | 100
+Train Loss: 32.062
+Train | Val | Test Accuracy 28.125 | 25.871 | 18.159
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 79 | 100
+Train Loss: 31.436
+Train | Val | Test Accuracy 30.108 | 25.124 | 20.149
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 80 | 100
+Train Loss: 30.946
+Train | Val | Test Accuracy 29.297 | 24.627 | 20.149
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 81 | 100
+Train Loss: 30.827
+Train | Val | Test Accuracy 28.576 | 25.373 | 20.398
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 82 | 100
+Train Loss: 31.059
+Train | Val | Test Accuracy 30.499 | 26.866 | 20.149
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 83 | 100
+Train Loss: 31.039
+Train | Val | Test Accuracy 30.349 | 26.119 | 20.398
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 84 | 100
+Train Loss: 30.642
+Train | Val | Test Accuracy 29.447 | 25.124 | 19.154
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 85 | 100
+Train Loss: 30.464
+Train | Val | Test Accuracy 30.859 | 26.617 | 20.647
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 86 | 100
+Train Loss: 30.234
+Train | Val | Test Accuracy 29.447 | 21.891 | 17.662
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 87 | 100
+Train Loss: 30.401
+Train | Val | Test Accuracy 30.409 | 25.124 | 19.154
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.612 | 19.403
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 88 | 100
+Train Loss: 30.101
+Train | Val | Test Accuracy 32.843 | 27.861 | 19.154
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.861 | 19.154
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 89 | 100
+Train Loss: 29.775
+Train | Val | Test Accuracy 32.422 | 24.378 | 21.642
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.861 | 19.154
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 90 | 100
+Train Loss: 29.308
+Train | Val | Test Accuracy 34.225 | 27.861 | 21.144
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.861 | 21.144
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 91 | 100
+Train Loss: 29.217
+Train | Val | Test Accuracy 33.233 | 27.363 | 21.891
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 27.861 | 21.144
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 92 | 100
+Train Loss: 29.213
+Train | Val | Test Accuracy 33.353 | 28.358 | 23.134
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.358 | 23.134
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 93 | 100
+Train Loss: 29.522
+Train | Val | Test Accuracy 33.894 | 27.114 | 21.144
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.358 | 23.134
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 94 | 100
+Train Loss: 28.892
+Train | Val | Test Accuracy 33.864 | 27.114 | 22.139
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.358 | 23.134
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 95 | 100
+Train Loss: 29.061
+Train | Val | Test Accuracy 34.285 | 26.617 | 22.388
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.358 | 23.134
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 96 | 100
+Train Loss: 28.799
+Train | Val | Test Accuracy 34.615 | 26.368 | 20.398
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.358 | 23.134
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 97 | 100
+Train Loss: 28.414
+Train | Val | Test Accuracy 35.216 | 27.114 | 22.637
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.358 | 23.134
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 98 | 100
+Train Loss: 28.397
+Train | Val | Test Accuracy 34.826 | 27.612 | 21.642
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.358 | 23.134
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Epoch | All epochs: 99 | 100
+Train Loss: 28.097
+Train | Val | Test Accuracy 35.757 | 28.856 | 22.637
+teacher: Train | Val | Test Accuracy 100.000 | 57.606 | 52.736
+Best Val | Test Accuracy | 28.856 | 22.637
+Best Teacher Val | Test Accuracy | 57.606 | 52.736
+ ----------------------------------------------------------------------
+Training finish! Best Val | Test Accuracy | 28.856 | 22.637
+Training finish! Best Teacher Val | Test Accuracy | 57.606 | 52.736
+Saving best model to results/our/distillednet_mod_0_1_kdweight1_stu_acc_22.64_tea_acc_52.74.pkl, Best Val | Test Accuracy | 28.856 | 22.637

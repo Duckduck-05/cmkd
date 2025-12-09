@@ -1,0 +1,813 @@
+Namespace(gpu=0, stu_type=1, num_runs=1, num_epochs=100, batch_size=64, batch_size2=512, num_workers=16, lr=0.01, num_frame=1, weight=1, audio_arch='resnet18', image_arch='resnet18', krc=0.0, pre_train=0, cmkd=1, group='c2kd')
+Seed 0
+teacher:image (resnet18); student:audio(resnet18)
+Finish Loading teacher model
+/home/anaconda3/envs/c2kd/lib/python3.11/site-packages/torch/nn/modules/conv.py:459: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+Epoch | All epochs: 0 | 100
+corr 0.195| num: 0.096
+Train Loss: 7.433 | temp1 Loss 4.188 | temp2 Loss 3.245 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+teacher: Train | Val | Test Accuracy 0.000 | 0.000 | 0.000
+Best Val | Test Accuracy | 0.000 | 0.000
+Best Teacher Val | Test Accuracy | 0.000 | 0.000
+ ----------------------------------------------------------------------
+Epoch | All epochs: 1 | 100
+corr 0.336| num: 0.182
+Train Loss: 5.688 | temp1 Loss 2.874 | temp2 Loss 2.815 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 31.431 | 30.673 | 28.358
+teacher: Train | Val | Test Accuracy 53.895 | 26.434 | 30.846
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 26.434 | 30.846
+ ----------------------------------------------------------------------
+Epoch | All epochs: 2 | 100
+corr 0.308| num: 0.117
+Train Loss: 6.854 | temp1 Loss 2.957 | temp2 Loss 3.897 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 7.095 | 7.481 | 6.468
+teacher: Train | Val | Test Accuracy 43.961 | 29.177 | 23.383
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 29.177 | 23.383
+ ----------------------------------------------------------------------
+Epoch | All epochs: 3 | 100
+corr 0.304| num: 0.102
+Train Loss: 6.111 | temp1 Loss 2.711 | temp2 Loss 3.400 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 8.213 | 6.983 | 8.209
+teacher: Train | Val | Test Accuracy 52.597 | 28.429 | 27.861
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 29.177 | 23.383
+ ----------------------------------------------------------------------
+Epoch | All epochs: 4 | 100
+corr 0.369| num: 0.111
+Train Loss: 5.942 | temp1 Loss 2.638 | temp2 Loss 3.304 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 12.349 | 14.464 | 11.194
+teacher: Train | Val | Test Accuracy 53.080 | 33.416 | 29.104
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 5 | 100
+corr 0.352| num: 0.127
+Train Loss: 5.754 | temp1 Loss 2.566 | temp2 Loss 3.188 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 16.576 | 16.958 | 14.925
+teacher: Train | Val | Test Accuracy 53.382 | 30.424 | 28.358
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 6 | 100
+corr 0.369| num: 0.148
+Train Loss: 5.665 | temp1 Loss 2.574 | temp2 Loss 3.091 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 19.082 | 17.955 | 17.413
+teacher: Train | Val | Test Accuracy 53.955 | 28.928 | 25.871
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 7 | 100
+corr 0.375| num: 0.153
+Train Loss: 5.601 | temp1 Loss 2.547 | temp2 Loss 3.054 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 20.682 | 20.449 | 20.398
+teacher: Train | Val | Test Accuracy 55.223 | 30.923 | 29.602
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 8 | 100
+corr 0.370| num: 0.169
+Train Loss: 5.547 | temp1 Loss 2.506 | temp2 Loss 3.041 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 26.057 | 24.439 | 24.627
+teacher: Train | Val | Test Accuracy 56.944 | 30.175 | 28.856
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 9 | 100
+corr 0.369| num: 0.166
+Train Loss: 5.513 | temp1 Loss 2.503 | temp2 Loss 3.010 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 26.963 | 27.182 | 26.617
+teacher: Train | Val | Test Accuracy 61.685 | 31.421 | 27.612
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 10 | 100
+corr 0.377| num: 0.183
+Train Loss: 5.421 | temp1 Loss 2.496 | temp2 Loss 2.925 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 30.344 | 26.933 | 28.358
+teacher: Train | Val | Test Accuracy 59.149 | 32.668 | 27.363
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 11 | 100
+corr 0.369| num: 0.188
+Train Loss: 5.310 | temp1 Loss 2.413 | temp2 Loss 2.897 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 29.740 | 30.424 | 30.100
+teacher: Train | Val | Test Accuracy 61.594 | 30.424 | 29.602
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 12 | 100
+corr 0.388| num: 0.206
+Train Loss: 5.299 | temp1 Loss 2.466 | temp2 Loss 2.833 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 29.076 | 27.431 | 24.378
+teacher: Train | Val | Test Accuracy 62.107 | 32.668 | 27.861
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 13 | 100
+corr 0.364| num: 0.205
+Train Loss: 5.241 | temp1 Loss 2.417 | temp2 Loss 2.824 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 32.880 | 30.424 | 30.597
+teacher: Train | Val | Test Accuracy 59.179 | 31.172 | 27.363
+Best Val | Test Accuracy | 30.673 | 28.358
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 14 | 100
+corr 0.376| num: 0.215
+Train Loss: 5.135 | temp1 Loss 2.405 | temp2 Loss 2.730 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 39.855 | 37.157 | 34.328
+teacher: Train | Val | Test Accuracy 60.054 | 30.175 | 28.109
+Best Val | Test Accuracy | 37.157 | 34.328
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 15 | 100
+corr 0.384| num: 0.231
+Train Loss: 5.067 | temp1 Loss 2.380 | temp2 Loss 2.687 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 35.719 | 31.172 | 33.333
+teacher: Train | Val | Test Accuracy 61.594 | 31.421 | 29.353
+Best Val | Test Accuracy | 37.157 | 34.328
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 16 | 100
+corr 0.393| num: 0.231
+Train Loss: 5.044 | temp1 Loss 2.378 | temp2 Loss 2.666 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 40.791 | 37.905 | 34.080
+teacher: Train | Val | Test Accuracy 66.667 | 33.167 | 32.090
+Best Val | Test Accuracy | 37.905 | 34.080
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 17 | 100
+corr 0.396| num: 0.242
+Train Loss: 4.938 | temp1 Loss 2.365 | temp2 Loss 2.573 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 39.644 | 35.411 | 33.333
+teacher: Train | Val | Test Accuracy 63.194 | 32.170 | 30.348
+Best Val | Test Accuracy | 37.905 | 34.080
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 18 | 100
+corr 0.401| num: 0.241
+Train Loss: 4.941 | temp1 Loss 2.349 | temp2 Loss 2.591 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 43.025 | 37.406 | 35.572
+teacher: Train | Val | Test Accuracy 66.184 | 30.673 | 31.095
+Best Val | Test Accuracy | 37.905 | 34.080
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 19 | 100
+corr 0.405| num: 0.245
+Train Loss: 4.815 | temp1 Loss 2.298 | temp2 Loss 2.517 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 47.796 | 41.895 | 39.303
+teacher: Train | Val | Test Accuracy 67.784 | 30.923 | 28.607
+Best Val | Test Accuracy | 41.895 | 39.303
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 20 | 100
+corr 0.403| num: 0.259
+Train Loss: 4.849 | temp1 Loss 2.362 | temp2 Loss 2.487 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 40.519 | 35.162 | 34.826
+teacher: Train | Val | Test Accuracy 66.908 | 29.676 | 28.607
+Best Val | Test Accuracy | 41.895 | 39.303
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 21 | 100
+corr 0.415| num: 0.257
+Train Loss: 4.765 | temp1 Loss 2.285 | temp2 Loss 2.479 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 46.860 | 40.150 | 38.557
+teacher: Train | Val | Test Accuracy 68.146 | 32.170 | 29.353
+Best Val | Test Accuracy | 41.895 | 39.303
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 22 | 100
+corr 0.410| num: 0.257
+Train Loss: 4.718 | temp1 Loss 2.293 | temp2 Loss 2.425 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 51.570 | 42.893 | 40.547
+teacher: Train | Val | Test Accuracy 70.803 | 32.918 | 30.100
+Best Val | Test Accuracy | 42.893 | 40.547
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 23 | 100
+corr 0.410| num: 0.267
+Train Loss: 4.619 | temp1 Loss 2.281 | temp2 Loss 2.338 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 52.083 | 40.648 | 39.303
+teacher: Train | Val | Test Accuracy 67.905 | 31.920 | 25.622
+Best Val | Test Accuracy | 42.893 | 40.547
+Best Teacher Val | Test Accuracy | 33.416 | 29.104
+ ----------------------------------------------------------------------
+Epoch | All epochs: 24 | 100
+corr 0.422| num: 0.275
+Train Loss: 4.600 | temp1 Loss 2.239 | temp2 Loss 2.362 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 55.374 | 42.394 | 40.796
+teacher: Train | Val | Test Accuracy 69.746 | 34.913 | 31.343
+Best Val | Test Accuracy | 42.893 | 40.547
+Best Teacher Val | Test Accuracy | 34.913 | 31.343
+ ----------------------------------------------------------------------
+Epoch | All epochs: 25 | 100
+corr 0.407| num: 0.274
+Train Loss: 4.605 | temp1 Loss 2.272 | temp2 Loss 2.333 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 54.438 | 47.132 | 39.552
+teacher: Train | Val | Test Accuracy 68.931 | 33.167 | 32.090
+Best Val | Test Accuracy | 47.132 | 39.552
+Best Teacher Val | Test Accuracy | 34.913 | 31.343
+ ----------------------------------------------------------------------
+Epoch | All epochs: 26 | 100
+corr 0.403| num: 0.277
+Train Loss: 4.550 | temp1 Loss 2.267 | temp2 Loss 2.283 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 56.371 | 48.379 | 44.030
+teacher: Train | Val | Test Accuracy 71.105 | 32.419 | 32.090
+Best Val | Test Accuracy | 48.379 | 44.030
+Best Teacher Val | Test Accuracy | 34.913 | 31.343
+ ----------------------------------------------------------------------
+Epoch | All epochs: 27 | 100
+corr 0.415| num: 0.279
+Train Loss: 4.510 | temp1 Loss 2.260 | temp2 Loss 2.250 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 56.763 | 48.628 | 43.781
+teacher: Train | Val | Test Accuracy 72.585 | 33.416 | 30.846
+Best Val | Test Accuracy | 48.628 | 43.781
+Best Teacher Val | Test Accuracy | 34.913 | 31.343
+ ----------------------------------------------------------------------
+Epoch | All epochs: 28 | 100
+corr 0.414| num: 0.281
+Train Loss: 4.470 | temp1 Loss 2.208 | temp2 Loss 2.263 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 55.103 | 45.885 | 42.537
+teacher: Train | Val | Test Accuracy 72.645 | 29.925 | 28.856
+Best Val | Test Accuracy | 48.628 | 43.781
+Best Teacher Val | Test Accuracy | 34.913 | 31.343
+ ----------------------------------------------------------------------
+Epoch | All epochs: 29 | 100
+corr 0.418| num: 0.290
+Train Loss: 4.431 | temp1 Loss 2.206 | temp2 Loss 2.225 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 58.665 | 49.127 | 44.527
+teacher: Train | Val | Test Accuracy 71.256 | 35.910 | 31.841
+Best Val | Test Accuracy | 49.127 | 44.527
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 30 | 100
+corr 0.414| num: 0.288
+Train Loss: 4.387 | temp1 Loss 2.199 | temp2 Loss 2.188 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 61.806 | 51.621 | 44.776
+teacher: Train | Val | Test Accuracy 71.105 | 32.918 | 29.104
+Best Val | Test Accuracy | 51.621 | 44.776
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 31 | 100
+corr 0.419| num: 0.292
+Train Loss: 4.315 | temp1 Loss 2.188 | temp2 Loss 2.127 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 62.711 | 48.878 | 44.279
+teacher: Train | Val | Test Accuracy 73.943 | 34.165 | 28.109
+Best Val | Test Accuracy | 51.621 | 44.776
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 32 | 100
+corr 0.417| num: 0.295
+Train Loss: 4.292 | temp1 Loss 2.172 | temp2 Loss 2.120 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 63.043 | 50.623 | 46.517
+teacher: Train | Val | Test Accuracy 73.762 | 30.424 | 30.597
+Best Val | Test Accuracy | 51.621 | 44.776
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 33 | 100
+corr 0.419| num: 0.299
+Train Loss: 4.262 | temp1 Loss 2.164 | temp2 Loss 2.098 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 63.164 | 50.873 | 45.025
+teacher: Train | Val | Test Accuracy 75.000 | 34.663 | 31.841
+Best Val | Test Accuracy | 51.621 | 44.776
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 34 | 100
+corr 0.420| num: 0.303
+Train Loss: 4.189 | temp1 Loss 2.131 | temp2 Loss 2.058 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 63.074 | 49.875 | 44.527
+teacher: Train | Val | Test Accuracy 77.144 | 33.416 | 32.587
+Best Val | Test Accuracy | 51.621 | 44.776
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 35 | 100
+corr 0.414| num: 0.308
+Train Loss: 4.195 | temp1 Loss 2.134 | temp2 Loss 2.062 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 70.411 | 53.117 | 48.507
+teacher: Train | Val | Test Accuracy 73.490 | 28.678 | 30.846
+Best Val | Test Accuracy | 53.117 | 48.507
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 36 | 100
+corr 0.417| num: 0.304
+Train Loss: 4.142 | temp1 Loss 2.128 | temp2 Loss 2.014 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 70.380 | 51.621 | 50.000
+teacher: Train | Val | Test Accuracy 74.457 | 31.920 | 32.587
+Best Val | Test Accuracy | 53.117 | 48.507
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 37 | 100
+corr 0.415| num: 0.307
+Train Loss: 4.120 | temp1 Loss 2.128 | temp2 Loss 1.992 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 65.851 | 50.125 | 44.030
+teacher: Train | Val | Test Accuracy 75.906 | 30.923 | 29.851
+Best Val | Test Accuracy | 53.117 | 48.507
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 38 | 100
+corr 0.425| num: 0.310
+Train Loss: 4.065 | temp1 Loss 2.101 | temp2 Loss 1.965 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 70.169 | 50.873 | 49.751
+teacher: Train | Val | Test Accuracy 76.872 | 33.666 | 29.851
+Best Val | Test Accuracy | 53.117 | 48.507
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 39 | 100
+corr 0.416| num: 0.311
+Train Loss: 4.040 | temp1 Loss 2.097 | temp2 Loss 1.943 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 74.789 | 54.364 | 48.259
+teacher: Train | Val | Test Accuracy 76.902 | 34.663 | 31.841
+Best Val | Test Accuracy | 54.364 | 48.259
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 40 | 100
+corr 0.424| num: 0.314
+Train Loss: 3.969 | temp1 Loss 2.075 | temp2 Loss 1.894 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 74.396 | 52.369 | 48.756
+teacher: Train | Val | Test Accuracy 78.472 | 31.920 | 32.090
+Best Val | Test Accuracy | 54.364 | 48.259
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 41 | 100
+corr 0.418| num: 0.312
+Train Loss: 3.922 | temp1 Loss 2.044 | temp2 Loss 1.878 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 74.789 | 50.623 | 50.498
+teacher: Train | Val | Test Accuracy 77.627 | 31.671 | 29.353
+Best Val | Test Accuracy | 54.364 | 48.259
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 42 | 100
+corr 0.424| num: 0.319
+Train Loss: 3.917 | temp1 Loss 2.071 | temp2 Loss 1.846 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 79.680 | 54.115 | 50.000
+teacher: Train | Val | Test Accuracy 78.231 | 34.663 | 33.333
+Best Val | Test Accuracy | 54.364 | 48.259
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 43 | 100
+corr 0.418| num: 0.318
+Train Loss: 3.860 | temp1 Loss 2.030 | temp2 Loss 1.830 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 80.586 | 52.868 | 48.259
+teacher: Train | Val | Test Accuracy 78.623 | 32.170 | 29.602
+Best Val | Test Accuracy | 54.364 | 48.259
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 44 | 100
+corr 0.418| num: 0.315
+Train Loss: 3.838 | temp1 Loss 2.048 | temp2 Loss 1.790 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 83.122 | 54.863 | 51.493
+teacher: Train | Val | Test Accuracy 79.921 | 30.673 | 31.841
+Best Val | Test Accuracy | 54.863 | 51.493
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 45 | 100
+corr 0.422| num: 0.323
+Train Loss: 3.760 | temp1 Loss 2.016 | temp2 Loss 1.745 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 83.665 | 54.115 | 50.000
+teacher: Train | Val | Test Accuracy 79.891 | 33.915 | 31.343
+Best Val | Test Accuracy | 54.863 | 51.493
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 46 | 100
+corr 0.421| num: 0.321
+Train Loss: 3.778 | temp1 Loss 2.015 | temp2 Loss 1.763 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 81.190 | 52.868 | 49.751
+teacher: Train | Val | Test Accuracy 80.495 | 32.170 | 30.846
+Best Val | Test Accuracy | 54.863 | 51.493
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 47 | 100
+corr 0.421| num: 0.323
+Train Loss: 3.759 | temp1 Loss 2.019 | temp2 Loss 1.740 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 84.360 | 53.367 | 48.507
+teacher: Train | Val | Test Accuracy 80.797 | 34.663 | 30.348
+Best Val | Test Accuracy | 54.863 | 51.493
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 48 | 100
+corr 0.419| num: 0.320
+Train Loss: 3.701 | temp1 Loss 2.023 | temp2 Loss 1.678 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 87.681 | 56.110 | 50.746
+teacher: Train | Val | Test Accuracy 81.643 | 33.915 | 30.348
+Best Val | Test Accuracy | 56.110 | 50.746
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 49 | 100
+corr 0.428| num: 0.328
+Train Loss: 3.630 | temp1 Loss 1.972 | temp2 Loss 1.658 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 91.546 | 57.107 | 53.234
+teacher: Train | Val | Test Accuracy 82.035 | 33.167 | 28.607
+Best Val | Test Accuracy | 57.107 | 53.234
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 50 | 100
+corr 0.420| num: 0.322
+Train Loss: 3.622 | temp1 Loss 1.977 | temp2 Loss 1.645 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 91.848 | 55.860 | 53.234
+teacher: Train | Val | Test Accuracy 83.635 | 32.918 | 30.348
+Best Val | Test Accuracy | 57.107 | 53.234
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 51 | 100
+corr 0.424| num: 0.325
+Train Loss: 3.545 | temp1 Loss 1.943 | temp2 Loss 1.602 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 91.063 | 54.115 | 50.498
+teacher: Train | Val | Test Accuracy 81.220 | 33.915 | 30.846
+Best Val | Test Accuracy | 57.107 | 53.234
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 52 | 100
+corr 0.421| num: 0.333
+Train Loss: 3.543 | temp1 Loss 1.941 | temp2 Loss 1.602 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 93.025 | 55.611 | 50.746
+teacher: Train | Val | Test Accuracy 81.310 | 30.923 | 28.607
+Best Val | Test Accuracy | 57.107 | 53.234
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 53 | 100
+corr 0.420| num: 0.323
+Train Loss: 3.523 | temp1 Loss 1.961 | temp2 Loss 1.562 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 93.841 | 55.362 | 51.493
+teacher: Train | Val | Test Accuracy 82.246 | 33.915 | 30.846
+Best Val | Test Accuracy | 57.107 | 53.234
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 54 | 100
+corr 0.420| num: 0.321
+Train Loss: 3.477 | temp1 Loss 1.932 | temp2 Loss 1.546 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 95.109 | 53.865 | 52.239
+teacher: Train | Val | Test Accuracy 81.310 | 35.661 | 28.607
+Best Val | Test Accuracy | 57.107 | 53.234
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 55 | 100
+corr 0.425| num: 0.329
+Train Loss: 3.442 | temp1 Loss 1.911 | temp2 Loss 1.530 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 96.014 | 57.855 | 54.229
+teacher: Train | Val | Test Accuracy 81.643 | 30.424 | 29.851
+Best Val | Test Accuracy | 57.855 | 54.229
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 56 | 100
+corr 0.426| num: 0.327
+Train Loss: 3.385 | temp1 Loss 1.886 | temp2 Loss 1.499 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 96.135 | 56.858 | 50.746
+teacher: Train | Val | Test Accuracy 82.790 | 31.671 | 30.100
+Best Val | Test Accuracy | 57.855 | 54.229
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 57 | 100
+corr 0.424| num: 0.327
+Train Loss: 3.358 | temp1 Loss 1.891 | temp2 Loss 1.467 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 97.524 | 56.858 | 51.741
+teacher: Train | Val | Test Accuracy 83.092 | 34.165 | 29.851
+Best Val | Test Accuracy | 57.855 | 54.229
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 58 | 100
+corr 0.426| num: 0.323
+Train Loss: 3.323 | temp1 Loss 1.872 | temp2 Loss 1.451 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 97.917 | 59.601 | 52.736
+teacher: Train | Val | Test Accuracy 84.722 | 33.416 | 30.597
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 35.910 | 31.841
+ ----------------------------------------------------------------------
+Epoch | All epochs: 59 | 100
+corr 0.421| num: 0.333
+Train Loss: 3.288 | temp1 Loss 1.847 | temp2 Loss 1.441 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 97.434 | 57.107 | 53.483
+teacher: Train | Val | Test Accuracy 82.729 | 36.908 | 35.075
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 36.908 | 35.075
+ ----------------------------------------------------------------------
+Epoch | All epochs: 60 | 100
+corr 0.423| num: 0.334
+Train Loss: 3.297 | temp1 Loss 1.869 | temp2 Loss 1.428 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 98.249 | 55.362 | 50.498
+teacher: Train | Val | Test Accuracy 86.232 | 37.406 | 31.592
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 61 | 100
+corr 0.424| num: 0.334
+Train Loss: 3.243 | temp1 Loss 1.840 | temp2 Loss 1.403 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 98.068 | 56.110 | 48.756
+teacher: Train | Val | Test Accuracy 85.175 | 35.661 | 30.348
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 62 | 100
+corr 0.425| num: 0.328
+Train Loss: 3.217 | temp1 Loss 1.830 | temp2 Loss 1.386 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 97.736 | 55.860 | 53.980
+teacher: Train | Val | Test Accuracy 84.964 | 35.162 | 32.090
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 63 | 100
+corr 0.427| num: 0.332
+Train Loss: 3.200 | temp1 Loss 1.836 | temp2 Loss 1.364 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.004 | 58.105 | 50.498
+teacher: Train | Val | Test Accuracy 83.696 | 35.411 | 28.607
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 64 | 100
+corr 0.427| num: 0.331
+Train Loss: 3.177 | temp1 Loss 1.840 | temp2 Loss 1.338 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 98.853 | 57.606 | 50.249
+teacher: Train | Val | Test Accuracy 84.118 | 34.913 | 33.831
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 65 | 100
+corr 0.425| num: 0.329
+Train Loss: 3.129 | temp1 Loss 1.806 | temp2 Loss 1.323 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 98.853 | 55.112 | 51.741
+teacher: Train | Val | Test Accuracy 84.209 | 33.416 | 29.851
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 66 | 100
+corr 0.419| num: 0.330
+Train Loss: 3.129 | temp1 Loss 1.815 | temp2 Loss 1.314 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.607 | 56.858 | 50.746
+teacher: Train | Val | Test Accuracy 86.262 | 34.663 | 29.353
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 67 | 100
+corr 0.426| num: 0.330
+Train Loss: 3.077 | temp1 Loss 1.790 | temp2 Loss 1.287 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.215 | 57.357 | 51.741
+teacher: Train | Val | Test Accuracy 86.111 | 34.165 | 32.338
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.406 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 68 | 100
+corr 0.427| num: 0.328
+Train Loss: 3.067 | temp1 Loss 1.799 | temp2 Loss 1.268 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.668 | 58.603 | 52.736
+teacher: Train | Val | Test Accuracy 84.873 | 37.905 | 31.592
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 69 | 100
+corr 0.429| num: 0.328
+Train Loss: 3.007 | temp1 Loss 1.765 | temp2 Loss 1.242 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.668 | 58.354 | 51.741
+teacher: Train | Val | Test Accuracy 83.786 | 32.419 | 32.338
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 70 | 100
+corr 0.429| num: 0.327
+Train Loss: 2.986 | temp1 Loss 1.754 | temp2 Loss 1.232 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 55.611 | 50.995
+teacher: Train | Val | Test Accuracy 86.594 | 33.666 | 29.602
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 71 | 100
+corr 0.429| num: 0.328
+Train Loss: 2.966 | temp1 Loss 1.739 | temp2 Loss 1.226 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.607 | 57.357 | 50.498
+teacher: Train | Val | Test Accuracy 87.560 | 36.409 | 32.338
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 72 | 100
+corr 0.429| num: 0.329
+Train Loss: 2.930 | temp1 Loss 1.725 | temp2 Loss 1.205 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.909 | 57.855 | 50.249
+teacher: Train | Val | Test Accuracy 87.681 | 35.910 | 32.587
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 73 | 100
+corr 0.430| num: 0.331
+Train Loss: 2.915 | temp1 Loss 1.739 | temp2 Loss 1.177 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.879 | 58.354 | 52.239
+teacher: Train | Val | Test Accuracy 86.021 | 35.910 | 32.836
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 74 | 100
+corr 0.432| num: 0.324
+Train Loss: 2.885 | temp1 Loss 1.706 | temp2 Loss 1.179 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.879 | 57.606 | 50.249
+teacher: Train | Val | Test Accuracy 87.107 | 37.656 | 31.592
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 75 | 100
+corr 0.430| num: 0.326
+Train Loss: 2.876 | temp1 Loss 1.712 | temp2 Loss 1.164 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 58.603 | 50.746
+teacher: Train | Val | Test Accuracy 87.802 | 36.908 | 34.328
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 76 | 100
+corr 0.425| num: 0.328
+Train Loss: 2.861 | temp1 Loss 1.710 | temp2 Loss 1.151 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.728 | 56.608 | 49.005
+teacher: Train | Val | Test Accuracy 87.198 | 35.162 | 30.348
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 77 | 100
+corr 0.432| num: 0.330
+Train Loss: 2.832 | temp1 Loss 1.693 | temp2 Loss 1.139 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.940 | 56.858 | 49.254
+teacher: Train | Val | Test Accuracy 87.107 | 34.913 | 34.577
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 78 | 100
+corr 0.429| num: 0.323
+Train Loss: 2.807 | temp1 Loss 1.683 | temp2 Loss 1.124 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.758 | 57.107 | 51.741
+teacher: Train | Val | Test Accuracy 87.409 | 36.658 | 32.090
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 79 | 100
+corr 0.433| num: 0.320
+Train Loss: 2.756 | temp1 Loss 1.656 | temp2 Loss 1.099 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 56.608 | 50.498
+teacher: Train | Val | Test Accuracy 87.923 | 35.910 | 31.592
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 80 | 100
+corr 0.438| num: 0.320
+Train Loss: 2.732 | temp1 Loss 1.635 | temp2 Loss 1.097 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.357 | 51.741
+teacher: Train | Val | Test Accuracy 88.134 | 35.910 | 34.080
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 81 | 100
+corr 0.431| num: 0.318
+Train Loss: 2.727 | temp1 Loss 1.649 | temp2 Loss 1.077 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.357 | 51.493
+teacher: Train | Val | Test Accuracy 87.862 | 34.663 | 29.851
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 82 | 100
+corr 0.431| num: 0.318
+Train Loss: 2.707 | temp1 Loss 1.652 | temp2 Loss 1.055 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 58.354 | 51.244
+teacher: Train | Val | Test Accuracy 86.866 | 34.414 | 31.095
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 83 | 100
+corr 0.436| num: 0.325
+Train Loss: 2.673 | temp1 Loss 1.633 | temp2 Loss 1.040 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 100.000 | 57.357 | 52.488
+teacher: Train | Val | Test Accuracy 87.198 | 35.661 | 31.095
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 84 | 100
+corr 0.440| num: 0.315
+Train Loss: 2.650 | temp1 Loss 1.623 | temp2 Loss 1.027 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.940 | 57.107 | 49.751
+teacher: Train | Val | Test Accuracy 88.345 | 37.157 | 33.085
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 85 | 100
+corr 0.437| num: 0.317
+Train Loss: 2.632 | temp1 Loss 1.614 | temp2 Loss 1.018 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.940 | 58.354 | 51.493
+teacher: Train | Val | Test Accuracy 88.768 | 34.663 | 32.338
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 86 | 100
+corr 0.439| num: 0.314
+Train Loss: 2.589 | temp1 Loss 1.583 | temp2 Loss 1.005 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.107 | 50.249
+teacher: Train | Val | Test Accuracy 89.130 | 34.663 | 33.085
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 87 | 100
+corr 0.441| num: 0.311
+Train Loss: 2.566 | temp1 Loss 1.579 | temp2 Loss 0.987 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 100.000 | 57.107 | 52.488
+teacher: Train | Val | Test Accuracy 89.493 | 35.162 | 34.328
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 88 | 100
+corr 0.440| num: 0.319
+Train Loss: 2.562 | temp1 Loss 1.576 | temp2 Loss 0.986 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.940 | 58.603 | 52.736
+teacher: Train | Val | Test Accuracy 88.587 | 32.170 | 33.085
+Best Val | Test Accuracy | 59.601 | 52.736
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 89 | 100
+corr 0.440| num: 0.312
+Train Loss: 2.553 | temp1 Loss 1.577 | temp2 Loss 0.976 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 60.100 | 51.244
+teacher: Train | Val | Test Accuracy 87.742 | 33.666 | 32.090
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 90 | 100
+corr 0.441| num: 0.313
+Train Loss: 2.531 | temp1 Loss 1.574 | temp2 Loss 0.957 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.107 | 50.995
+teacher: Train | Val | Test Accuracy 89.161 | 34.414 | 33.582
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 91 | 100
+corr 0.439| num: 0.315
+Train Loss: 2.515 | temp1 Loss 1.560 | temp2 Loss 0.955 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.357 | 50.498
+teacher: Train | Val | Test Accuracy 90.006 | 34.913 | 31.841
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 92 | 100
+corr 0.438| num: 0.311
+Train Loss: 2.499 | temp1 Loss 1.555 | temp2 Loss 0.944 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 100.000 | 58.603 | 50.995
+teacher: Train | Val | Test Accuracy 88.678 | 34.913 | 33.582
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 93 | 100
+corr 0.442| num: 0.306
+Train Loss: 2.473 | temp1 Loss 1.546 | temp2 Loss 0.927 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 58.105 | 50.498
+teacher: Train | Val | Test Accuracy 89.312 | 35.411 | 31.841
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 94 | 100
+corr 0.442| num: 0.309
+Train Loss: 2.454 | temp1 Loss 1.530 | temp2 Loss 0.924 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.855 | 50.000
+teacher: Train | Val | Test Accuracy 90.127 | 35.661 | 33.333
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 95 | 100
+corr 0.445| num: 0.300
+Train Loss: 2.415 | temp1 Loss 1.510 | temp2 Loss 0.905 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 100.000 | 57.357 | 50.498
+teacher: Train | Val | Test Accuracy 90.036 | 36.409 | 33.085
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 96 | 100
+corr 0.441| num: 0.303
+Train Loss: 2.424 | temp1 Loss 1.524 | temp2 Loss 0.900 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.855 | 52.239
+teacher: Train | Val | Test Accuracy 89.402 | 34.663 | 34.328
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 97 | 100
+corr 0.446| num: 0.301
+Train Loss: 2.400 | temp1 Loss 1.510 | temp2 Loss 0.890 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.357 | 50.249
+teacher: Train | Val | Test Accuracy 90.157 | 35.162 | 32.587
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 98 | 100
+corr 0.446| num: 0.301
+Train Loss: 2.402 | temp1 Loss 1.517 | temp2 Loss 0.885 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 57.606 | 50.498
+teacher: Train | Val | Test Accuracy 89.432 | 35.162 | 32.090
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Epoch | All epochs: 99 | 100
+corr 0.451| num: 0.298
+Train Loss: 2.365 | temp1 Loss 1.494 | temp2 Loss 0.871 | PL_pseu_label Loss 0.000 | PL_output Loss 0.000| cosine Loss 0.000
+Train | Val | Test Accuracy 99.970 | 58.354 | 50.995
+teacher: Train | Val | Test Accuracy 90.519 | 35.411 | 34.328
+Best Val | Test Accuracy | 60.100 | 51.244
+Best Teacher Val | Test Accuracy | 37.905 | 31.592
+ ----------------------------------------------------------------------
+Training finish! Best Val | Test Accuracy | 60.100 | 51.244
+Training finish! Best Teacher Val | Test Accuracy | 37.905 | 31.592
+Saving best model to results/distillednet_mod_1_1_kdweight1_stu_acc_51.24_tea_acc_31.59.pkl, Best Val | Test Accuracy | 60.100 | 51.244
+Finish 1 runs
+Student Val Acc 60.100 ± 0.000 | Test Acc 51.244 ± 0.000
+Teacher Val Acc 37.905 ± 0.000 | Test Acc 31.592 ± 0.000
+teacher:image (resnet18); student:audio(resnet18)

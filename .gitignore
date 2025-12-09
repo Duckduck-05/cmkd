@@ -1,10 +1,15 @@
 /C2KD/ave/utils/data/AVE_Dataset/
 /C2KD/ave/results/our/
 /C2KD/ave/wandb/
+/C2KD/ave/results/
+/C2KD/ave_new/results/
+/C2KD/ave_new/utils/data/AVE_Dataset/
+/C2KD/ave_new_unpair/results/
 
 /MFH/ravdess/results/
 # /MFH/ravdess/credentials.json
 # /MFH/ravdess/token.json
-# /MFH/ravdess/download.py
-# /MFH/ravdess/download1.py
+/MFH/ravdess/download.py
+/MFH/ravdess/download1.py
 /MFH/ravdess/wandb/
+/MFH/ravdess/data/
