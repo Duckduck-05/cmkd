@@ -1,5 +1,0 @@
-2025-12-06 14:30:57,930 INFO    MainThread:3449390 [wandb_init.py:setup_run_log_directory():705] Logging user logs to /home/ducca/CMKD/C2KD/ave_new/wandb/run-20251206_143057-mkjoha42/logs/debug.log
-2025-12-06 14:30:57,930 INFO    MainThread:3449390 [wandb_init.py:setup_run_log_directory():706] Logging internal logs to /home/ducca/CMKD/C2KD/ave_new/wandb/run-20251206_143057-mkjoha42/logs/debug-internal.log
-2025-12-06 14:30:57,930 INFO    MainThread:3449390 [wandb_init.py:init():832] calling init triggers
-2025-12-06 14:30:57,930 INFO    MainThread:3449390 [wandb_init.py:init():837] wandb.init called with sweep_config: {}
-config: {'gpu': 0, 'stu_type': 1, 'num_runs': 3, 'num_epochs': 100, 'batch_size': 64, 'batch_size2': 512, 'num_workers': 16, 'lr': 0.01, 'num_frame': 1, 'weight': 1, 'audio_arch': 'resnet18', 'image_arch': 'resnet18', 'krc': 0.0, 'pre_train': 0, 'cmkd': 1, 'group': 'c2kd', '_wandb': {}}
