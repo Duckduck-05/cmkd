@@ -10,6 +10,9 @@
 /C2KD/ave_new_unpair/wandb/
 /C2KD/ave_unpair_ginger/results/
 /C2KD/ave_unpair_ginger/wandb/
+/C2KD/ave_unpair_consider/results/
+/C2KD/ave_unpair_consider/wandb/
+
 
 /MFH/ravdess/results/
 # /MFH/ravdess/credentials.json

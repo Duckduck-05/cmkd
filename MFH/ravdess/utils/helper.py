@@ -286,7 +286,7 @@ def train_network_for_overlap_tag(stu_type, tea_type, dist_loss, loader, epochs,
             # train_loss += loss.item()
         print(f"Epoch {epoch} | loss1 {loss1 / len(loader['train']):.4f} | loss2 {loss2 / len(loader['train']):.4f} | "
               f"dist loss {loss3 / len(loader['train']):.4f}")
-        wandb.log({loss1 : loss1 / len(loader['train']), loss2 : loss2 / len(loader['train']), "dist loss": loss3 / len(loader['train'])})
+        wandb.log({"loss1" : loss1 / len(loader['train']), "loss2" : loss2 / len(loader['train']), "dist loss": loss3 / len(loader['train'])})
 
         _, train_acc = evaluate(loader['train'], device, tea_model, tea_type)
         _, train_acc_s = evaluate(loader['train'], device, stu_model, stu_type)
