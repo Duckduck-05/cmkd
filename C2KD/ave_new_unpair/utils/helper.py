@@ -442,6 +442,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             optimizer_tmp = torch.optim.SGD(net_tmp.parameters(), lr = current_lr)
 
             for _ in range(n1_steps):
+                optimizer_tmp.zero_grad()
                 if stu_type == 0:
                     # outputs = self.fc(outputs_128)
                     # outputs: [b, num_class], [b, 128]
@@ -458,9 +459,11 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 b = torch.ones(batch_size, device=tea_f.device) / batch_size
                 M = torch.cdist(stu_f_tmp, tea_f, p=2) ** 2
                 
+                # print(M)
                 FA_loss = ot.sinkhorn2(a, b, M, reg=0.1)
+                # print(FA_loss)
                 FA_loss = torch.mean(FA_loss)
-
+                # print(FA_loss)
                 # Update net_tmp, net van ok
                 FA_loss.backward()
                 optimizer_tmp.step()
@@ -470,12 +473,17 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
 
                 # forward lai net_tmp sau khi cap nhat
                 if stu_type == 0:
-                    outputs_tmp, stu_f_tmp, _ = net_tmp(img_inputs_cln)
+                    stu_f_tmp, _ = net_tmp.forward_encoder(img_inputs_cln)
+                    stu_f_fixed = stu_f_tmp.detach() # ngắt gradient tmp
+                    outputs_tmp = net_tmp.forward_head(stu_f_fixed)
                 elif stu_type == 1:
-                    outputs_tmp, stu_f_tmp, _ = net_tmp(aud_inputs_cln)
+                    stu_f_tmp, _ = net_tmp.forward_encoder(aud_inputs_cln)
+                    stu_f_fixed = stu_f_tmp.detach() # ngắt gradient tmp
+                    outputs_tmp = net_tmp.forward_head(stu_f_fixed)
                 
-                # Tính LA Loss 
-                stu_latent_2_tea = tea_model.fc(stu_f_tmp) # Teacher view on Student z
+                # Tính LA Loss
+                with torch.no_grad():
+                    stu_latent_2_tea = tea_model.fc(stu_f_tmp) # Teacher view on Student z
                 
                 log_probs_s = F.log_softmax(outputs_tmp, dim=-1)
                 log_probs_t = F.log_softmax(stu_latent_2_tea, dim=-1)
@@ -491,35 +499,41 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 LA_loss.backward()
                 optimizer_tmp.step()
                     
-             # update net va lay cai output cuoi cua temp
+            # update net va lay cai output cuoi cua temp
             if stu_type == 0:   
                 # outputs = self.fc(outputs_128)
                 # outputs: [b, num_class], [b, 128]
+                # outputs_final_tmp, outputs_128, stu_fit = net_tmp(img_inputs_cln)
                 outputs_final_tmp, outputs_128, stu_fit = net_tmp(img_inputs_cln)
             elif stu_type == 1:
+                # outputs_final_tmp, outputs_128, stu_fit = net_tmp(aud_inputs_cln)
                 outputs_final_tmp, outputs_128, stu_fit = net_tmp(aud_inputs_cln)
             else:
                 raise ValueError("Undefined training type in distilled training")
+            
+            # optimizer.zero_grad()
             CE_loss = F.cross_entropy(outputs_final_tmp, labels)
             
-            optimizer_tmp.zero_grad()
-
-            CE_loss.backward()
+            # optimizer_tmp.zero_grad()
+            net_tmp.zero_grad()
+            CE_loss.backward() # tinh gradient cong vao net_tmp.parameters().grad
 
             optimizer.zero_grad() # xoa gradient cu
+            # Chep gradient tu mang tmp vao real, chi co moi celoss thoi
             for real_param, tmp_param in zip(net.parameters(), net_tmp.parameters()):
                 if tmp_param.grad is not None:
                     real_param.grad = tmp_param.grad.clone()
+            optimizer.step()
 
-
-            loss = CE_loss.mean().item() + FA_loss.item() + LA_loss.item()
+            # loss = CE_loss.mean().item() + FA_loss.item() + LA_loss.item()
+            # loss = CE_loss.mean().item()
             # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
             # loss.backward()
             optimizer.step()
             # lr = adjust_lr(iter=epoch, optimizer=optimizer)
-            lr_scheduler.step()
-            train_loss += loss
-            CE_loss_total += CE_loss.mean().item()
+            # lr_scheduler.step()
+            train_loss += CE_loss.item()
+            CE_loss_total += CE_loss.item()
             FA_loss_total += FA_loss.item()
             LA_loss_total += LA_loss.item()
 

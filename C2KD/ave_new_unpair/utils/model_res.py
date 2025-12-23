@@ -152,19 +152,20 @@ class ResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward(self, x):
+    def forward_encoder(self, x):
         if self.modality == 'visual':
             (B, C, T, H, W) = x.size()
             x = x.permute(0, 2, 1, 3, 4).contiguous()
             x = x.view(B, C * T, H, W)
         else:
             x = x.unsqueeze(1)
-        # x = x.unsqueeze(1)
         x = x.float()
+
+        # --- Backbone ---
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        f0 = x
+        f0 = x # (Optional: Nếu cần intermediate feature thì return thêm)
         x = self.maxpool(x)
 
         x = self.layer1(x)
@@ -173,12 +174,54 @@ class ResNet(nn.Module):
         f2 = x
         x = self.layer3(x)
         f3 = x
-        x_512 = self.avgpool(self.layer4(x))
-        x_512 = x_512.reshape(x_512.shape[0], -1)
+        x = self.layer4(x)
         f4 = x
-        out = self.fc(x_512)
+        
+        # --- Pooling & Flatten ---
+        x_512 = self.avgpool(x)
+        feature_vector = x_512.reshape(x_512.shape[0], -1) #  phi
+        
+        return feature_vector, [f0, f1, f2, f3, f4]
 
-        return out, x_512, [f0, f1, f2, f3, f4]
+    def forward_head(self, feature_vector):
+        logits = self.fc(feature_vector)
+        return logits
+    
+    def forward(self, x):
+        feature, feature_maps = self.forward_encoder(x)
+
+        logits = self.forward_head(feature)
+
+        return logits, feature, feature_maps
+
+    
+    # def forward(self, x):
+    #     if self.modality == 'visual':
+    #         (B, C, T, H, W) = x.size()
+    #         x = x.permute(0, 2, 1, 3, 4).contiguous()
+    #         x = x.view(B, C * T, H, W)
+    #     else:
+    #         x = x.unsqueeze(1)
+    #     # x = x.unsqueeze(1)
+    #     x = x.float()
+    #     x = self.conv1(x)
+    #     x = self.bn1(x)
+    #     x = self.relu(x)
+    #     f0 = x
+    #     x = self.maxpool(x)
+
+    #     x = self.layer1(x)
+    #     f1 = x
+    #     x = self.layer2(x)
+    #     f2 = x
+    #     x = self.layer3(x)
+    #     f3 = x
+    #     x_512 = self.avgpool(self.layer4(x))
+    #     x_512 = x_512.reshape(x_512.shape[0], -1)
+    #     f4 = x
+    #     out = self.fc(x_512)
+
+    #     return out, x_512, [f0, f1, f2, f3, f4]
 
 
 class Bottleneck(nn.Module):

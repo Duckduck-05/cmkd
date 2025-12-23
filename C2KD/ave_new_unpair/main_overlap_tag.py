@@ -56,7 +56,7 @@ def eval_overlap_tag(loader, device, args):
     main_lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.num_epochs - args.warmup_epoch, eta_min=args.min_lr)
     lr_scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, schedulers=[warmup_lr_scheduler, main_lr_scheduler], milestones=[args.warmup_epoch])
 
-    acc = train_network_distill_unpair_bilevel(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer2, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+    acc = train_network_distill_unpair_bilevel(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
     return acc
 
 
