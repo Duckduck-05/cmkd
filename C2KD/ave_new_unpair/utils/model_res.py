@@ -323,7 +323,10 @@ class ImageNet(nn.Module):
 
     def fc(self, x):
         return self.backbone.fc(x)
-
+    def forward_encoder(self, x):
+        return self.backbone.forward_encoder(x)
+    def forward_head(self, feature_vector):
+        return self.backbone.forward_head(feature_vector)
     def forward(self, x):
         return self.backbone(x)
 
