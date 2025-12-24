@@ -459,8 +459,12 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 b = torch.ones(batch_size, device=tea_f.device) / batch_size
                 M = torch.cdist(stu_f_tmp, tea_f, p=2) ** 2
                 
+                scale_factor = M.max().detach()
+                M_scaled = M / scale_factor
                 # print(M)
-                FA_loss = ot.sinkhorn2(a, b, M, reg=0.1)
+                # update log_sinkhorn due to Numerical Instability
+                FA_loss_scaled = ot.sinkhorn2(a, b, M_scaled, reg=0.05, numItermax=100)
+                FA_loss = FA_loss_scaled * scale_factor
                 # print(FA_loss)
                 FA_loss = torch.mean(FA_loss)
                 # print(FA_loss)
