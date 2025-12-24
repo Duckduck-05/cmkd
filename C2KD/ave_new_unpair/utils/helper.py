@@ -464,7 +464,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 # print(FA_loss)
                 FA_loss = torch.mean(FA_loss)
                 # print(FA_loss)
-                # Update net_tmp, net van ok
+                
                 FA_loss.backward()
                 optimizer_tmp.step()
 
