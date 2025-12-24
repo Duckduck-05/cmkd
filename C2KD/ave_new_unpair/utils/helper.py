@@ -485,14 +485,14 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 with torch.no_grad():
                     stu_latent_2_tea = tea_model.fc(stu_f_tmp) # Teacher view on Student z
                 
-                Cross_Entropy = torch.nn.CrossEntropyLoss()
+                Cross_Entropy = torch.nn.CrossEntropyLoss(reduction='none')
                 probs_s = F.softmax(outputs_tmp, dim=-1)
                 probs_t = F.softmax(stu_latent_2_tea, dim=-1)
             
                 #select target class prob as kappa 
                 kappa = probs_t.gather(dim=1, index=labels.unsqueeze(1)).squeeze(1)
                 
-                LA_loss = Cross_Entropy(probs_s,labels) - kappa*Cross_Entropy(probs_t,labels)
+                LA_loss = (Cross_Entropy(outputs_tmp,labels) - kappa*Cross_Entropy(stu_latent_2_tea,labels)).mean()
 
                 # Update net_tmp lần 2
                 LA_loss.backward()
@@ -528,7 +528,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             # loss = CE_loss.mean().item()
             # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
             # loss.backward()
-            optimizer.step()
+            # optimizer.step()
             # lr = adjust_lr(iter=epoch, optimizer=optimizer)
             # lr_scheduler.step()
             train_loss += CE_loss.item()
