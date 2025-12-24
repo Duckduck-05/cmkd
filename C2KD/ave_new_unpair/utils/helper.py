@@ -524,6 +524,11 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                     real_param.grad = tmp_param.grad.clone()
             optimizer.step()
 
+            # sao chep cac tham so thong ke, running mean/ running var
+            with torch.no_grad():
+                for real_buffer, tmp_buffer in zip(net.buffers(), net_tmp.buffers()):
+                    real_buffer.data.copy_(tmp_buffer.data)
+
             # loss = CE_loss.mean().item() + FA_loss.item() + LA_loss.item()
             # loss = CE_loss.mean().item()
             # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
