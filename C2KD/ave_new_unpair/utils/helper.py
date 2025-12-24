@@ -485,15 +485,14 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 with torch.no_grad():
                     stu_latent_2_tea = tea_model.fc(stu_f_tmp) # Teacher view on Student z
                 
-                log_probs_s = F.log_softmax(outputs_tmp, dim=-1)
-                log_probs_t = F.log_softmax(stu_latent_2_tea, dim=-1)
+                Cross_Entropy = torch.nn.CrossEntropyLoss()
+                probs_s = F.softmax(outputs_tmp, dim=-1)
                 probs_t = F.softmax(stu_latent_2_tea, dim=-1)
+            
+                #select target class prob as kappa 
+                kappa = probs_t.gather(dim=1, index=labels.unsqueeze(1)).squeeze(1)
                 
-                kappa = probs_t.detach() # Dynamic weight
-                log_ratio_matrix = log_probs_s - kappa * log_probs_t
-                
-                # LA Loss: Expectation trên D^S
-                LA_loss = F.nll_loss(log_ratio_matrix, labels)
+                LA_loss = Cross_Entropy(probs_s,labels) - kappa*Cross_Entropy(probs_t,labels)
 
                 # Update net_tmp lần 2
                 LA_loss.backward()
