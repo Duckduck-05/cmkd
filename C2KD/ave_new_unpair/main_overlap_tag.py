@@ -5,7 +5,7 @@ import argparse
 import numpy as np
 import random
 import wandb
-from utils.helper import gen_data, train_network_distill, train_network_distill_unpair, train_network_distill_unpair_bilevel, pre_train
+from utils.helper import gen_data, train_network_distill, train_network_distill_unpair, train_network_distill_unpair_ce, train_network_distill_unpair_bilevel, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -56,7 +56,7 @@ def eval_overlap_tag(loader, device, args):
     main_lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.num_epochs - args.warmup_epoch, eta_min=args.min_lr)
     lr_scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, schedulers=[warmup_lr_scheduler, main_lr_scheduler], milestones=[args.warmup_epoch])
 
-    acc = train_network_distill_unpair_bilevel(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+    acc = train_network_distill_unpair_ce(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
     return acc
 
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
     wandb.init(entity= "cmkd" ,project="c2kd-ours",
-                name=f"data: ave, type:unpair, bilevel, lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
+                name=f"data: ave, type:unpair, CE, lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
                 config=vars(args), group=args.group)
 
     print(args)

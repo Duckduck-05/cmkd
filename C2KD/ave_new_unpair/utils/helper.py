@@ -319,11 +319,16 @@ def train_network_distill_unpair(stu_type, tea_model, epochs, loader, net, devic
 
             # Cost Matrix: ||z_s - z_t||^2
             M = torch.cdist(stu_f, tea_f, p = 2) ** 2
+            scale_factor = M.max().detach()
+            M_scaled = M / scale_factor
 
-            FA_loss = ot.sinkhorn2(a, b, M, reg=0.1)
+            # FA_loss = ot.sinkhorn2(a, b, M, reg=0.1)
+            FA_loss_scaled = ot.sinkhorn2(a, b, M_scaled, reg=0.05, numItermax=100)
+            FA_loss = FA_loss_scaled * scale_factor
             FA_loss = torch.mean(FA_loss) # to be a scalar
             # FA_loss = ot.wasserstein_1d(stu_f.reshape(-1), tea_f.reshape(-1))
             # print(FA_loss)
+
 
             # Tinh LA?
             stu_latent_2_tea = tea_model.fc(stu_f)
@@ -339,6 +344,7 @@ def train_network_distill_unpair(stu_type, tea_model, epochs, loader, net, devic
 
             loss = CE_loss.mean() + FA_loss + LA_loss
             # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
+            # loss = CE_loss.mean() 
             loss.backward()
             optimizer.step()
             # lr = adjust_lr(iter=epoch, optimizer=optimizer)
@@ -454,22 +460,42 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                     pseu_label, tea_f, tea_fit = tea_model(img_inputs_cln)
                 
                 # Tính FA Loss 
+                # Loi khong giam duoc FA do gap qua lon, cai FA_loss luon la 220-250 -> normalize
+                # Vi wasserstein dung de sap xep
+                
                 batch_size = stu_f_tmp.size(0)
                 a = torch.ones(batch_size, device=stu_f_tmp.device) / batch_size
                 b = torch.ones(batch_size, device=tea_f.device) / batch_size
-                M = torch.cdist(stu_f_tmp, tea_f, p=2) ** 2
                 
-                scale_factor = M.max().detach()
-                M_scaled = M / scale_factor
-                # print(M)
-                # update log_sinkhorn due to Numerical Instability
-                FA_loss_scaled = ot.sinkhorn2(a, b, M_scaled, reg=0.05, numItermax=100)
-                FA_loss = FA_loss_scaled * scale_factor
-                # print(FA_loss)
+                # code cu
+                # M = torch.cdist(stu_f_tmp, tea_f, p=2) ** 2
+                
+                # scale_factor = M.max().detach()
+                # M_scaled = M / scale_factor
+                # # print(M)
+                # # update log_sinkhorn due to Numerical Instability
+                # FA_loss_scaled = ot.sinkhorn2(a, b, M_scaled, reg=0.05, numItermax=100)
+                # FA_loss = FA_loss_scaled * scale_factor
+                # # print(FA_loss)
+                # FA_loss = torch.mean(FA_loss)
+                # # print(FA_loss)
+                
+
+                stu_f_norm = torch.nn.functional.normalize(stu_f_tmp, p=2, dim=1)
+                tea_f_norm = torch.nn.functional.normalize(tea_f, p=2, dim=1)
+
+                M = 1 - torch.matmul(stu_f_norm, tea_f_norm.transpose(0, 1))
+                # print("Requires Grad:", stu_f_tmp.requires_grad)
+                # print("Grad Fn:", stu_f_tmp.grad_fn)
+                FA_loss = ot.sinkhorn2(a, b, M, reg=0.1, numItermax=100)
                 FA_loss = torch.mean(FA_loss)
-                # print(FA_loss)
-                
                 FA_loss.backward()
+                # for name, param in net_tmp.named_parameters():
+                #     if param.grad is not None:
+                #         print(f"Gradient norm of {name}: {param.grad.norm().item()}")
+                #         break 
+                #     else:
+                #         print(f"NO GRADIENT for {name}")
                 optimizer_tmp.step()
 
             for _ in range(n2_steps):
@@ -506,11 +532,11 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             if stu_type == 0:   
                 # outputs = self.fc(outputs_128)
                 # outputs: [b, num_class], [b, 128]
-                # outputs_final_tmp, outputs_128, stu_fit = net_tmp(img_inputs_cln)
                 outputs_final_tmp, outputs_128, stu_fit = net_tmp(img_inputs_cln)
+                # outputs_final_tmp, outputs_128, stu_fit = net(img_inputs_cln)
             elif stu_type == 1:
-                # outputs_final_tmp, outputs_128, stu_fit = net_tmp(aud_inputs_cln)
                 outputs_final_tmp, outputs_128, stu_fit = net_tmp(aud_inputs_cln)
+                # outputs_final_tmp, outputs_128, stu_fit = net(aud_inputs_cln)
             else:
                 raise ValueError("Undefined training type in distilled training")
             
@@ -538,7 +564,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
             # loss.backward()
             # optimizer.step()
-            # lr = adjust_lr(iter=epoch, optimizer=optimizer)
+            lr = adjust_lr(iter=epoch, optimizer=optimizer)
             # lr_scheduler.step()
             train_loss += CE_loss.item()
             CE_loss_total += CE_loss.item()
@@ -599,6 +625,114 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
 
     return val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t
 
+
+def train_network_distill_unpair_ce(stu_type, tea_model, epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu):
+    save_model = True
+    val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t = 0, 0, 0, 0
+    model_best = net
+    criterion3 = torch.nn.KLDivLoss(reduction='batchmean')
+    criterion4 = torch.nn.KLDivLoss(reduction='none')
+    iter = 0
+    net.train()
+    # tea_model.train()
+    tea_model.eval()
+    for name, param in tea_model.named_parameters():
+        # if 'layer4' not in name and 'layer4' not in name and 'fc' not in name:
+        # if 'fc' not in name:
+            param.requires_grad = False
+    
+    # hyperparameter
+    # n1_steps = 1
+    # n2_steps = 1
+
+    for epoch in range(epochs):
+
+        train_loss = 0.0
+        CE_loss_total = 0.0
+        FA_loss_total = 0.0
+        LA_loss_total = 0.0
+
+        for i, data in enumerate(loader['train']):
+            iter = iter + 1
+            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
+                device)         
+                    
+            if stu_type == 0:   
+                outputs_final, outputs_128, stu_fit = net(img_inputs_cln)
+            elif stu_type == 1:
+                outputs_final, outputs_128, stu_fit = net(aud_inputs_cln)
+            else:
+                raise ValueError("Undefined training type in distilled training")
+            
+            optimizer.zero_grad()
+            CE_loss = F.cross_entropy(outputs_final, labels)
+            
+
+            loss = CE_loss
+            # print(loss.item(), CE_loss.mean(), FA_loss, LA_loss)
+            loss.backward()
+            optimizer.step()
+            lr = adjust_lr(iter=epoch, optimizer=optimizer)
+            # lr_scheduler.step()
+            train_loss += loss.item()
+            CE_loss_total += CE_loss.item()
+            # FA_loss_total += FA_loss.item()
+            # LA_loss_total += LA_loss.item()
+
+
+
+        if epoch >= 1:
+            _, train_acc = evaluate(loader['train'], device, net, stu_type)
+            val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
+            test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
+            _, train_acc_t = evaluate(loader['train'], device, tea_model, int(1-stu_type))
+            val_loss_t, val_acc_t = evaluate(loader['val'], device, tea_model, int(1-stu_type))
+            test_loss_t, test_acc_t = evaluate(loader['test'], device, tea_model, int(1-stu_type))
+
+            wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc,\
+                       'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        else:
+            _, train_acc = 0, 0
+            val_loss, val_acc = 0, 0
+            test_loss, test_acc = 0, 0
+            _, train_acc_t = 0, 0
+            val_loss_t, val_acc_t = 0, 0
+            test_loss_t, test_acc_t = 0, 0
+
+        if val_acc >= val_best_acc:
+            val_best_acc = val_acc
+            test_best_acc = test_acc
+            model_best = deepcopy(net)
+        if val_acc_t >= val_best_acc_t:
+            val_best_acc_t = val_acc_t
+            test_best_acc_t = test_acc_t
+
+        wandb.log({'trainloss': train_loss / len(loader['train']), 'CE_loss_total': CE_loss_total / len(loader['train']), \
+                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train'])})
+        wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
+                   'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+        print(f"Epoch | All epochs: {epoch} | {epochs}")
+        print(
+            f"Train Loss: {train_loss / len(loader['train']):.3f}")
+        print(f"Train | Val | Test Accuracy {train_acc:.3f} | {val_acc:.3f} | {test_acc:.3f}")
+        print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
+        print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
+        print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+
+    print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+    print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
+
+    if save_model:
+        os.makedirs('results/our', exist_ok=True)
+        model_path = os.path.join('results', 'our', 'distillednet_mod_' + str(stu_type) + '_' + str(
+            args.num_frame) + '_kdweight' + str(args.weight) + '_stu_acc_' + str(round(test_best_acc, 2)) + '_tea_acc_' \
+                                  + str(round(test_best_acc_t, 2)) + '.pkl')
+        torch.save(model_best.state_dict(), model_path)
+        print(
+            f'Saving best model to {model_path}, Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
+
+    return val_best_acc, test_best_acc, val_best_acc_t, test_best_acc_t
 
 def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, args, save_model=False):
     criterion = torch.nn.CrossEntropyLoss()
