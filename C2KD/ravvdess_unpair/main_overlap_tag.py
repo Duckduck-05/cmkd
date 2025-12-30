@@ -93,15 +93,15 @@ if __name__ == '__main__':
 
     wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
     wandb.init(entity= "cmkd" ,project="c2kd-ours",
-                name=f"data: ave, type:unpair, bilevel, lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
+                name=f"data: ravdess, type:unpair, bilevel, lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
                 config=vars(args), group=args.group)
 
     print(args)
 
     device = torch.device("cpu") if args.gpu < 0 else torch.device("cuda:" + str(args.gpu))
-    loader = gen_data('./data', args.batch_size, args.num_workers, args)
+    loader = gen_data('/home/ducca/CMKD/C2KD/ravvdess_unpair/utils/data/ravvdess', args.batch_size, args.num_workers, args)
     if args.pre_train:
-        loader_fb = gen_data('./data', args.batch_size2, args.num_workers, args)
+        loader_fb = gen_data('/home/ducca/CMKD/C2KD/ravvdess_unpair/utils/data/ravvdess', args.batch_size2, args.num_workers, args)
         pre_train(args.stu_type, loader, args.num_epochs, args.lr, device, args)
 
     if args.cmkd:

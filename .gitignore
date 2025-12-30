@@ -13,6 +13,13 @@
 /C2KD/ave_unpair_consider/results/
 /C2KD/ave_unpair_consider/wandb/
 
+/C2KD/ravvdess_unpair/results/
+# /C2KD/ravvdess_unpair/credentials.json
+# /C2KD/ravvdess_unpair/token.json
+/C2KD/ravvdess_unpair/download.py
+/C2KD/ravvdess_unpair/download1.py
+/C2KD/ravvdess_unpair/wandb/
+/C2KD/ravvdess_unpair/utils/data/
 
 /MFH/ravdess/results/
 # /MFH/ravdess/credentials.json

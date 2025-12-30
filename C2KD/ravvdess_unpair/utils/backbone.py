@@ -1,8 +1,3 @@
-from copy import deepcopy
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
 import torch.nn as nn
 
 
@@ -59,7 +54,7 @@ class BasicBlock(nn.Module):
 
 class ResNet(nn.Module):
 
-    def __init__(self, block, layers, modality, num_classes=1000, num_frame=10, pool='avgpool', zero_init_residual=False,
+    def __init__(self, block, layers, modality, num_classes=1000, pool='avgpool', zero_init_residual=False,
                  groups=1, width_per_group=64, replace_stride_with_dilation=None,
                  norm_layer=None):
         super(ResNet, self).__init__()
@@ -84,7 +79,7 @@ class ResNet(nn.Module):
             self.conv1 = nn.Conv2d(1, self.inplanes, kernel_size=7, stride=2, padding=3,
                                    bias=False)
         elif modality == 'visual':
-            self.conv1 = nn.Conv2d(3 * num_frame, self.inplanes, kernel_size=7, stride=2, padding=3,
+            self.conv1 = nn.Conv2d(3, self.inplanes, kernel_size=7, stride=2, padding=3,
                                    bias=False)
         else:
             raise NotImplementedError('Incorrect modality, should be audio or visual but got {}'.format(modality))
@@ -98,18 +93,10 @@ class ResNet(nn.Module):
                                        dilate=replace_stride_with_dilation[1])
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
                                        dilate=replace_stride_with_dilation[2])
-        if self.pool == 'avgpool':
-            self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-
-            self.fc = nn.Linear(512 * block.expansion, num_classes)  # 8192
-
-        # if modality == 'audio':
+        # if self.pool == 'avgpool':
         #     self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        #
         #     self.fc = nn.Linear(512 * block.expansion, num_classes)  # 8192
-        # elif modality == 'visual':
-        #     self.avgpool = nn.AdaptiveAvgPool3d(1)
-        #     self.fc = nn.Linear(512 * block.expansion, num_classes)
-
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -152,76 +139,25 @@ class ResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward_encoder(self, x):
+    def forward(self, x):
+
         if self.modality == 'visual':
             (B, C, T, H, W) = x.size()
             x = x.permute(0, 2, 1, 3, 4).contiguous()
-            x = x.view(B, C * T, H, W)
-        else:
-            x = x.unsqueeze(1)
-        x = x.float()
+            x = x.view(B * T, C, H, W)
 
-        # --- Backbone ---
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        f0 = x # (Optional: Nếu cần intermediate feature thì return thêm)
         x = self.maxpool(x)
 
         x = self.layer1(x)
-        f1 = x
         x = self.layer2(x)
-        f2 = x
         x = self.layer3(x)
-        f3 = x
         x = self.layer4(x)
-        f4 = x
-        
-        # --- Pooling & Flatten ---
-        x_512 = self.avgpool(x)
-        feature_vector = x_512.reshape(x_512.shape[0], -1) #  phi
-        
-        return feature_vector, [f0, f1, f2, f3, f4]
+        out = x
 
-    def forward_head(self, feature_vector):
-        logits = self.fc(feature_vector)
-        return logits
-    
-    def forward(self, x):
-        feature, feature_maps = self.forward_encoder(x)
-
-        logits = self.forward_head(feature)
-
-        return logits, feature, feature_maps
-
-    
-    # def forward(self, x):
-    #     if self.modality == 'visual':
-    #         (B, C, T, H, W) = x.size()
-    #         x = x.permute(0, 2, 1, 3, 4).contiguous()
-    #         x = x.view(B, C * T, H, W)
-    #     else:
-    #         x = x.unsqueeze(1)
-    #     # x = x.unsqueeze(1)
-    #     x = x.float()
-    #     x = self.conv1(x)
-    #     x = self.bn1(x)
-    #     x = self.relu(x)
-    #     f0 = x
-    #     x = self.maxpool(x)
-
-    #     x = self.layer1(x)
-    #     f1 = x
-    #     x = self.layer2(x)
-    #     f2 = x
-    #     x = self.layer3(x)
-    #     f3 = x
-    #     x_512 = self.avgpool(self.layer4(x))
-    #     x_512 = x_512.reshape(x_512.shape[0], -1)
-    #     f4 = x
-    #     out = self.fc(x_512)
-
-    #     return out, x_512, [f0, f1, f2, f3, f4]
+        return out
 
 
 class Bottleneck(nn.Module):
@@ -267,72 +203,11 @@ class Bottleneck(nn.Module):
         return out
 
 
-
-def _resnet(arch, block, layers, modality, num_classes, num_frame):
-    model = ResNet(block, layers, modality, num_classes=num_classes, num_frame=num_frame)
+def _resnet(arch, block, layers, modality, progress, **kwargs):
+    model = ResNet(block, layers, modality, **kwargs)
     return model
 
 
-
-class AudioNet(nn.Module):
-    """AudioNet"""
-
-    def __init__(self, args):
-        super(AudioNet, self).__init__()
-        self.arch = args.audio_arch
-        if self.arch == 'resnet18':
-            layers = [2, 2, 2, 2]
-        if self.arch == 'resnet50':
-            layers = [3, 4, 6, 3]
-        self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='audio', num_classes=28, num_frame=args.num_frame)
-
-    def fc(self, x):
-        return self.backbone.fc(x)
-
-    def forward_encoder(self, x):
-        return self.backbone.forward_encoder(x)
-    
-    def forward_head(self, feature_vector):
-        return self.backbone.forward_head(feature_vector)
-
-    def forward(self, x):
-        return self.backbone(x)
-
-class FCReg(nn.Module):
-    """Convolutional regression"""
-
-    def __init__(self, s_C1, s_C2, use_relu=True):
-        super(FCReg, self).__init__()
-        self.use_relu = use_relu
-        self.fc = nn.Linear(s_C1, s_C2)
-        self.bn = nn.BatchNorm1d(s_C2)
-        self.relu = nn.ReLU(inplace=True)
-
-    def forward(self, x):
-        x = self.fc(x)
-        if self.use_relu:
-            return self.relu(self.bn(x))
-        else:
-            return self.bn(x)
-        return x
-
-class ImageNet(nn.Module):
-    """ImageNet"""
-    def __init__(self, args):
-        super(ImageNet, self).__init__()
-        self.arch = args.image_arch
-        if self.arch == 'resnet18':
-            layers = [2, 2, 2, 2]
-        if self.arch == 'resnet50':
-            layers = [3, 4, 6, 3]
-        self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='visual', num_classes=28, num_frame=args.num_frame)
-
-    def fc(self, x):
-        return self.backbone.fc(x)
-    def forward_encoder(self, x):
-        return self.backbone.forward_encoder(x)
-    def forward_head(self, feature_vector):
-        return self.backbone.forward_head(feature_vector)
-    def forward(self, x):
-        return self.backbone(x)
-
+def resnet18(modality, progress=True, **kwargs):
+    return _resnet('resnet18', BasicBlock, [2, 2, 2, 2], modality, progress,
+                   **kwargs)

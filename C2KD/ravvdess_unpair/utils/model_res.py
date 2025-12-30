@@ -153,13 +153,25 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward_encoder(self, x):
-        if self.modality == 'visual':
-            (B, C, T, H, W) = x.size()
-            x = x.permute(0, 2, 1, 3, 4).contiguous()
-            x = x.view(B, C * T, H, W)
-        else:
-            x = x.unsqueeze(1)
         x = x.float()
+        
+        if self.modality == 'visual':
+            # Xử lý Video (5D) -> Gộp Frame vào Channel -> 4D
+            if x.dim() == 5:
+                (B, C, T, H, W) = x.size()
+                x = x.permute(0, 2, 1, 3, 4).contiguous()
+                x = x.view(B, C * T, H, W)
+            # Nếu là Ảnh (4D) thì giữ nguyên
+            
+        else: # Audio
+            # Nếu thừa chiều (5D: B, C, T, H, W) -> Cắt chiều T đi
+            if x.dim() == 5:
+                x = x.squeeze(2) 
+            # Nếu thiếu chiều (3D: B, H, W) -> Thêm chiều Channel
+            elif x.dim() == 3:
+                x = x.unsqueeze(1)
+            # Nếu đã chuẩn 4D (B, C, H, W) -> Giữ nguyên
+        
 
         # --- Backbone ---
         x = self.conv1(x)

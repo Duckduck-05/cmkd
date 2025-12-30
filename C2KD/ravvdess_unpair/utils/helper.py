@@ -12,7 +12,7 @@ from utils.dist_utils import *
 import time
 import torch.nn.functional as F
 import geomloss
-from utils.AVEDataset import AVEDataset
+from utils.RavvdessDataset import RavvdessDataset
 # from utils.VGGSoundDataset import VGGSound
 from torch.utils.data import DataLoader
 import math
@@ -86,10 +86,17 @@ def evaluate_allacc(loader, device, net, in_type):
 
 
 def gen_data(data_dir, batch_size, num_workers, args):
+    audio_dir = os.path.join(data_dir, 'aud_features')
+    image_dir = os.path.join(data_dir, 'vid_features')
 
-    train_dataset = AVEDataset(args, mode='train')
-    test_dataset = AVEDataset(args, mode='test')
-    val_dataset = AVEDataset(args, mode='val')
+    data_file = os.path.join(data_dir, 'data_file')
+    train_file = os.path.join(data_file, 'spa_dl.csv')
+    val_file = os.path.join(data_file, 'spa_val.csv')
+    test_file = os.path.join(data_file, 'spa_test.csv')
+
+    train_dataset = RavvdessDataset(csv_path=train_file, audio_dir=audio_dir, image_dir=image_dir, mode='train')
+    test_dataset = RavvdessDataset(csv_path=test_file, audio_dir=audio_dir, image_dir=image_dir, mode='test')
+    val_dataset = RavvdessDataset(csv_path=val_file, audio_dir=audio_dir, image_dir=image_dir, mode='val')
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True)  # 计算机的内存充足的时候，可以设置pin_memory=True
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
     val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
@@ -765,7 +772,7 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
             tmp1 = criterion(outputs1[0], labels)
             tmp2 = criterion(outputs2[0], labels)
             tmp3 = 0
-            loss = tmp2
+            loss = tmp2 + tmp1
             loss.backward()
             optimizer.step()
 
@@ -799,9 +806,9 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
 
     if save_model:
         os.makedirs('./results', exist_ok=True)
-        model_path_t = os.path.join('./results', 'teacher_mod_' + str(tea_type) + '_' + 'resnet50' + '_' + str(args.num_frame) + '_overlap.pkl')
+        model_path_t = os.path.join('./results', 'teacher_mod_' + str(tea_type) + '_' + 'resnet18' + '_' + str(args.num_frame) + '_overlap.pkl')
         torch.save(tea_model_best.state_dict(), model_path_t)
-        model_path_s = os.path.join('./results', 'student_mod_' + str(stu_type) + '_' + 'resnet50' + '_'+ str(args.num_frame) + '_overlap.pkl')
+        model_path_s = os.path.join('./results', 'student_mod_' + str(stu_type) + '_' + 'resnet18' + '_'+ str(args.num_frame) + '_overlap.pkl')
         torch.save(stu_model_best.state_dict(), model_path_s)
         print(f"Saving teacher and student model to {model_path_t} and {model_path_s}")
         print(f"Best Test acc: teacher: {test_best_acc:.2f} student: {test_best_acc_s:.2f}")
