@@ -19,6 +19,7 @@ import math
 import wandb
 from scipy.stats.stats import kendalltau
 import ot
+import time
 
 
 
@@ -284,6 +285,7 @@ def train_network_distill_unpair_sumall(stu_type, tea_model, epochs, loader, net
 
 
     for epoch in range(epochs):
+        epoch_start_time = time.time()
 
         train_loss = 0.0
         CE_loss_total = 0.0
@@ -327,9 +329,9 @@ def train_network_distill_unpair_sumall(stu_type, tea_model, epochs, loader, net
 
             eps = 1e-8
             stu_f_norm = stu_f / (stu_f.norm(dim=1, keepdim=True) + eps)
-            print(stu_f_norm)
+            # print(stu_f_norm)
             tea_f_norm = tea_f / (tea_f.norm(dim=1, keepdim=True) + eps)
-            print(tea_f_norm)
+            # print(tea_f_norm)
 
             M = 1 - torch.matmul(stu_f_norm, tea_f_norm.transpose(0, 1))
             M = torch.clamp(M, min=0.0)
@@ -363,7 +365,7 @@ def train_network_distill_unpair_sumall(stu_type, tea_model, epochs, loader, net
             FA_loss_total += FA_loss.item()
             LA_loss_total += LA_loss.item()
 
-
+        epoch_duration = time.time() - epoch_start_time
 
         if epoch >= 1:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
@@ -392,7 +394,8 @@ def train_network_distill_unpair_sumall(stu_type, tea_model, epochs, loader, net
             test_best_acc_t = test_acc_t
 
         wandb.log({'trainloss': train_loss / len(loader['train']), 'CE_loss_total': CE_loss_total / len(loader['train']), \
-                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train'])})
+                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train']),
+                    'epoch_duration': epoch_duration})
         wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
                    'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
         print(f"Epoch | All epochs: {epoch} | {epochs}")
@@ -402,6 +405,7 @@ def train_network_distill_unpair_sumall(stu_type, tea_model, epochs, loader, net
         print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
         print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
         print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+        print(f"epoch_duration: {epoch_duration}")
 
     print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
     print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
@@ -437,6 +441,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
     n2_steps = 1
 
     for epoch in range(epochs):
+        epoch_start_time = time.time()
 
         train_loss = 0.0
         CE_loss_total = 0.0
@@ -580,7 +585,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             FA_loss_total += FA_loss.item()
             LA_loss_total += LA_loss.item()
 
-
+        epoch_duration = time.time() - epoch_start_time
 
         if epoch >= 1:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
@@ -611,7 +616,8 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
         wandb.log({'trainloss': train_loss / len(loader['train']), 'CE_loss_total': CE_loss_total / len(loader['train']), \
                     'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train'])})
         wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
-                   'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
+                   'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t
+                   ,'epoch_duration_seconds': epoch_duration})
         print(f"Epoch | All epochs: {epoch} | {epochs}")
         print(
             f"Train Loss: {train_loss / len(loader['train']):.3f}")
@@ -619,6 +625,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
         print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
         print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
         print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+        print(f'epoch_duration_seconds: {epoch_duration}')
 
     print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
     print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
@@ -655,6 +662,7 @@ def train_network_distill_unpair_ce(stu_type, tea_model, epochs, loader, net, de
     # n2_steps = 1
 
     for epoch in range(epochs):
+        epoch_start_time = time.time()
 
         train_loss = 0.0
         CE_loss_total = 0.0
@@ -689,6 +697,7 @@ def train_network_distill_unpair_ce(stu_type, tea_model, epochs, loader, net, de
             # FA_loss_total += FA_loss.item()
             # LA_loss_total += LA_loss.item()
 
+        epoch_duration = time.time() - epoch_start_time
 
 
         if epoch >= 1:
@@ -718,7 +727,8 @@ def train_network_distill_unpair_ce(stu_type, tea_model, epochs, loader, net, de
             test_best_acc_t = test_acc_t
 
         wandb.log({'trainloss': train_loss / len(loader['train']), 'CE_loss_total': CE_loss_total / len(loader['train']), \
-                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train'])})
+                    'FA_loss_total': FA_loss_total / len(loader['train']), 'LA_loss_total': LA_loss_total / len(loader['train']),
+                    'epoch_duration': epoch_duration})
         wandb.log({'train_acc': train_acc, 'val_acc': val_acc, 'test_acc': test_acc, \
                    'train_acc_t': train_acc_t, 'val_acc_t': val_acc_t, 'test_acc_t': test_acc_t})
         print(f"Epoch | All epochs: {epoch} | {epochs}")
@@ -728,6 +738,7 @@ def train_network_distill_unpair_ce(stu_type, tea_model, epochs, loader, net, de
         print(f"teacher: Train | Val | Test Accuracy {train_acc_t:.3f} | {val_acc_t:.3f} | {test_acc_t:.3f}")
         print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
         print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
+        print(f"Epoch_duration: {epoch_duration}" )
 
     print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
     print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
