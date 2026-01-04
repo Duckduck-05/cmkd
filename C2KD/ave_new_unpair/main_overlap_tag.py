@@ -5,7 +5,8 @@ import argparse
 import numpy as np
 import random
 import wandb
-from utils.helper import gen_data, train_network_distill, train_network_distill_unpair_sumall, train_network_distill_unpair_ce, train_network_distill_unpair_bilevel, pre_train
+from utils.helper import gen_data, train_network_distill, train_network_distill_unpair_sumall, train_network_distill_unpair_ce, train_network_distill_unpair_bilevel,train_network_distill_unpair_vanillaKD, \
+    train_network_distill_unpair_fea, pre_train
 # from utils.model import ImageNet, AudioNet
 from utils.model_res import ImageNet, AudioNet
 from utils.module import Tea, Stu
@@ -56,7 +57,17 @@ def eval_overlap_tag(loader, device, args):
     main_lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.num_epochs - args.warmup_epoch, eta_min=args.min_lr)
     lr_scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, schedulers=[warmup_lr_scheduler, main_lr_scheduler], milestones=[args.warmup_epoch])
 
-    acc = train_network_distill_unpair_bilevel(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+    if args.method_type == "bilevel":
+        acc = train_network_distill_unpair_bilevel(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+    if args.method_type == "ce":
+        acc = train_network_distill_unpair_ce(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+    if args.method_type == "sumall":
+        acc = train_network_distill_unpair_sumall(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+    if args.method_type == "vanillaKD":
+        acc = train_network_distill_unpair_vanillaKD(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+    if args.method_type =="feadistill":
+        acc = train_network_distill_unpair_fea(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
+   
     return acc
 
 
@@ -87,14 +98,15 @@ if __name__ == '__main__':
     parser.add_argument("--beta1", default=0.9, type=float)
     parser.add_argument("--beta2", default=0.999, type=float)
     parser.add_argument("--warmup-epoch", default=5, type=int)
+    parser.add_argument("--method_type", type=str, default="ce")
 
 
     args = parser.parse_args()
 
     wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
-    wandb.init(entity= "cmkd" ,project="c2kd-ours",
-                name=f"data: ave, type:unpair, bilevel, lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
-                config=vars(args), group=args.group)
+    # wandb.init(entity= "cmkd" ,project="experiments",
+    #             name=f"data: ave, type:unpair, {args.method_type}, lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}",
+    #             config=vars(args), group=args.group)
 
     print(args)
 
@@ -109,7 +121,20 @@ if __name__ == '__main__':
         for run in range(args.num_runs):
             set_random_seed(seed=run)
             print(f'Seed {run}')
+
+            run_name = f"data: ave, type:unpair, {args.method_type}, seed: {run} lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}"
+            wandb.init(
+                entity="cmkd",
+                project="experiments",
+                name=run_name,
+                config=vars(args),
+                group=args.group,  
+                reinit=True        
+            )
+
             log_np[run, :] = eval_overlap_tag(loader, device, args)
+
+            wandb.finish()
         log_mean = np.mean(log_np, axis=0)
         log_std = np.std(log_np, axis=0)
         print(f'Finish {args.num_runs} runs')

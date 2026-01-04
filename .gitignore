@@ -14,6 +14,8 @@
 /C2KD/ave_unpair_consider/wandb/
 /C2KD/avmnist_unpair/
 
+/C2KD/nyu-depth-v2/utils/data/
+
 /C2KD/ravvdess_unpair/results/
 # /C2KD/ravvdess_unpair/credentials.json
 # /C2KD/ravvdess_unpair/token.json
