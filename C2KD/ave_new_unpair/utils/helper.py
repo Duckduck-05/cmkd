@@ -7,7 +7,8 @@ import codecs
 import csv
 from copy import deepcopy
 # from utils.model import ImageNet, AudioNet
-from utils.model_res import ImageNet, AudioNet
+# from utils.model_res import ImageNet, AudioNet
+from utils.model_res_new import ImageNet, AudioNet
 from utils.dist_utils import *
 import time
 import torch.nn.functional as F
@@ -993,6 +994,15 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
     criterion = torch.nn.CrossEntropyLoss()
     tea_model = ImageNet(args).to(device) if tea_type == 0 else AudioNet(args).to(device)
     stu_model = ImageNet(args).to(device) if stu_type == 0 else AudioNet(args).to(device)
+
+    if stu_type == 0:
+        stu_arch = args.image_arch
+        tea_arch = args.audio_arch
+    else:
+        stu_arch = args.audio_arch
+        tea_arch = args.image_arch
+
+
     optimizer = torch.optim.SGD(list(tea_model.parameters()) + list(stu_model.parameters()), lr=learning_rate, momentum=0.9)
     # optimizer = torch.optim.SGD(list(tea_model.parameters()), lr=learning_rate, momentum=0.9)
     val_best_acc, test_best_acc, val_best_acc_s, test_best_acc_s, tea_model_best, stu_model_best = 0, 0, 0, 0, 0, 0
@@ -1052,9 +1062,9 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
 
     if save_model:
         os.makedirs('./results', exist_ok=True)
-        model_path_t = os.path.join('./results', 'teacher_mod_' + str(tea_type) + '_' + 'resnet50' + '_' + str(args.num_frame) + '_overlap.pkl')
+        model_path_t = os.path.join('./results', 'teacher_mod_' + str(tea_type) + '_' + tea_arch + '_' + str(args.num_frame) + '_overlap.pkl')
         torch.save(tea_model_best.state_dict(), model_path_t)
-        model_path_s = os.path.join('./results', 'student_mod_' + str(stu_type) + '_' + 'resnet50' + '_'+ str(args.num_frame) + '_overlap.pkl')
+        model_path_s = os.path.join('./results', 'student_mod_' + str(stu_type) + '_' + stu_arch + '_'+ str(args.num_frame) + '_overlap.pkl')
         torch.save(stu_model_best.state_dict(), model_path_s)
         print(f"Saving teacher and student model to {model_path_t} and {model_path_s}")
         print(f"Best Test acc: teacher: {test_best_acc:.2f} student: {test_best_acc_s:.2f}")

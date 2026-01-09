@@ -5,7 +5,7 @@
 /C2KD/ave_new/results/
 /C2KD/ave_new/utils/data/AVE_Dataset/
 /C2KD/ave_new_unpair/results/
-/C2KD/cramed/CREMA-D/
+/C2KD/cramed_unpair/CREMA-D/
 /C2KD/ave_new/wandb/
 /C2KD/ave_new_unpair/wandb/
 /C2KD/ave_unpair_ginger/results/
@@ -14,7 +14,12 @@
 /C2KD/ave_unpair_consider/wandb/
 /C2KD/avmnist_unpair/
 
-/C2KD/nyu-depth-v2/utils/data/
+/C2KD/nyu-depth-v2/results/
+/C2KD/nyu-depth-v2/wandb/
+/C2KD/nyu-depth-v2/utils/data/nyu_depth_v2_labeled.mat
+
+/C2KD/cremad_new_unpair/results/
+/C2KD/cremad_new_unpair/wandb/
 
 /C2KD/ravvdess_unpair/results/
 # /C2KD/ravvdess_unpair/credentials.json
@@ -23,6 +28,17 @@
 /C2KD/ravvdess_unpair/download1.py
 /C2KD/ravvdess_unpair/wandb/
 /C2KD/ravvdess_unpair/utils/data/
+
+
+/C2KD/cremad_unpair/results/
+/C2KD/cremad_unpair/wandb/
+/C2KD/cremad_unpair/CREMA-D/
+
+/C2KD/crisisMMD_unpair/results/
+/C2KD/crisisMMD_unpair/wandb/
+/C2KD/crisisMMD_unpair/utils/data/CrisisMMD_v2.0/
+/C2KD/crisisMMD_unpair/utils/data/CrisisMMD_v2.0.tar.gz
+/C2KD/crisisMMD_unpair/utils/data/CrisisMMD_v2.0.tar.1.gz
 
 /MFH/ravdess/results/
 # /MFH/ravdess/credentials.json

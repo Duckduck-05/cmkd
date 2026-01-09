@@ -48,7 +48,7 @@ class videoReader(object):
 
 
 class VGGSound_dataset(object):
-    def __init__(self, path_to_dataset = '/workdir/carrot/VGGSound/extracted/scratch/shared/beegfs/hchen/train_data/VGGSound_final/video', frame_interval=1, frame_kept_per_second=1):
+    def __init__(self, path_to_dataset = '/workdir/carrot/VGGSound/extracted_new/scratch/shared/beegfs/hchen/train_data/VGGSound_final/video', frame_interval=1, frame_kept_per_second=1):
         # self.path_to_video = os.path.join(path_to_dataset, 'test-videos/test-set/')
         self.path_to_video = path_to_dataset
         self.frame_kept_per_second = frame_kept_per_second
@@ -67,10 +67,14 @@ class VGGSound_dataset(object):
                 print('*******************************************')
                 print('Processing: {}/{}'.format(i, len(self.file_list)))
                 print('*******************************************')
-            video_dir = os.path.join(self.path_to_video, each_video[0])
+            video_dir = os.path.join(self.path_to_video, each_video.split(',')[0] + '.mp4')
+            # print(video_dir)
+            # break
             try:
+                print('before')
                 self.videoReader = videoReader(video_path=video_dir, frame_kept_per_second=self.frame_kept_per_second)
-
+                print('ok')
+                break
                 save_dir = os.path.join(self.path_to_save, each_video[0])
                 if not os.path.exists(save_dir):
                     os.mkdir(save_dir)

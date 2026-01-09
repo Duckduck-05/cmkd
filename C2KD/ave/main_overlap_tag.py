@@ -57,26 +57,9 @@ def eval_overlap_tag(loader, device, args):
     main_lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.num_epochs - args.warmup_epoch, eta_min=args.min_lr)
     lr_scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, schedulers=[warmup_lr_scheduler, main_lr_scheduler], milestones=[args.warmup_epoch])
 
-    if args.distill_type == 0:
-        acc = train_network_distill_highest2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer2, warmup_lr_scheduler, main_lr_scheduler, lr_scheduler, args, tea, stu)
-    if args.distill_type == 1:
+    if args.method_type == "c2kd":
         acc = train_network_distill(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 2:
-        acc = train_network_distill2(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 3:
-        acc = train_network_distill3(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 31:
-        acc = train_network_distill31(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer2, args, tea, stu)
-    if args.distill_type == 4:
-        acc = train_network_distill4(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 5:
-        acc = train_network_distill5(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 21:
-        acc = train_network_distill21(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 22:
-        acc = train_network_distill22(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
-    if args.distill_type == 23:
-        acc = train_network_distill23(stu_type, tea_model, args.num_epochs, loader, net, device, optimizer, args, tea, stu)
+    
     return acc
 
 
@@ -109,13 +92,14 @@ if __name__ == '__main__':
     parser.add_argument("--beta1", default=0.9, type=float)
     parser.add_argument("--beta2", default=0.999, type=float)
     parser.add_argument("--warmup-epoch", default=5, type=int)
+    parser.add_argument("--method_type", type=str, default="ce")
 
     args = parser.parse_args()
 
     wandb.login(key="365a2332ad390479c5a6bb01365f47f0f427f47f")
-    wandb.init(entity= "cmkd" ,project="c2kd-ours",
-                name=f"{args.run_name}_lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}_distill_type_{args.distill_type}",
-                config=vars(args), group=args.group)
+    # wandb.init(entity= "cmkd" ,project="c2kd-ours",
+    #             name=f"{args.run_name}_lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}_distill_type_{args.distill_type}",
+    #             config=vars(args), group=args.group)
 
     print(args)
 
@@ -130,7 +114,21 @@ if __name__ == '__main__':
         for run in range(args.num_runs):
             set_random_seed(seed=run)
             print(f'Seed {run}')
+
+            run_name = f"data: ave, type:pair, {args.method_type}, seed: {run} lr_{args.lr}_bs_{args.batch_size}_numepochs_{args.num_epochs}_stutype_{args.stu_type}"
+            wandb.init(
+                entity="cmkd",
+                project="experiments",
+                name=run_name,
+                config=vars(args),
+                group=args.group,  
+                reinit=True        
+            )
+
             log_np[run, :] = eval_overlap_tag(loader, device, args)
+
+            wandb.finish()
+
         log_mean = np.mean(log_np, axis=0)
         log_std = np.std(log_np, axis=0)
         print(f'Finish {args.num_runs} runs')

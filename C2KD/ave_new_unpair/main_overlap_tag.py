@@ -8,7 +8,7 @@ import wandb
 from utils.helper import gen_data, train_network_distill, train_network_distill_unpair_sumall, train_network_distill_unpair_ce, train_network_distill_unpair_bilevel,train_network_distill_unpair_vanillaKD, \
     train_network_distill_unpair_fea, pre_train
 # from utils.model import ImageNet, AudioNet
-from utils.model_res import ImageNet, AudioNet
+from utils.model_res_new import ImageNet, AudioNet
 from utils.module import Tea, Stu
 def set_random_seed(seed):
     random.seed(seed)
