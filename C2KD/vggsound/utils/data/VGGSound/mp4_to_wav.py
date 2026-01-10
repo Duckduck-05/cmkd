@@ -1,6 +1,6 @@
 import os
 
-root_fol = "/workdir/carrot/VGGSound/extracted"
+# root_fol = "/workdir/carrot/VGGSound/extracted"
 
 train_videos = '/home/ducca/CMKD/C2KD/vggsound/train.csv'
 test_videos = '/home/ducca/CMKD/C2KD/vggsound/test.csv'

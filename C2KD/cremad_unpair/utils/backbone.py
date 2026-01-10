@@ -141,9 +141,9 @@ class ResNet(nn.Module):
 
     def forward(self, x):
 
-        if self.modality == 'visual':
-            (B, C, T, H, W) = x.size()
-            x = x.permute(0, 2, 1, 3, 4).contiguous()
+        if self.modality == 'visual' or self.modality == 'flow':
+            (B, T, C, H, W) = x.size()
+            # x = x.permute(0, 2, 1, 3, 4).contiguous()
             x = x.view(B * T, C, H, W)
 
         x = self.conv1(x)

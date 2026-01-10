@@ -16,6 +16,7 @@ from geomloss import SamplesLoss
 import geomloss
 from utils.AVEDataset import AVEDataset
 from utils.CremadDataset import CremadDataset
+from utils.av_dataset import AVDataset_CD
 from torch.utils.data import DataLoader
 from scipy.stats.stats import kendalltau
 import torch.nn as nn
@@ -54,15 +55,15 @@ def evaluate(loader, device, net, in_type):
     net.eval()
     with torch.no_grad():
         for i, data in enumerate(loader):
-            img_inputs, aud_inputs, labels = data['image'].to(device), data['audio'].to(device), data['label'].to(
-                device)
+            img_inputs, aud_inputs, labels = data
+            img_inputs, aud_inputs, labels = img_inputs.to(device), aud_inputs.to(device), labels.to(device)
             total += labels.size(0)
             if in_type == 0:
-                outputs, _, _ = net(img_inputs)
+                outputs = net(img_inputs)
             elif in_type == 1:
-                outputs, _, _ = net(aud_inputs)
+                outputs = net(aud_inputs)
             elif in_type == 2:
-                outputs, _, _ = net(img_inputs, aud_inputs)
+                outputs = net(img_inputs, aud_inputs)
             else:
                 raise ValueError('the value of element in in_type_list should be 0,1,2\n')
 
@@ -97,8 +98,8 @@ def gen_data(data_dir, batch_size, num_workers, args):
     # loader = {'train': get_loader(train_file, audio_dir=audio_dir, image_dir=image_dir, batch_size=batch_size, num_workers=num_workers),
     #           'val': get_loader(val_file, audio_dir=audio_dir, image_dir=image_dir, batch_size=batch_size, num_workers=num_workers),
     #           'test': get_loader(test_file, audio_dir=audio_dir, image_dir=image_dir, batch_size=batch_size, num_workers=num_workers)}
-    train_dataset = CremadDataset(args, mode='train')
-    test_dataset = CremadDataset(args, mode='test')
+    train_dataset = AVDataset_CD( mode='train')
+    test_dataset = AVDataset_CD( mode='test')
     # val_dataset = CramedDataset(args, mode='val')
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True)  # 计算机的内存充足的时候，可以设置pin_memory=True
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
@@ -1052,7 +1053,7 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
         # train_loss = 0.0
         loss1, loss2, loss3 = 0, 0, 0
         for i, data in enumerate(loader['train']):
-            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = data
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(device)
             if stu_type == 0:
                 outputs1 = stu_model(img_inputs_cln)
@@ -1065,8 +1066,8 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
 
             lr = adjust_lr(iter=epoch, optimizer=optimizer)
             optimizer.zero_grad()
-            tmp1 = criterion(outputs1[0], labels)
-            tmp2 = criterion(outputs2[0], labels)
+            tmp1 = criterion(outputs1, labels)
+            tmp2 = criterion(outputs2, labels)
             tmp3 = 0
             loss = tmp2 + tmp1
             loss.backward()
@@ -1078,14 +1079,14 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
             loss3 += tmp3
         print(f"Epoch {epoch} | loss1 {loss1 / len(loader['train']):.4f} | loss2 {loss2 / len(loader['train']):.4f} ")
 
-        if epoch > 1:
+        if epoch > -1:
             _, train_acc = evaluate(loader['train'], device, tea_model, tea_type)
             _, train_acc_s = evaluate(loader['train'], device, stu_model, stu_type)
             _, val_acc = evaluate(loader['val'], device, tea_model, tea_type)
             _, val_acc_s = evaluate(loader['val'], device, stu_model, stu_type)
             _, test_acc = evaluate(loader['test'], device, tea_model, tea_type)
             _, test_acc_s = evaluate(loader['test'], device, stu_model, stu_type)
-            print(f'Teacher train|val|test acc {val_acc:.2f}|{val_acc:.2f}|{test_acc:.2f}')
+            print(f'Teacher train|val|test acc {train_acc:.2f}|{val_acc:.2f}|{test_acc:.2f}')
             print(f'Student train|val|test acc {train_acc_s:.2f}|{val_acc_s:.2f}|{test_acc_s:.2f}')
             if val_acc > val_best_acc:
                 val_best_acc = val_acc
@@ -1103,9 +1104,9 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
 
     if save_model:
         os.makedirs('./results', exist_ok=True)
-        model_path_t = os.path.join('./results', 'teacher_mod_' + str(tea_type) + '_' + 'resnet18' + '_' + str(args.num_frame) + '_overlap.pkl')
+        model_path_t = os.path.join('./results', 'teacher_mod_' + str(tea_type) + '_' + tea_arch + '_' + str(args.num_frame) + '_overlap.pkl')
         torch.save(tea_model_best.state_dict(), model_path_t)
-        model_path_s = os.path.join('./results', 'student_mod_' + str(stu_type) + '_' + 'resnet18' + '_'+ str(args.num_frame) + '_overlap.pkl')
+        model_path_s = os.path.join('./results', 'student_mod_' + str(stu_type) + '_' + stu_arch + '_'+ str(args.num_frame) + '_overlap.pkl')
         torch.save(stu_model_best.state_dict(), model_path_s)
         print(f"Saving teacher and student model to {model_path_t} and {model_path_s}")
         print(f"Best Test acc: teacher: {test_best_acc:.2f} student: {test_best_acc_s:.2f}")

@@ -5,6 +5,7 @@ import torch.nn.functional as F
 
 import torch.nn as nn
 
+from utils.backbone import ResNet
 
 def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1):
     """3x3 convolution with padding"""
@@ -57,170 +58,170 @@ class BasicBlock(nn.Module):
         return out
 
 
-class ResNet(nn.Module):
+# class ResNet(nn.Module):
 
-    def __init__(self, block, layers, modality, num_classes=1000, num_frame=10, pool='avgpool', zero_init_residual=False,
-                 groups=1, width_per_group=64, replace_stride_with_dilation=None,
-                 norm_layer=None):
-        super(ResNet, self).__init__()
-        self.modality = modality
-        self.pool = pool
-        if norm_layer is None:
-            norm_layer = nn.BatchNorm2d
-        self._norm_layer = norm_layer
+#     def __init__(self, block, layers, modality, num_classes=1000, num_frame=10, pool='avgpool', zero_init_residual=False,
+#                  groups=1, width_per_group=64, replace_stride_with_dilation=None,
+#                  norm_layer=None):
+#         super(ResNet, self).__init__()
+#         self.modality = modality
+#         self.pool = pool
+#         if norm_layer is None:
+#             norm_layer = nn.BatchNorm2d
+#         self._norm_layer = norm_layer
 
-        self.inplanes = 64
-        self.dilation = 1
-        if replace_stride_with_dilation is None:
-            # each element in the tuple indicates if we should replace
-            # the 2x2 stride with a dilated convolution instead
-            replace_stride_with_dilation = [False, False, False]
-        if len(replace_stride_with_dilation) != 3:
-            raise ValueError("replace_stride_with_dilation should be None "
-                             "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
-        self.groups = groups
-        self.base_width = width_per_group
-        if modality == 'audio':
-            self.conv1 = nn.Conv2d(1, self.inplanes, kernel_size=7, stride=2, padding=3,
-                                   bias=False)
-        elif modality == 'visual':
-            self.conv1 = nn.Conv2d(3 * num_frame, self.inplanes, kernel_size=7, stride=2, padding=3,
-                                   bias=False)
-        else:
-            raise NotImplementedError('Incorrect modality, should be audio or visual but got {}'.format(modality))
-        self.bn1 = norm_layer(self.inplanes)
-        self.relu = nn.ReLU(inplace=True)
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        self.layer1 = self._make_layer(block, 64, layers[0])
-        self.layer2 = self._make_layer(block, 128, layers[1], stride=2,
-                                       dilate=replace_stride_with_dilation[0])
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=2,
-                                       dilate=replace_stride_with_dilation[1])
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
-                                       dilate=replace_stride_with_dilation[2])
-        if self.pool == 'avgpool':
-            self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+#         self.inplanes = 64
+#         self.dilation = 1
+#         if replace_stride_with_dilation is None:
+#             # each element in the tuple indicates if we should replace
+#             # the 2x2 stride with a dilated convolution instead
+#             replace_stride_with_dilation = [False, False, False]
+#         if len(replace_stride_with_dilation) != 3:
+#             raise ValueError("replace_stride_with_dilation should be None "
+#                              "or a 3-element tuple, got {}".format(replace_stride_with_dilation))
+#         self.groups = groups
+#         self.base_width = width_per_group
+#         if modality == 'audio':
+#             self.conv1 = nn.Conv2d(1, self.inplanes, kernel_size=7, stride=2, padding=3,
+#                                    bias=False)
+#         elif modality == 'visual':
+#             self.conv1 = nn.Conv2d(3 * num_frame, self.inplanes, kernel_size=7, stride=2, padding=3,
+#                                    bias=False)
+#         else:
+#             raise NotImplementedError('Incorrect modality, should be audio or visual but got {}'.format(modality))
+#         self.bn1 = norm_layer(self.inplanes)
+#         self.relu = nn.ReLU(inplace=True)
+#         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+#         self.layer1 = self._make_layer(block, 64, layers[0])
+#         self.layer2 = self._make_layer(block, 128, layers[1], stride=2,
+#                                        dilate=replace_stride_with_dilation[0])
+#         self.layer3 = self._make_layer(block, 256, layers[2], stride=2,
+#                                        dilate=replace_stride_with_dilation[1])
+#         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
+#                                        dilate=replace_stride_with_dilation[2])
+#         if self.pool == 'avgpool':
+#             self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
 
-            self.fc = nn.Linear(512 * block.expansion, num_classes)  # 8192
+#             self.fc = nn.Linear(512 * block.expansion, num_classes)  # 8192
 
-        # if modality == 'audio':
-        #     self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        #     self.fc = nn.Linear(512 * block.expansion, num_classes)  # 8192
-        # elif modality == 'visual':
-        #     self.avgpool = nn.AdaptiveAvgPool3d(1)
-        #     self.fc = nn.Linear(512 * block.expansion, num_classes)
+#         # if modality == 'audio':
+#         #     self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+#         #     self.fc = nn.Linear(512 * block.expansion, num_classes)  # 8192
+#         # elif modality == 'visual':
+#         #     self.avgpool = nn.AdaptiveAvgPool3d(1)
+#         #     self.fc = nn.Linear(512 * block.expansion, num_classes)
 
 
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
-                nn.init.normal_(m.weight, mean=1, std=0.02)
-                nn.init.constant_(m.bias, 0)
+#         for m in self.modules():
+#             if isinstance(m, nn.Conv2d):
+#                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+#             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+#                 nn.init.normal_(m.weight, mean=1, std=0.02)
+#                 nn.init.constant_(m.bias, 0)
 
-        # Zero-initialize the last BN in each residual branch,
-        # so that the residual branch starts with zeros, and each residual block behaves like an identity.
-        # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
-        if zero_init_residual:
-            for m in self.modules():
-                if isinstance(m, Bottleneck):
-                    nn.init.constant_(m.bn3.weight, 0)
-                elif isinstance(m, BasicBlock):
-                    nn.init.constant_(m.bn2.weight, 0)
+#         # Zero-initialize the last BN in each residual branch,
+#         # so that the residual branch starts with zeros, and each residual block behaves like an identity.
+#         # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
+#         if zero_init_residual:
+#             for m in self.modules():
+#                 if isinstance(m, Bottleneck):
+#                     nn.init.constant_(m.bn3.weight, 0)
+#                 elif isinstance(m, BasicBlock):
+#                     nn.init.constant_(m.bn2.weight, 0)
 
-    def _make_layer(self, block, planes, blocks, stride=1, dilate=False):
-        norm_layer = self._norm_layer
-        downsample = None
-        previous_dilation = self.dilation
-        if dilate:
-            self.dilation *= stride
-            stride = 1
-        if stride != 1 or self.inplanes != planes * block.expansion:
-            downsample = nn.Sequential(
-                conv1x1(self.inplanes, planes * block.expansion, stride),
-                norm_layer(planes * block.expansion),
-            )
+#     def _make_layer(self, block, planes, blocks, stride=1, dilate=False):
+#         norm_layer = self._norm_layer
+#         downsample = None
+#         previous_dilation = self.dilation
+#         if dilate:
+#             self.dilation *= stride
+#             stride = 1
+#         if stride != 1 or self.inplanes != planes * block.expansion:
+#             downsample = nn.Sequential(
+#                 conv1x1(self.inplanes, planes * block.expansion, stride),
+#                 norm_layer(planes * block.expansion),
+#             )
 
-        layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample, self.groups,
-                            self.base_width, previous_dilation, norm_layer))
-        self.inplanes = planes * block.expansion
-        for _ in range(1, blocks):
-            layers.append(block(self.inplanes, planes, groups=self.groups,
-                                base_width=self.base_width, dilation=self.dilation,
-                                norm_layer=norm_layer))
+#         layers = []
+#         layers.append(block(self.inplanes, planes, stride, downsample, self.groups,
+#                             self.base_width, previous_dilation, norm_layer))
+#         self.inplanes = planes * block.expansion
+#         for _ in range(1, blocks):
+#             layers.append(block(self.inplanes, planes, groups=self.groups,
+#                                 base_width=self.base_width, dilation=self.dilation,
+#                                 norm_layer=norm_layer))
 
-        return nn.Sequential(*layers)
+#         return nn.Sequential(*layers)
 
-    def forward_encoder(self, x):
-        if self.modality == 'visual':
-            (B, C, T, H, W) = x.size()
-            x = x.permute(0, 2, 1, 3, 4).contiguous()
-            x = x.view(B, C * T, H, W)
-        else:
-            x = x.unsqueeze(1)
-        x = x.float()
+#     def forward_encoder(self, x):
+#         if self.modality == 'visual':
+#             (B, C, T, H, W) = x.size()
+#             x = x.permute(0, 2, 1, 3, 4).contiguous()
+#             x = x.view(B, C * T, H, W)
+#         else:
+#             x = x.unsqueeze(1)
+#         x = x.float()
 
-        # --- Backbone ---
-        x = self.conv1(x)
-        x = self.bn1(x)
-        x = self.relu(x)
-        f0 = x # (Optional: Nếu cần intermediate feature thì return thêm)
-        x = self.maxpool(x)
+#         # --- Backbone ---
+#         x = self.conv1(x)
+#         x = self.bn1(x)
+#         x = self.relu(x)
+#         f0 = x # (Optional: Nếu cần intermediate feature thì return thêm)
+#         x = self.maxpool(x)
 
-        x = self.layer1(x)
-        f1 = x
-        x = self.layer2(x)
-        f2 = x
-        x = self.layer3(x)
-        f3 = x
-        x = self.layer4(x)
-        f4 = x
+#         x = self.layer1(x)
+#         f1 = x
+#         x = self.layer2(x)
+#         f2 = x
+#         x = self.layer3(x)
+#         f3 = x
+#         x = self.layer4(x)
+#         f4 = x
         
-        # --- Pooling & Flatten ---
-        x_512 = self.avgpool(x)
-        feature_vector = x_512.reshape(x_512.shape[0], -1) #  phi
+#         # --- Pooling & Flatten ---
+#         x_512 = self.avgpool(x)
+#         feature_vector = x_512.reshape(x_512.shape[0], -1) #  phi
         
-        return feature_vector, [f0, f1, f2, f3, f4]
+#         return feature_vector, [f0, f1, f2, f3, f4]
 
-    def forward_head(self, feature_vector):
-        logits = self.fc(feature_vector)
-        return logits
+#     def forward_head(self, feature_vector):
+#         logits = self.fc(feature_vector)
+#         return logits
     
-    def forward(self, x):
-        feature, feature_maps = self.forward_encoder(x)
+#     def forward(self, x):
+#         feature, feature_maps = self.forward_encoder(x)
 
-        logits = self.forward_head(feature)
+#         logits = self.forward_head(feature)
 
-        return logits, feature, feature_maps
+#         return logits, feature, feature_maps
 
-    # def forward(self, x):
-    #     if self.modality == 'visual':
-    #         (B, C, T, H, W) = x.size()
-    #         x = x.permute(0, 2, 1, 3, 4).contiguous()
-    #         x = x.view(B, C * T, H, W)
-    #     else:
-    #         x = x.unsqueeze(1)
-    #     # x = x.unsqueeze(1)
-    #     x = x.float()
-    #     x = self.conv1(x)
-    #     x = self.bn1(x)
-    #     x = self.relu(x)
-    #     f0 = x
-    #     x = self.maxpool(x)
+#     # def forward(self, x):
+#     #     if self.modality == 'visual':
+#     #         (B, C, T, H, W) = x.size()
+#     #         x = x.permute(0, 2, 1, 3, 4).contiguous()
+#     #         x = x.view(B, C * T, H, W)
+#     #     else:
+#     #         x = x.unsqueeze(1)
+#     #     # x = x.unsqueeze(1)
+#     #     x = x.float()
+#     #     x = self.conv1(x)
+#     #     x = self.bn1(x)
+#     #     x = self.relu(x)
+#     #     f0 = x
+#     #     x = self.maxpool(x)
 
-    #     x = self.layer1(x)
-    #     f1 = x
-    #     x = self.layer2(x)
-    #     f2 = x
-    #     x = self.layer3(x)
-    #     f3 = x
-    #     x_512 = self.avgpool(self.layer4(x))
-    #     x_512 = x_512.reshape(x_512.shape[0], -1)
-    #     f4 = x
-    #     out = self.fc(x_512)
+#     #     x = self.layer1(x)
+#     #     f1 = x
+#     #     x = self.layer2(x)
+#     #     f2 = x
+#     #     x = self.layer3(x)
+#     #     f3 = x
+#     #     x_512 = self.avgpool(self.layer4(x))
+#     #     x_512 = x_512.reshape(x_512.shape[0], -1)
+#     #     f4 = x
+#     #     out = self.fc(x_512)
 
-    #     return out, x_512, [f0, f1, f2, f3, f4]
+#     #     return out, x_512, [f0, f1, f2, f3, f4]
 
 
 class Bottleneck(nn.Module):
@@ -267,35 +268,35 @@ class Bottleneck(nn.Module):
 
 
 
-def _resnet(arch, block, layers, modality, num_classes, num_frame):
-    model = ResNet(block, layers, modality, num_classes=num_classes, num_frame=num_frame)
+def _resnet(arch, block, layers, modality, num_classes, **kwargs):
+    model = ResNet(block, layers, modality, num_classes=num_classes, **kwargs)
     return model
 
 
 
-class AudioNet(nn.Module):
-    """AudioNet"""
+# class AudioNet(nn.Module):
+#     """AudioNet"""
 
-    def __init__(self, args):
-        super(AudioNet, self).__init__()
-        self.arch = args.audio_arch
-        if self.arch == 'resnet18':
-            layers = [2, 2, 2, 2]
-        if self.arch == 'resnet50':
-            layers = [3, 4, 6, 3]
-        self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='audio', num_classes=6, num_frame=args.num_frame)
+#     def __init__(self, args):
+#         super(AudioNet, self).__init__()
+#         self.arch = args.audio_arch
+#         if self.arch == 'resnet18':
+#             layers = [2, 2, 2, 2]
+#         if self.arch == 'resnet50':
+#             layers = [3, 4, 6, 3]
+#         self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='audio', num_classes=6, num_frame=args.num_frame)
 
-    def fc(self, x):
-        return self.backbone.fc(x)
+#     def fc(self, x):
+#         return self.backbone.fc(x)
 
-    def forward_encoder(self, x):
-        return self.backbone.forward_encoder(x)
+#     def forward_encoder(self, x):
+#         return self.backbone.forward_encoder(x)
     
-    def forward_head(self, feature_vector):
-        return self.backbone.forward_head(feature_vector)
+#     def forward_head(self, feature_vector):
+#         return self.backbone.forward_head(feature_vector)
 
-    def forward(self, x):
-        return self.backbone(x)
+#     def forward(self, x):
+#         return self.backbone(x)
 
 class FCReg(nn.Module):
     """Convolutional regression"""
@@ -315,25 +316,135 @@ class FCReg(nn.Module):
             return self.bn(x)
         return x
 
+# class ImageNet(nn.Module):
+#     """ImageNet"""
+#     def __init__(self, args):
+#         super(ImageNet, self).__init__()
+#         self.arch = args.image_arch
+#         if self.arch == 'resnet18':
+#             layers = [2, 2, 2, 2]
+#         if self.arch == 'resnet50':
+#             layers = [3, 4, 6, 3]
+#         self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='visual', num_classes=6, num_frame=args.num_frame)
+
+#     def fc(self, x):
+#         return self.backbone.fc(x)
+    
+#     def forward_encoder(self, x):
+#         return self.backbone.forward_encoder(x)
+    
+#     def forward_head(self, feature_vector):
+#         return self.backbone.forward_head(feature_vector)
+
+#     def forward(self, x):
+#         return self.backbone(x)
+
 class ImageNet(nn.Module):
-    """ImageNet"""
+    """ImageNet: Xử lý nhánh hình ảnh"""
     def __init__(self, args):
         super(ImageNet, self).__init__()
-        self.arch = args.image_arch
-        if self.arch == 'resnet18':
+        self.dataset = 'CREMAD'
+        self.args = args
+        
+        if args.image_arch == 'resnet18':
             layers = [2, 2, 2, 2]
-        if self.arch == 'resnet50':
+        elif args.image_arch == 'resnet50':
             layers = [3, 4, 6, 3]
-        self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='visual', num_classes=6, num_frame=args.num_frame)
+        else:
+            layers = [2, 2, 2, 2]
 
-    def fc(self, x):
-        return self.backbone.fc(x)
-    
-    def forward_encoder(self, x):
-        return self.backbone.forward_encoder(x)
-    
-    def forward_head(self, feature_vector):
-        return self.backbone.forward_head(feature_vector)
+        self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='visual', 
+                                num_classes=6)
+        
+        self.head_video = nn.Linear(512, 6)
 
     def forward(self, x):
-        return self.backbone(x)
+        # Lưu lại Batch size ban đầu để reshape sau này (B, T, C, H, W)
+        B = x.size(0) 
+
+        # 1. Pre-processing Logic (từ code gốc)
+        if self.dataset != 'CREMAD':
+            x = x.permute(0, 2, 1, 3, 4).contiguous()
+        
+        # 2. Đi qua backbone
+        v = self.backbone(x)
+        
+        # 3. Reshape Logic (Quan trọng: Khôi phục chiều thời gian)
+        # Code gốc: (_, C, H, W) = v.size() -> v = v.view(B, -1, C, H, W)
+        (_, C, H, W) = v.size()
+        v = v.view(B, -1, C, H, W)
+        
+        # 4. Permute Logic (từ code gốc)
+        v = v.permute(0, 2, 1, 3, 4) # (B, C, T, H, W)
+        
+        # 5. Pooling Logic: adaptive_avg_pool3d(v, 1)
+        v = F.adaptive_avg_pool3d(v, 1)
+        
+        # 6. Flatten Logic
+        v = torch.flatten(v, 1)
+        v = self.head_video(v)
+        
+        return v
+
+    # Các hàm phụ trợ theo template
+    def forward_head(self, feature_vector):
+        logits = self.head_video(feature_vector)
+        return logits
+
+    def forward_encoder(self, x):
+        x = self.backbone(x)
+        
+        # 2. Logic Pooling từ code gốc: adaptive_avg_pool2d(a, 1)
+        x = F.adaptive_avg_pool2d(x, 1)
+        
+        # 3. Logic Flatten từ code gốc: flatten(a, 1)
+        feature_vector = torch.flatten(x, 1)
+        return feature_vector
+    
+class AudioNet(nn.Module):
+    """AudioNet: Xử lý nhánh âm thanh"""
+    def __init__(self, args):
+        super(AudioNet, self).__init__()
+        self.args = args
+        # Chọn kiến trúc layers
+        if args.audio_arch == 'resnet18':
+            layers = [2, 2, 2, 2]
+        elif args.audio_arch == 'resnet50':
+            layers = [3, 4, 6, 3]
+        else:
+            layers = [2, 2, 2, 2] # Default fallback
+
+        # Khởi tạo backbone (giả sử _resnet và BasicBlock đã được import)
+        self.backbone = _resnet('resnet_x', BasicBlock, layers, modality='audio', 
+                                num_classes=6)
+
+        self.head_audio = nn.Linear(512, 6)
+
+    def forward(self, x):
+        # 1. Đi qua backbone
+        x = self.backbone(x)
+        
+        # 2. Logic Pooling từ code gốc: adaptive_avg_pool2d(a, 1)
+        x = F.adaptive_avg_pool2d(x, 1)
+        
+        # 3. Logic Flatten từ code gốc: flatten(a, 1)
+        x = torch.flatten(x, 1)
+
+        x = self.head_audio(x)
+        
+        return x
+    
+    # Các hàm phụ trợ theo template
+    def forward_head(self, feature_vector):
+        logits = self.head_audio(feature_vector)
+        return logits
+
+    def forward_encoder(self, x):
+        x = self.backbone(x)
+        
+        # 2. Logic Pooling từ code gốc: adaptive_avg_pool2d(a, 1)
+        x = F.adaptive_avg_pool2d(x, 1)
+        
+        # 3. Logic Flatten từ code gốc: flatten(a, 1)
+        feature_vector = torch.flatten(x, 1)
+        return feature_vector
