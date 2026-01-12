@@ -1,24 +1,30 @@
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 import pandas as pd
-from MMDDataset import CrisisMMDTextDataset
+from utils.MMDDataset import CrisisMMDTextDataset
 import torch.nn as nn
 from torch.optim import AdamW
 
 from model.Bert_based import BertClassifier, BertModel
 def train():
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-    csv_file = "../dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_train.tsv"
+    label_map = {
+    "not_informative": 0,
+    "informative": 1
+}
+    csv_file = "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_train.tsv"
     df = pd.read_csv(csv_file, sep="\t")
     print("len df: ", len(df))
     train_dataset = CrisisMMDTextDataset(
-    csv_file="../dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_train.tsv",
-    tokenizer=tokenizer
+    csv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_train.tsv",
+    tokenizer=tokenizer, 
+    label_map= label_map
 )
     print("len dataset: ",len(train_dataset))  
     dev_dataset = CrisisMMDTextDataset(
-    csv_file="../dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_dev.tsv",
-    tokenizer=tokenizer
+    csv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_dev.tsv",
+    tokenizer=tokenizer, 
+    label_map= label_map
 )
 
     train_loader = DataLoader(
@@ -34,7 +40,7 @@ def train():
     shuffle=False
 )
     print("complete data loader")
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = "cuda" 
 
     model = BertClassifier().to(device)
     optimizer = AdamW(model.parameters(), lr=2e-5)

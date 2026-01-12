@@ -140,19 +140,17 @@ class CrisisMMDDataset_unpaired(Dataset):
 
 
 class CrisisMMDTextDataset(Dataset):
-    def __init__(
-        self,
-        csv_file,
-        tokenizer,
-        max_length=128,
-        label_map=None
-    ):
-        self.df = pd.read_csv(csv_file,sep= "\t")
+    def __init__(self, csv_file, tokenizer, max_length=128, label_map=None):
+        self.df = pd.read_csv(csv_file, sep="\t")
         self.tokenizer = tokenizer
         self.max_length = max_length
 
         if label_map is not None:
             self.df["label"] = self.df["label"].map(label_map)
+
+        # 🔒 safety check
+        if self.df["label"].isnull().any():
+            raise ValueError("Unmapped labels found! Check label_map.")
 
     def __len__(self):
         return len(self.df)
@@ -171,8 +169,9 @@ class CrisisMMDTextDataset(Dataset):
         return {
             "input_ids": encoding["input_ids"].squeeze(0),
             "attention_mask": encoding["attention_mask"].squeeze(0),
-            "label": torch.tensor(row["label"], dtype=torch.long)
+            "label": torch.tensor(int(row["label"]), dtype=torch.long)
         }
+
     
 
 class CrisisMMDImageDataset(Dataset):
