@@ -442,9 +442,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)
-            
-            proj_s = Projector(out_dim=256).to(device)
-            proj_t = Projector(out_dim=256).to(device)
+
 
 
             # copy student network
@@ -452,7 +450,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             net_tmp.train()
 
             current_lr = optimizer.param_groups[0]['lr']
-            optimizer_tmp = torch.optim.SGD(list(net_tmp.parameters()) + list(proj_s.parameters()) + list(proj_t.parameters()), lr = current_lr)
+            optimizer_tmp = torch.optim.SGD(list(net_tmp.parameters()), lr = current_lr)
 
             for _ in range(n1_steps):
                 optimizer_tmp.zero_grad()
@@ -473,9 +471,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 batch_size = stu_f_tmp.size(0)
                 a = torch.ones(batch_size, device=stu_f_tmp.device) / batch_size
                 b = torch.ones(batch_size, device=tea_f.device) / batch_size
-                
-                stu_z = proj_s(stu_f_tmp)          # (B, D_common)
-                tea_z = proj_t(tea_f)
+
                 
 
                 stu_f_norm = torch.nn.functional.normalize(stu_f_tmp, p=2, dim=1)
@@ -894,8 +890,6 @@ def train_network_distill_unpair_fea(stu_type, tea_model, epochs, loader, net, d
             stu_f = outputs_128
             tea_f = pseu_label_128
 
-            stu_z = proj_s(stu_f)          # (B, D_common)
-            tea_z = proj_t(tea_f)
 
             # print(stu_f.shape)
             CE_loss = F.cross_entropy(outputs, labels, reduction='none')
