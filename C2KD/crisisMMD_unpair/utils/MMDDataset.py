@@ -5,7 +5,7 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
-
+import random
 
 class CrisisMMDDataset_paired(Dataset):
     def __init__(
