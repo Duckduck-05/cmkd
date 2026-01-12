@@ -381,25 +381,45 @@ class ImageNet(nn.Module):
         v = F.adaptive_avg_pool3d(v, 1)
         
         # 6. Flatten Logic
-        v = torch.flatten(v, 1)
-        v = self.head_video(v)
+        features = torch.flatten(v, 1)
+        # print(v.shape)
+        logits = self.head_video(features)
         
-        return v
+        return logits, features, []
 
     # Các hàm phụ trợ theo template
     def forward_head(self, feature_vector):
         logits = self.head_video(feature_vector)
         return logits
+    
+    def fc(self, feature_vector):
+        return self.head_video(feature_vector)
 
     def forward_encoder(self, x):
-        x = self.backbone(x)
+        B = x.size(0) 
+
+        # 1. Pre-processing Logic (từ code gốc)
+        if self.dataset != 'CREMAD':
+            x = x.permute(0, 2, 1, 3, 4).contiguous()
         
-        # 2. Logic Pooling từ code gốc: adaptive_avg_pool2d(a, 1)
-        x = F.adaptive_avg_pool2d(x, 1)
+        # 2. Đi qua backbone
+        v = self.backbone(x)
         
-        # 3. Logic Flatten từ code gốc: flatten(a, 1)
-        feature_vector = torch.flatten(x, 1)
-        return feature_vector
+        # 3. Reshape Logic (Quan trọng: Khôi phục chiều thời gian)
+        # Code gốc: (_, C, H, W) = v.size() -> v = v.view(B, -1, C, H, W)
+        (_, C, H, W) = v.size()
+        v = v.view(B, -1, C, H, W)
+        
+        # 4. Permute Logic (từ code gốc)
+        v = v.permute(0, 2, 1, 3, 4) # (B, C, T, H, W)
+        
+        # 5. Pooling Logic: adaptive_avg_pool3d(v, 1)
+        v = F.adaptive_avg_pool3d(v, 1)
+        
+        # 6. Flatten Logic
+        feature_vector = torch.flatten(v, 1)
+
+        return feature_vector, []
     
 class AudioNet(nn.Module):
     """AudioNet: Xử lý nhánh âm thanh"""
@@ -428,12 +448,15 @@ class AudioNet(nn.Module):
         x = F.adaptive_avg_pool2d(x, 1)
         
         # 3. Logic Flatten từ code gốc: flatten(a, 1)
-        x = torch.flatten(x, 1)
+        features = torch.flatten(x, 1)
 
-        x = self.head_audio(x)
+        logits = self.head_audio(features)
         
-        return x
+        return logits, features, []
     
+    def fc(self, feature_vector):
+        return self.head_audio(feature_vector)
+
     # Các hàm phụ trợ theo template
     def forward_head(self, feature_vector):
         logits = self.head_audio(feature_vector)
@@ -447,4 +470,4 @@ class AudioNet(nn.Module):
         
         # 3. Logic Flatten từ code gốc: flatten(a, 1)
         feature_vector = torch.flatten(x, 1)
-        return feature_vector
+        return feature_vector, []

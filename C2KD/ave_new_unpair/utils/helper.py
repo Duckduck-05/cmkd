@@ -8,7 +8,7 @@ import csv
 from copy import deepcopy
 # from utils.model import ImageNet, AudioNet
 # from utils.model_res import ImageNet, AudioNet
-from utils.model_res_new import ImageNet, AudioNet
+from utils.model_res_usingtimm import ImageNet, AudioNet, Projector
 from utils.dist_utils import *
 import time
 import torch.nn.functional as F
@@ -427,7 +427,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             param.requires_grad = False
     
     # hyperparameter
-    n1_steps = 1
+    n1_steps = 2
     n2_steps = 1
 
     for epoch in range(epochs):
@@ -442,13 +442,17 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
             img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)
+            
+            proj_s = Projector(out_dim=256).to(device)
+            proj_t = Projector(out_dim=256).to(device)
+
 
             # copy student network
             net_tmp = deepcopy(net)
             net_tmp.train()
 
             current_lr = optimizer.param_groups[0]['lr']
-            optimizer_tmp = torch.optim.SGD(net_tmp.parameters(), lr = current_lr)
+            optimizer_tmp = torch.optim.SGD(list(net_tmp.parameters()) + list(proj_s.parameters()) + list(proj_t.parameters()), lr = current_lr)
 
             for _ in range(n1_steps):
                 optimizer_tmp.zero_grad()
@@ -470,6 +474,8 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
                 a = torch.ones(batch_size, device=stu_f_tmp.device) / batch_size
                 b = torch.ones(batch_size, device=tea_f.device) / batch_size
                 
+                stu_z = proj_s(stu_f_tmp)          # (B, D_common)
+                tea_z = proj_t(tea_f)
                 
 
                 stu_f_norm = torch.nn.functional.normalize(stu_f_tmp, p=2, dim=1)
@@ -596,6 +602,8 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
         print(f"Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}")
         print(f"Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}\n", '-' * 70)
 
+        torch.cuda.empty_cache()
+        
     print(f'Training finish! Best Val | Test Accuracy | {val_best_acc:.3f} | {test_best_acc:.3f}')
     print(f'Training finish! Best Teacher Val | Test Accuracy | {val_best_acc_t:.3f} | {test_best_acc_t:.3f}')
 
@@ -886,6 +894,9 @@ def train_network_distill_unpair_fea(stu_type, tea_model, epochs, loader, net, d
             stu_f = outputs_128
             tea_f = pseu_label_128
 
+            stu_z = proj_s(stu_f)          # (B, D_common)
+            tea_z = proj_t(tea_f)
+
             # print(stu_f.shape)
             CE_loss = F.cross_entropy(outputs, labels, reduction='none')
 
@@ -992,8 +1003,8 @@ def train_network_distill_unpair_fea(stu_type, tea_model, epochs, loader, net, d
 
 def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, args, save_model=False):
     criterion = torch.nn.CrossEntropyLoss()
-    tea_model = ImageNet(args).to(device) if tea_type == 0 else AudioNet(args).to(device)
-    stu_model = ImageNet(args).to(device) if stu_type == 0 else AudioNet(args).to(device)
+    tea_model = ImageNet(args, pretrained=True).to(device) if tea_type == 0 else AudioNet(args, pretrained=True).to(device)
+    stu_model = ImageNet(args, pretrained=True).to(device) if stu_type == 0 else AudioNet(args, pretrained=True).to(device)
 
     if stu_type == 0:
         stu_arch = args.image_arch
@@ -1028,7 +1039,7 @@ def pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, 
             tmp1 = criterion(outputs1[0], labels)
             tmp2 = criterion(outputs2[0], labels)
             tmp3 = 0
-            loss = tmp2
+            loss = tmp2 + tmp1
             loss.backward()
             optimizer.step()
 

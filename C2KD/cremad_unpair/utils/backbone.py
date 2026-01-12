@@ -144,7 +144,10 @@ class ResNet(nn.Module):
         if self.modality == 'visual' or self.modality == 'flow':
             (B, T, C, H, W) = x.size()
             # x = x.permute(0, 2, 1, 3, 4).contiguous()
+            # print('0.1', x.shape)
             x = x.view(B * T, C, H, W)
+
+        # print('1', x.shape)
 
         x = self.conv1(x)
         x = self.bn1(x)
@@ -156,6 +159,7 @@ class ResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
         out = x
+        # print('2', x.shape)
 
         return out
 

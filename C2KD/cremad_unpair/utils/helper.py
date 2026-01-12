@@ -67,10 +67,10 @@ def evaluate(loader, device, net, in_type):
             else:
                 raise ValueError('the value of element in in_type_list should be 0,1,2\n')
 
-            _, predicted = torch.max(outputs.detach(), 1)
+            _, predicted = torch.max(outputs[0].detach(), 1)
             correct += (predicted == labels).sum().item()
             criterion = torch.nn.CrossEntropyLoss()
-            loss = criterion(outputs, labels)  # fix to CE loss
+            loss = criterion(outputs[0], labels)  # fix to CE loss
             v_loss += loss.item()
     v_loss = v_loss / len(loader)
     val_acc = 100 * correct / total
@@ -152,7 +152,7 @@ def train_network_distill(stu_type, tea_model, epochs, loader, net, device, opti
         loss1, loss2, loss_s2t, loss_t2s, loss_ang = 0, 0, 0, 0, 0
         for i, data in enumerate(loader['train']):
             iter = iter + 1
-            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = data
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)
 
@@ -294,7 +294,7 @@ def train_network_distill_unpair_sumall(stu_type, tea_model, epochs, loader, net
 
         for i, data in enumerate(loader['train']):
             iter = iter + 1
-            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = data
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)
 
@@ -367,7 +367,7 @@ def train_network_distill_unpair_sumall(stu_type, tea_model, epochs, loader, net
 
 
 
-        if epoch >= 1:
+        if epoch >= 0:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
@@ -447,7 +447,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
 
         for i, data in enumerate(loader['train']):
             iter = iter + 1
-            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = data
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)
 
@@ -566,7 +566,7 @@ def train_network_distill_unpair_bilevel(stu_type, tea_model, epochs, loader, ne
 
 
 
-        if epoch >= 1:
+        if epoch >= 0:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
@@ -647,7 +647,7 @@ def train_network_distill_unpair_ce(stu_type, tea_model, epochs, loader, net, de
 
         for i, data in enumerate(loader['train']):
             iter = iter + 1
-            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = data
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)         
                     
@@ -676,7 +676,7 @@ def train_network_distill_unpair_ce(stu_type, tea_model, epochs, loader, net, de
 
 
 
-        if epoch >= 1:
+        if epoch >= 0:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
@@ -758,7 +758,7 @@ def train_network_distill_unpair_vanillaKD(stu_type, tea_model, epochs, loader, 
 
         for i, data in enumerate(loader['train']):
             iter = iter + 1
-            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = data
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)         
                     
@@ -791,7 +791,7 @@ def train_network_distill_unpair_vanillaKD(stu_type, tea_model, epochs, loader, 
 
 
 
-        if epoch >= 1:
+        if epoch >= 0:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)
@@ -871,7 +871,7 @@ def train_network_distill_unpair_fea(stu_type, tea_model, epochs, loader, net, d
 
         for i, data in enumerate(loader['train']):
             iter = iter + 1
-            img_inputs_cln, aud_inputs_cln, labels = data['image'], data['audio'], data['label']
+            img_inputs_cln, aud_inputs_cln, labels = data
             img_inputs_cln, aud_inputs_cln, labels = img_inputs_cln.to(device), aud_inputs_cln.to(device), labels.to(
                 device)
 
@@ -945,7 +945,7 @@ def train_network_distill_unpair_fea(stu_type, tea_model, epochs, loader, net, d
 
 
 
-        if epoch >= 1:
+        if epoch >= 0:
             _, train_acc = evaluate(loader['train'], device, net, stu_type)
             val_loss, val_acc = evaluate(loader['val'], device, net, stu_type)
             test_loss, test_acc = evaluate(loader['test'], device, net, stu_type)

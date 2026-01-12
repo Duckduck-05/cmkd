@@ -8,7 +8,7 @@ import wandb
 from utils.helper import gen_data, train_network_distill, train_network_distill_unpair_sumall, train_network_distill_unpair_ce, train_network_distill_unpair_bilevel,train_network_distill_unpair_vanillaKD, \
     train_network_distill_unpair_fea, pre_train
 # from utils.model import ImageNet, AudioNet
-from utils.model_res_new import ImageNet, AudioNet
+from utils.model_res_usingtimm import ImageNet, AudioNet
 from utils.module import Tea, Stu
 def set_random_seed(seed):
     random.seed(seed)
@@ -35,23 +35,25 @@ def eval_overlap_tag(loader, device, args):
     net = ImageNet(args).to(device) if stu_type == 0 else AudioNet(args).to(device)
     tea = Tea().cuda()
     stu = Stu().cuda()
-    optimizer = torch.optim.SGD([
-            {'params': net.parameters()},
-            {'params': tea_model.parameters()},
-            {'params': tea.parameters()},
-            {'params': stu.parameters()},
-        ], lr=args.lr, momentum=0.9)
     
-    optimizer2 = torch.optim.Adam([
-            {'params': net.parameters()},
-            {'params': tea_model.parameters()},
-            {'params': tea.parameters()},
-            {'params': stu.parameters()},
-        ],
-        lr = args.lr, 
-        betas = (args.beta1, args.beta2),
-        weight_decay=args.weight_decay
-        )
+    if args.optimizer == "sgd":
+        optimizer = torch.optim.SGD([
+                {'params': net.parameters()},
+                {'params': tea_model.parameters()},
+                {'params': tea.parameters()},
+                {'params': stu.parameters()},
+            ], lr=args.lr, momentum=0.9)
+    elif args.optimizer == "adamw":
+        optimizer = torch.optim.AdamW([
+                {'params': net.parameters()},
+                {'params': tea_model.parameters()},
+                {'params': tea.parameters()},
+                {'params': stu.parameters()},
+            ],
+            lr = args.lr 
+            # betas = (args.beta1, args.beta2),
+            # weight_decay=args.weight_decay
+            )
     
     warmup_lr_scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=args.min_lr / args.lr, end_factor=1.0, total_iters=args.warmup_epoch)
     main_lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.num_epochs - args.warmup_epoch, eta_min=args.min_lr)
@@ -99,6 +101,7 @@ if __name__ == '__main__':
     parser.add_argument("--beta2", default=0.999, type=float)
     parser.add_argument("--warmup-epoch", default=5, type=int)
     parser.add_argument("--method_type", type=str, default="ce")
+    parser.add_argument("--optimizer", default='sgd')
 
 
     args = parser.parse_args()
