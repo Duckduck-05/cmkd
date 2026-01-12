@@ -26,7 +26,7 @@ class CrisisMMDDataset_paired(Dataset):
             image_transform: torchvision transforms
             label_map: dict mapping string labels to int
         """
-        self.df = pd.read_csv(csv_file)
+        self.df = pd.read_csv(csv_file , sep="\t")
         self.image_root = image_root
         self.tokenizer = tokenizer
         self.max_length = max_length
@@ -147,7 +147,7 @@ class CrisisMMDTextDataset(Dataset):
         max_length=128,
         label_map=None
     ):
-        self.df = pd.read_csv(csv_file)
+        self.df = pd.read_csv(csv_file,sep= "\t")
         self.tokenizer = tokenizer
         self.max_length = max_length
 
