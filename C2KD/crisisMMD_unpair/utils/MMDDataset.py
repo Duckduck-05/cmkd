@@ -139,5 +139,72 @@ class CrisisMMDDataset_unpaired(Dataset):
         }
 
 
+class CrisisMMDTextDataset(Dataset):
+    def __init__(
+        self,
+        csv_file,
+        tokenizer,
+        max_length=128,
+        label_map=None
+    ):
+        self.df = pd.read_csv(csv_file)
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+
+        if label_map is not None:
+            self.df["label"] = self.df["label"].map(label_map)
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+
+        encoding = self.tokenizer(
+            row["tweet_text"],
+            padding="max_length",
+            truncation=True,
+            max_length=self.max_length,
+            return_tensors="pt"
+        )
+
+        return {
+            "input_ids": encoding["input_ids"].squeeze(0),
+            "attention_mask": encoding["attention_mask"].squeeze(0),
+            "label": torch.tensor(row["label"], dtype=torch.long)
+        }
+    
+
+class CrisisMMDImageDataset(Dataset):
+    def __init__(
+        self,
+        csv_file,
+        image_root,
+        image_transform=None,
+        label_map=None
+    ):
+        self.df = pd.read_csv(csv_file)
+        self.image_root = image_root
+        self.image_transform = image_transform
+
+        if label_map is not None:
+            self.df["label"] = self.df["label"].map(label_map)
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+
+        img_path = os.path.join(self.image_root, row["image_path"])
+        image = Image.open(img_path).convert("RGB")
+
+        if self.image_transform:
+            image = self.image_transform(image)
+
+        return {
+            "image": image,
+            "label": torch.tensor(row["label"], dtype=torch.long)
+        }
 
 
