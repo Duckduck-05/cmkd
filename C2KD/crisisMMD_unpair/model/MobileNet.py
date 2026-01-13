@@ -1,6 +1,6 @@
 import torch.nn as nn
 import torchvision.models as models
-
+from torchvision.models import mobilenet_v2, MobileNet_V2_Weights
 
 class MobileNetV2Classifier(nn.Module):
     def __init__(
@@ -30,5 +30,14 @@ class MobileNetV2Classifier(nn.Module):
             return logits, features
         return logits
 
+class MobileNetV2Humanitarian(nn.Module):
+    def __init__(self, num_classes=8):
+        super().__init__()
+        self.backbone = mobilenet_v2(weights=MobileNet_V2_Weights.IMAGENET1K_V1)
+        in_features = self.backbone.classifier[1].in_features
+        self.backbone.classifier[1] = nn.Linear(in_features, num_classes)
+
+    def forward(self, images):
+        return self.backbone(images)
 
 
