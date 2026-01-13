@@ -1,7 +1,6 @@
 import random
 import numpy as np
 import torch
-from utils.dataloader import get_loader
 import os
 import codecs
 import csv
@@ -1064,7 +1063,8 @@ def pre_train(stu_type, loader, epochs, learning_rate, device, args):
     tea_type = 1 - stu_type
     pre_train_models(stu_type, tea_type, loader, epochs, learning_rate, device, args, save_model=True)
 
-
+def count_trainable_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 if __name__ == '__main__':
     pass

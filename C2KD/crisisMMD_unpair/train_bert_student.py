@@ -7,6 +7,10 @@ from torch.optim import AdamW
 import torch 
 from model.Bert_based import BertClassifier, BertModel
 from transformers import BertForSequenceClassification
+from transformers import AutoModelForSequenceClassification
+
+def count_trainable_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 def evaluate(model, dataloader, device):
     model.eval()
@@ -126,12 +130,20 @@ def train():
     device = "cuda" 
 
     #model = BertClassifier(num_classes= 8).to(device)
-    model = BertForSequenceClassification.from_pretrained(
-    "bert-base-uncased",
-    num_labels=NUM_LABELS,
-    id2label=ID2LABEL,
-    label2id=LABEL2ID
-).to(device)
+#     model = BertForSequenceClassification.from_pretrained(
+#     "bert-base-uncased",
+#     num_labels=NUM_LABELS,
+#     id2label=ID2LABEL,
+#     label2id=LABEL2ID
+# ).to(device)
+    print("Init student model...")
+    model = AutoModelForSequenceClassification.from_pretrained(
+    "nreimers/MiniLM-L6-H384-uncased",
+    num_labels=8,   # humanitarian task
+    label2id=LABEL2ID,
+    id2label=ID2LABEL
+    ).to(device)
+    print("student params: ", count_trainable_parameters(model))
     optimizer = AdamW(model.parameters(), lr=2e-5)
     criterion = nn.CrossEntropyLoss()
     print("start traing")

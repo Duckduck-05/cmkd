@@ -8,6 +8,8 @@ import torch
 from model.Bert_based import BertClassifier, BertModel
 from transformers import BertForSequenceClassification
 
+def count_trainable_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 def evaluate(model, dataloader, device):
     model.eval()
     criterion = nn.CrossEntropyLoss()
@@ -134,6 +136,7 @@ def train():
 ).to(device)
     optimizer = AdamW(model.parameters(), lr=2e-5)
     criterion = nn.CrossEntropyLoss()
+    print("teacher model params: ", count_trainable_parameters(model))
     print("start traing")
     for epoch in range(20):
        model.train()

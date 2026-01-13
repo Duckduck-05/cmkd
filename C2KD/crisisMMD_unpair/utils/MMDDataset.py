@@ -259,3 +259,38 @@ class CrisisMMDHumanitarianTextDataset(Dataset):
             "label": torch.tensor(label, dtype=torch.long)
         }
 
+class CrisisMMDHumanitarianImageDataset(Dataset):
+    def __init__(
+        self,
+        tsv_file,
+        image_root,
+        transform,
+        label2id= None
+    ):
+        self.df = pd.read_csv(tsv_file, sep="\t")
+        self.image_root = image_root
+        self.transform = transform
+        self.label2id = label2id
+
+        self.df["label_image"] = self.df["label_image"].apply(normalize_label)
+        self.df = self.df[self.df["label_image"].isin(label2id)]
+        self.df = self.df.reset_index(drop=True)
+
+        print(f"[INFO] Loaded {len(self.df)} humanitarian image samples")
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+
+        img_path = os.path.join(self.image_root, row["image"])
+        image = Image.open(img_path).convert("RGB")
+        image = self.transform(image)
+
+        label = self.label2id[row["label_image"]]
+
+        return {
+            "image": image,
+            "label": torch.tensor(label, dtype=torch.long)
+        }
