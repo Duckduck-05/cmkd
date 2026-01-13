@@ -205,5 +205,57 @@ class CrisisMMDImageDataset(Dataset):
             "image": image,
             "label": torch.tensor(row["label"], dtype=torch.long)
         }
+def normalize_label(label: str):
+    if not isinstance(label, str):
+        return None
+    return (
+        label.lower()
+        .strip()
+        .replace(" ", "_")
+        .replace("-", "_")
+    )
 
+class CrisisMMDHumanitarianTextDataset(Dataset):
+    def __init__(
+        self,
+        tsv_file,
+        tokenizer,
+        max_length=128,
+        label2id= None
+    ):
+        self.df = pd.read_csv(tsv_file, sep="\t")
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+        self.label2id = label2id
+
+        # normalize labels
+        self.df["label_text"] = self.df["label_text"].apply(normalize_label)
+
+        # keep only valid humanitarian labels
+        self.df = self.df[self.df["label_text"].isin(label2id.keys())]
+        self.df = self.df.reset_index(drop=True)
+
+        print(f"[INFO] Loaded {len(self.df)} humanitarian text samples")
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+
+        encoding = self.tokenizer(
+            row["tweet_text"],
+            padding="max_length",
+            truncation=True,
+            max_length=self.max_length,
+            return_tensors="pt"
+        )
+
+        label = self.label2id[row["label_text"]]
+
+        return {
+            "input_ids": encoding["input_ids"].squeeze(0),
+            "attention_mask": encoding["attention_mask"].squeeze(0),
+            "label": torch.tensor(label, dtype=torch.long)
+        }
 

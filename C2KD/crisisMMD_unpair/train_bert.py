@@ -1,11 +1,12 @@
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 import pandas as pd
-from utils.MMDDataset import CrisisMMDTextDataset
+from utils.MMDDataset import CrisisMMDTextDataset, CrisisMMDHumanitarianTextDataset
 import torch.nn as nn
 from torch.optim import AdamW
 import torch 
 from model.Bert_based import BertClassifier, BertModel
+from transformers import BertForSequenceClassification
 
 def evaluate(model, dataloader, device):
     model.eval()
@@ -27,7 +28,7 @@ def evaluate(model, dataloader, device):
             outputs = model(
                 input_ids=input_ids,
                 attention_mask=attention_mask,
-            )
+            ).logits
 
             loss = criterion(
             outputs,
@@ -57,32 +58,52 @@ def evaluate(model, dataloader, device):
         "preds": all_preds,
         "labels": all_labels
     }
+HUMANITARIAN_LABELS = [
+    "affected_individuals",
+    "infrastructure_and_utility_damage",
+    "injured_or_dead_people",
+    "missing_or_found_people",
+    "not_humanitarian",
+    "other_relevant_information",
+    "rescue_volunteering_or_donation_effort",
+    "vehicle_damage",
+]
+
+
+LABEL2ID = {label: idx for idx, label in enumerate(HUMANITARIAN_LABELS)}
+ID2LABEL = {idx: label for label, idx in LABEL2ID.items()}
+NUM_LABELS = len(LABEL2ID)
+
+def normalize_label(label: str):
+    if not isinstance(label, str):
+        return None
+    return (
+        label.lower()
+        .strip()
+        .replace(" ", "_")
+        .replace("-", "_")
+    )
+
 
 def train():
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-    label_map = {
-    "not_informative": 0,
-    "informative": 1
-}
-    csv_file = "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_train.tsv"
-    df = pd.read_csv(csv_file, sep="\t")
-    print("len df: ", len(df))
-    train_dataset = CrisisMMDTextDataset(
-    csv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_train.tsv",
+   
+    train_dataset = CrisisMMDHumanitarianTextDataset(
+    tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_train.tsv",
     tokenizer=tokenizer, 
-    label_map= label_map
+    label2id= LABEL2ID
 )
     print("len dataset: ",len(train_dataset))  
-    dev_dataset = CrisisMMDTextDataset(
-    csv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_dev.tsv",
+    dev_dataset = CrisisMMDHumanitarianTextDataset(
+    tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_dev.tsv",
     tokenizer=tokenizer, 
-    label_map= label_map
+    label2id= LABEL2ID
 )
     
-    test_dataset = CrisisMMDTextDataset(
-    csv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_informative_text_img_test.tsv",
+    test_dataset = CrisisMMDHumanitarianTextDataset(
+    tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_test.tsv",
     tokenizer=tokenizer, 
-    label_map= label_map
+    label2id= LABEL2ID
 )
     train_loader = DataLoader(
     train_dataset,
@@ -104,12 +125,17 @@ def train():
     print("complete data loader")
     device = "cuda" 
 
-    model = BertClassifier().to(device)
+    #model = BertClassifier(num_classes= 8).to(device)
+    model = BertForSequenceClassification.from_pretrained(
+    "bert-base-uncased",
+    num_labels=NUM_LABELS,
+    id2label=ID2LABEL,
+    label2id=LABEL2ID
+).to(device)
     optimizer = AdamW(model.parameters(), lr=2e-5)
     criterion = nn.CrossEntropyLoss()
     print("start traing")
-    evaluate(model,dev_loader, device)
-    for epoch in range(3):
+    for epoch in range(10):
        model.train()
        total_loss = 0
 
@@ -119,7 +145,7 @@ def train():
            logits = model(
             batch["input_ids"].to(device),
             batch["attention_mask"].to(device)
-        )
+        ).logits 
 
            loss = criterion(
             logits,

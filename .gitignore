@@ -49,3 +49,6 @@
 /MFH/ravdess/download1.py
 /MFH/ravdess/wandb/
 /MFH/ravdess/data/
+
+
+C2KD/crisisMMD_unpair/dataset/*
