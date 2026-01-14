@@ -2,7 +2,7 @@ import torch.nn as nn
 import torchvision.models as models
 from torchvision.models import mobilenet_v2, MobileNet_V2_Weights
 import torch
-
+import torch.nn.functional as F
 class MobileNetV2Classifier(nn.Module):
     def __init__(
         self,
@@ -36,7 +36,10 @@ class MobileNetV2Humanitarian(nn.Module):
         super().__init__()
         self.backbone = mobilenet_v2(weights=MobileNet_V2_Weights.IMAGENET1K_V1)
         in_features = self.backbone.classifier[1].in_features
-        self.backbone.classifier[1] = nn.Linear(in_features, num_classes)
+        self.classifier = nn.Linear(in_features, num_classes)
+
+        # 🔹 remove original classifier
+        self.backbone.classifier = nn.Identity()
 
     def forward(self, images, return_features=False):
         """
@@ -59,7 +62,7 @@ class MobileNetV2Humanitarian(nn.Module):
         Shape: [B, 1280]
         """
         x = self.backbone.features(images)     # [B, 1280, H, W]
-        x = self.backbone.avgpool(x)            # [B, 1280, 1, 1]
+        x = F.adaptive_avg_pool2d(x, (1, 1))        # [B, 1280, 1, 1]
         x = torch.flatten(x, 1)                 # [B, 1280]
         return x
 
