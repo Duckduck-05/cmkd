@@ -115,7 +115,7 @@ def main():
     model = MobileNetV2Student().to(device)
     optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
     print("student model params: ", count_trainable_parameters(model))
-    epochs = 10
+    epochs = 60
     print("start training...")
     for epoch in range(epochs):
         train_loss, train_acc = train_image_epoch(

@@ -142,5 +142,59 @@ def main():
         )
 
 
+def get_pretraining_techer_model(epochs=10):
+    print("begin load dataset...")
+    train_dataset = CrisisMMDHumanitarianImageDataset(tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_train.tsv",
+                                                     label2id= LABEL2ID,
+                                                     transform= image_transform,
+                                                     image_root="dataset/CrisisMMD_v2.0/")
+    print("len train loader: ", len(train_dataset))
+    val_dataset = CrisisMMDHumanitarianImageDataset(tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_dev.tsv",
+                                                     label2id= LABEL2ID,
+                                                     transform= image_transform,
+                                                     image_root="dataset/CrisisMMD_v2.0/")
+    
+    test_dataset = CrisisMMDHumanitarianImageDataset(tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_test.tsv",
+                                                     label2id= LABEL2ID,
+                                                     transform= image_transform,
+                                                     image_root="dataset/CrisisMMD_v2.0/")
+    
+
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
+    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=4)
+    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=4)
+    print("init model...")
+    device = "cuda"
+    model = MobileNetV2Humanitarian().to(device)
+    optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
+    
+    print("model params: ", count_trainable_parameters(model))
+    print("start training...")
+    for epoch in range(epochs):
+        train_loss, train_acc = train_image_epoch(
+            model, train_loader, optimizer, device
+        )
+
+        val_loss, val_acc = evaluate_image(
+            model, val_loader, device
+        )
+
+        print(
+            f"Epoch [{epoch+1}/{epochs}] | "
+            f"Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f} | "
+            f"Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}"
+        )
+
+    print("evaluate on test set")
+    test_loss, test_acc = evaluate_image(
+            model, test_loader, device
+        )
+
+    print(
+            f"test Loss: {val_loss:.4f}, test Acc: {val_acc:.4f}"
+        )
+    
+    return model 
+
 if __name__== "__main__":
     main()

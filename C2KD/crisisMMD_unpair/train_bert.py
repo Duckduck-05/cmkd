@@ -5,7 +5,7 @@ from utils.MMDDataset import CrisisMMDTextDataset, CrisisMMDHumanitarianTextData
 import torch.nn as nn
 from torch.optim import AdamW
 import torch 
-from model.Bert_based import BertClassifier, BertModel
+from model.Bert_based import BertTeacher
 from transformers import BertForSequenceClassification
 
 def count_trainable_parameters(model):
@@ -30,7 +30,7 @@ def evaluate(model, dataloader, device):
             outputs = model(
                 input_ids=input_ids,
                 attention_mask=attention_mask,
-            ).logits
+            )
 
             loss = criterion(
             outputs,
@@ -128,12 +128,13 @@ def train():
     device = "cuda" 
 
     #model = BertClassifier(num_classes= 8).to(device)
-    model = BertForSequenceClassification.from_pretrained(
-    "bert-base-uncased",
-    num_labels=NUM_LABELS,
-    id2label=ID2LABEL,
-    label2id=LABEL2ID
-).to(device)
+    model = BertTeacher(num_labels= NUM_LABELS).to(device)
+#     model = BertForSequenceClassification.from_pretrained(
+#     "bert-base-uncased",
+#     num_labels=NUM_LABELS,
+#     id2label=ID2LABEL,
+#     label2id=LABEL2ID
+# ).to(device)
     optimizer = AdamW(model.parameters(), lr=2e-5)
     criterion = nn.CrossEntropyLoss()
     print("teacher model params: ", count_trainable_parameters(model))
@@ -148,7 +149,7 @@ def train():
            logits = model(
             batch["input_ids"].to(device),
             batch["attention_mask"].to(device)
-        ).logits 
+        ) 
 
            loss = criterion(
             logits,
