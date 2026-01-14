@@ -39,5 +39,24 @@ class MobileNetV2Humanitarian(nn.Module):
 
     def forward(self, images):
         return self.backbone(images)
+    
+
+class MobileNetV2Student(nn.Module):
+    def __init__(self, num_classes=8, width_mult= 0.5):
+        super().__init__()
+
+        self.backbone = mobilenet_v2(
+            weights= None,
+            width_mult=width_mult
+        )
+
+        in_features = self.backbone.classifier[1].in_features
+        self.backbone.classifier = nn.Sequential(
+            nn.Dropout(p=0.2),
+            nn.Linear(in_features, num_classes)
+        )
+
+    def forward(self, x):
+        return self.backbone(x)
 
 

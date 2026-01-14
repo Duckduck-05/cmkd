@@ -2,7 +2,7 @@ from torchvision import transforms
 import torch 
 import torch.nn as nn
 from utils.MMDDataset import CrisisMMDHumanitarianImageDataset
-from model.MobileNet import MobileNetV2Classifier, MobileNetV2Humanitarian
+from model.MobileNet import MobileNetV2Classifier, MobileNetV2Humanitarian, MobileNetV2Student
 from torch.utils.data import DataLoader
 import torch.optim as optim
 
@@ -85,6 +85,7 @@ def train_image_epoch(model, dataloader, optimizer,  device):
 
     return total_loss / len(dataloader), correct / total
 
+
 def count_trainable_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
@@ -111,11 +112,10 @@ def main():
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=4)
     print("init model...")
     device = "cuda"
-    model = MobileNetV2Humanitarian().to(device)
+    model = MobileNetV2Student().to(device)
     optimizer = optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
-    
+    print("student model params: ", count_trainable_parameters(model))
     epochs = 10
-    print("model params: ", count_trainable_parameters(model))
     print("start training...")
     for epoch in range(epochs):
         train_loss, train_acc = train_image_epoch(
