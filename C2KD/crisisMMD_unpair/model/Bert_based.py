@@ -56,10 +56,13 @@ class BertTeacher(nn.Module):
         )
         return outputs.last_hidden_state[:, 0]  # CLS
 
-    def forward(self, input_ids, attention_mask):
+    def forward(self, input_ids, attention_mask, return_feature = False):
         features = self.encode(input_ids, attention_mask)
         logits = self.classifier(features)
-        return logits 
+        if return_feature:
+            return logits, features
+        
+        return logits
 
 class SmallBertStudent(nn.Module):
     def __init__(self, num_labels=8):
@@ -92,9 +95,11 @@ class SmallBertStudent(nn.Module):
         # CLS embedding
         return outputs.last_hidden_state[:, 0]  # [B, H]
 
-    def forward(self, input_ids, attention_mask):
+    def forward(self, input_ids, attention_mask, return_feature = False):
         features = self.encode(input_ids, attention_mask)
         logits = self.classifier(features)
+        if return_feature:
+            return logits, features
         return logits
     
 

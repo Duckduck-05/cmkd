@@ -38,8 +38,20 @@ class MobileNetV2Humanitarian(nn.Module):
         in_features = self.backbone.classifier[1].in_features
         self.backbone.classifier[1] = nn.Linear(in_features, num_classes)
 
-    def forward(self, images):
-        return self.backbone(images)
+    def forward(self, images, return_features=False):
+        """
+        Forward pass
+
+        return_features:
+            False -> logits
+            True  -> (logits, features)
+        """
+        features = self.encode(images)
+        logits = self.classifier(features)
+
+        if return_features:
+            return logits, features
+        return logits
     
     def encode(self, images):
         """
@@ -66,8 +78,20 @@ class MobileNetV2Student(nn.Module):
             nn.Linear(in_features, num_classes)
         )
 
-    def forward(self, x):
-        return self.backbone(x)
+    def forward(self, images, return_features=False):
+        """
+        Forward pass
+
+        return_features:
+            False -> logits
+            True  -> (logits, features)
+        """
+        features = self.encode(images)
+        logits = self.classifier(features)
+
+        if return_features:
+            return logits, features
+        return logits
     
     def encode(self, images):
         """
