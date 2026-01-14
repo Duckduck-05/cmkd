@@ -96,3 +96,12 @@ class SmallBertStudent(nn.Module):
         features = self.encode(input_ids, attention_mask)
         logits = self.classifier(features)
         return logits
+    
+
+class FeatureProjector(nn.Module):
+    def __init__(self, in_dim, out_dim):
+        super().__init__()
+        self.proj = nn.Linear(in_dim, out_dim)
+
+    def forward(self, x):
+        return self.proj(x)

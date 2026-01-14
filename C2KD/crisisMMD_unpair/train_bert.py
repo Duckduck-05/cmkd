@@ -167,6 +167,82 @@ def train():
     print("finish training, start testing...")
     evaluate(model,test_loader, device)
 
+def get_pre_trained_teacher(teacher_epochs= 20):
+
+    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+   
+    train_dataset = CrisisMMDHumanitarianTextDataset(
+    tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_train.tsv",
+    tokenizer=tokenizer, 
+    label2id= LABEL2ID
+)
+    print("len dataset: ",len(train_dataset))  
+    dev_dataset = CrisisMMDHumanitarianTextDataset(
+    tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_dev.tsv",
+    tokenizer=tokenizer, 
+    label2id= LABEL2ID
+)
+    
+    test_dataset = CrisisMMDHumanitarianTextDataset(
+    tsv_file="dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_test.tsv",
+    tokenizer=tokenizer, 
+    label2id= LABEL2ID
+)
+    train_loader = DataLoader(
+    train_dataset,
+    batch_size=32,
+    shuffle=True,
+    num_workers=4
+)
+
+    dev_loader = DataLoader(
+    dev_dataset,
+    batch_size=32,
+    shuffle=False
+)
+    test_loader = DataLoader(
+    test_dataset,
+    batch_size=64,
+    shuffle=False
+)
+    print("complete data loader")
+    device = "cuda" 
+
+    model = BertTeacher(num_labels= NUM_LABELS).to(device)
+
+    optimizer = AdamW(model.parameters(), lr=2e-5)
+    criterion = nn.CrossEntropyLoss()
+    print("teacher model params: ", count_trainable_parameters(model))
+    print("start traing")
+    for epoch in range(teacher_epochs):
+       model.train()
+       total_loss = 0
+
+       for batch in train_loader:
+           optimizer.zero_grad()
+
+           logits = model(
+            batch["input_ids"].to(device),
+            batch["attention_mask"].to(device)
+        ) 
+
+           loss = criterion(
+            logits,
+            batch["label"].to(device)
+        )
+
+           loss.backward()
+           optimizer.step()
+           total_loss += loss.item()
+       
+       
+       print(f"Epoch {epoch} | Train loss: {total_loss / len(train_loader):.4f}")
+       evaluate(model,dev_loader, device)
+    
+    print("finish training, start testing...")
+    evaluate(model,test_loader, device)
+    
+    return model
 if __name__ == "__main__":
     print("start test")
     train()
