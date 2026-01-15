@@ -80,7 +80,7 @@ class CrisisMMDDataset_unpaired(Dataset):
         image_transform=None,
         label_map=None
     ):
-        self.df = pd.read_csv(csv_file)
+        self.df = pd.read_csv(csv_file, sep="\t")
         self.image_root = image_root
         self.tokenizer = tokenizer
         self.max_length = max_length
@@ -125,7 +125,7 @@ class CrisisMMDDataset_unpaired(Dataset):
         # =====================
         # Image
         # =====================
-        img_path = os.path.join(self.image_root, row_img["image_path"])
+        img_path = os.path.join(self.image_root, row_img["image"])
         image = Image.open(img_path).convert("RGB")
 
         if self.image_transform:
@@ -195,7 +195,7 @@ class CrisisMMDImageDataset(Dataset):
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
 
-        img_path = os.path.join(self.image_root, row["image_path"])
+        img_path = os.path.join(self.image_root, row["image"])
         image = Image.open(img_path).convert("RGB")
 
         if self.image_transform:

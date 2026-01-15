@@ -69,7 +69,7 @@ class SmallBertStudent(nn.Module):
         super().__init__()
 
         # 🔹 Small BERT config (NO pretrained)
-        config = BertConfig(
+        self.config = BertConfig(
             vocab_size=30522,
             hidden_size=384,          # ↓ smaller than 768
             num_hidden_layers=6,      # ↓ fewer layers
@@ -80,8 +80,9 @@ class SmallBertStudent(nn.Module):
             attention_probs_dropout_prob=0.1
         )
 
-        self.encoder = BertModel(config)
-        self.classifier = nn.Linear(config.hidden_size, num_labels)
+        self.feature_dim = self.config.hidden_size
+        self.encoder = BertModel(self.config)
+        self.classifier = nn.Linear(self.config.hidden_size, num_labels)
 
     def encode(self, input_ids, attention_mask):
         """

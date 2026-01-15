@@ -37,7 +37,7 @@ class MobileNetV2Humanitarian(nn.Module):
         self.backbone = mobilenet_v2(weights=MobileNet_V2_Weights.IMAGENET1K_V1)
         in_features = self.backbone.classifier[1].in_features
         self.classifier = nn.Linear(in_features, num_classes)
-
+        self.feature_dim = in_features
         # 🔹 remove original classifier
         self.backbone.classifier = nn.Identity()
 

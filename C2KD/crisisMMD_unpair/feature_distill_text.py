@@ -107,7 +107,7 @@ def feature_distill_one_epoch(student_model, teacher_model, projector ,data_load
 
 def train():
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-    teacher_epochs = 10
+    teacher_epochs = 1
     print("pre-training vision teacher with epochs: ",teacher_epochs)
     teacher_model = get_pretraining_techer_model(epochs= teacher_epochs)
     print("frozen teacher model...")
@@ -144,7 +144,9 @@ def train():
         list(student_model.parameters()) + list(projector.parameters()),
         lr=3e-4
     )
-
+    student_epochs = 10
+    for epoch in range(student_epochs):
+        feature_distill_one_epoch(student_model, teacher_model, projector, train_dataset, optimizer, device)
 
 
 if __name__ == "__main__":
