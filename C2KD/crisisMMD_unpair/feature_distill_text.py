@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 import pandas as pd
-from utils.MMDDataset import CrisisMMDTextDataset, CrisisMMDHumanitarianTextDataset, CrisisMMDDataset_unpaired
+from utils.MMDDataset import CrisisMMDTextDataset, CrisisMMDHumanitarianTextDataset, CrisisMMDDataset_unpaired_random_image
 import torch.nn as nn
 from torch.optim import AdamW
 import torch 
@@ -55,6 +55,56 @@ def compute_FA(stu_f, tea_f, device):
             numItermax=100
         )
     return fa
+def evaluate(model, dataloader, device):
+    model.eval()
+    criterion = nn.CrossEntropyLoss()
+
+    total_loss = 0.0
+    total_correct = 0
+    total_samples = 0
+
+    all_preds = []
+    all_labels = []
+
+    with torch.no_grad():
+        for batch in dataloader:
+            input_ids = batch["input_ids"].to(device)
+            attention_mask = batch["attention_mask"].to(device)
+            labels = batch["label"].to(device)
+
+            outputs = model(
+                input_ids=input_ids,
+                attention_mask=attention_mask,
+            )
+
+            loss = criterion(
+            outputs,
+            batch["label"].to(device)
+        )
+
+
+            total_loss += loss.item()
+
+            preds = torch.argmax(outputs, dim=1)
+
+            total_correct += (preds == labels).sum().item()
+            total_samples += labels.size(0)
+
+            all_preds.extend(preds.cpu().tolist())
+            all_labels.extend(labels.cpu().tolist())
+
+    avg_loss = total_loss / len(dataloader)
+    accuracy = total_correct / total_samples
+
+    print(f"Eval Loss: {avg_loss:.4f}")
+    print(f"Eval Accuracy: {accuracy:.4f}")
+
+    return {
+        "loss": avg_loss,
+        "accuracy": accuracy,
+        "preds": all_preds,
+        "labels": all_labels}
+
 
 def feature_distill_one_epoch(student_model, teacher_model, projector ,data_loader,  optimizer,  device, lambda_fa=1.0):
     student_model.train()
@@ -97,17 +147,19 @@ def feature_distill_one_epoch(student_model, teacher_model, projector ,data_load
         correct += (preds == labels).sum().item()
         total += labels.size(0)
 
-    return {
+    results =  {
         "loss": total_loss / len(data_loader),
         "ce": total_ce / len(data_loader),
         "fa": total_fa / len(data_loader),
         "acc": correct / total
     }
+    
+    return student_model, projector, optimizer, results
 
 
 def train():
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-    teacher_epochs = 1
+    teacher_epochs = 20
     print("pre-training vision teacher with epochs: ",teacher_epochs)
     teacher_model = get_pretraining_techer_model(epochs= teacher_epochs)
     print("frozen teacher model...")
@@ -116,24 +168,24 @@ def train():
     device = "cuda"
     student_model = SmallBertStudent().to(device)
     print("Load unpaired data...")
-    train_dataset = CrisisMMDDataset_unpaired(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_train.tsv",
+    train_dataset = CrisisMMDDataset_unpaired_random_image(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_train.tsv",
                                               tokenizer= tokenizer,image_root="dataset/CrisisMMD_v2.0/",
                                               image_transform= image_transform,
                                               label_map= HUMANITARIAN_LABEL2ID)
     
-    val_dataset = CrisisMMDDataset_unpaired(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_dev.tsv",
+    val_dataset = CrisisMMDDataset_unpaired_random_image(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_dev.tsv",
                                               tokenizer= tokenizer,image_root="dataset/CrisisMMD_v2.0/",
                                               image_transform= image_transform,
                                               label_map= HUMANITARIAN_LABEL2ID)
     
-    test_dataset = CrisisMMDDataset_unpaired(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_test.tsv",
+    test_dataset = CrisisMMDDataset_unpaired_random_image(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_test.tsv",
                                               tokenizer= tokenizer,image_root="dataset/CrisisMMD_v2.0/",
                                               image_transform= image_transform,
                                               label_map= HUMANITARIAN_LABEL2ID)
     
     train_loader = DataLoader(train_dataset,batch_size=32, shuffle=True, num_workers=4)
-    val_loader = DataLoader(train_dataset,batch_size=32, shuffle=True, num_workers=4)
-    test_loader = DataLoader(train_dataset,batch_size=32, shuffle=True, num_workers=4)
+    val_loader = DataLoader(val_dataset,batch_size=64, shuffle=True, num_workers=4)
+    test_loader = DataLoader(test_dataset,batch_size=64, shuffle=True, num_workers=4)
     print("define the projector...")
     projector = FeatureProjector(
         in_dim= student_model.feature_dim,      # student hidden
@@ -144,10 +196,14 @@ def train():
         list(student_model.parameters()) + list(projector.parameters()),
         lr=3e-4
     )
-    student_epochs = 10
+    student_epochs = 20
     for epoch in range(student_epochs):
-        feature_distill_one_epoch(student_model, teacher_model, projector, train_loader, optimizer, device)
+        student_model, projector, optimizer, results = feature_distill_one_epoch(student_model, teacher_model, projector, train_loader, optimizer, device)
+        print("training_result: ",results)
+        evaluate(student_model, val_loader, device)
 
+    print("Complete training, begin evaluation...")
+    evaluate(student_model, test_loader, device)
 
 if __name__ == "__main__":
     train()

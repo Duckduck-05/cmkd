@@ -70,7 +70,7 @@ class CrisisMMDDataset_paired(Dataset):
         }
     
 
-class CrisisMMDDataset_unpaired(Dataset):
+class CrisisMMDDataset_unpaired_random_image(Dataset):
     def __init__(
         self,
         csv_file,
