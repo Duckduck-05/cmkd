@@ -61,9 +61,9 @@ def feature_distill_one_epoch(student_model, teacher_model, projector ,data_load
     teacher_model.eval()
     projector.train()
     criterion = nn.CrossEntropyLoss()
-    
-    fa_loss = 0.0
-    ce_loss = 0.0
+    total = 0
+    total_fa = 0.0
+    total_ce = 0.0
     total_loss = 0.0
     correct = 0
     
@@ -146,7 +146,7 @@ def train():
     )
     student_epochs = 10
     for epoch in range(student_epochs):
-        feature_distill_one_epoch(student_model, teacher_model, projector, train_dataset, optimizer, device)
+        feature_distill_one_epoch(student_model, teacher_model, projector, train_loader, optimizer, device)
 
 
 if __name__ == "__main__":
