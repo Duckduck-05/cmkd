@@ -118,17 +118,17 @@ def train():
     print("Load unpaired data...")
     train_dataset = CrisisMMDDataset_unpaired(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_train.tsv",
                                               tokenizer= tokenizer,image_root="dataset/CrisisMMD_v2.0/",
-                                              image_transform= transforms,
+                                              image_transform= image_transform,
                                               label_map= HUMANITARIAN_LABEL2ID)
     
     val_dataset = CrisisMMDDataset_unpaired(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_dev.tsv",
                                               tokenizer= tokenizer,image_root="dataset/CrisisMMD_v2.0/",
-                                              image_transform= transforms,
+                                              image_transform= image_transform,
                                               label_map= HUMANITARIAN_LABEL2ID)
     
     test_dataset = CrisisMMDDataset_unpaired(csv_file= "dataset/CrisisMMD_v2.0/crisismmd_datasplit_all/task_humanitarian_text_img_test.tsv",
                                               tokenizer= tokenizer,image_root="dataset/CrisisMMD_v2.0/",
-                                              image_transform= transforms,
+                                              image_transform= image_transform,
                                               label_map= HUMANITARIAN_LABEL2ID)
     
     train_loader = DataLoader(train_dataset,batch_size=32, shuffle=True, num_workers=4)

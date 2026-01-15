@@ -76,8 +76,8 @@ class CrisisMMDDataset_unpaired(Dataset):
         csv_file,
         image_root,
         tokenizer,
+        image_transform,
         max_length=128,
-        image_transform=None,
         label_map=None
     ):
         self.df = pd.read_csv(csv_file, sep="\t")
@@ -128,8 +128,8 @@ class CrisisMMDDataset_unpaired(Dataset):
         img_path = os.path.join(self.image_root, row_img["image"])
         image = Image.open(img_path).convert("RGB")
 
-        if self.image_transform:
-            image = self.image_transform(image)
+       
+        image = self.image_transform(image)
 
         return {
             "input_ids": encoding["input_ids"].squeeze(0),
@@ -179,7 +179,7 @@ class CrisisMMDImageDataset(Dataset):
         self,
         csv_file,
         image_root,
-        image_transform=None,
+        image_transform,
         label_map=None
     ):
         self.df = pd.read_csv(csv_file)
@@ -197,9 +197,7 @@ class CrisisMMDImageDataset(Dataset):
 
         img_path = os.path.join(self.image_root, row["image"])
         image = Image.open(img_path).convert("RGB")
-
-        if self.image_transform:
-            image = self.image_transform(image)
+        image = self.image_transform(image)
 
         return {
             "image": image,
