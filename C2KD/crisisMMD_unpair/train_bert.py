@@ -167,7 +167,7 @@ def train():
     print("finish training, start testing...")
     evaluate(model,test_loader, device)
 
-def get_pre_trained_teacher(teacher_epochs= 20):
+def get_pre_trained_teacher(epochs= 20):
 
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
    
@@ -214,7 +214,7 @@ def get_pre_trained_teacher(teacher_epochs= 20):
     criterion = nn.CrossEntropyLoss()
     print("teacher model params: ", count_trainable_parameters(model))
     print("start traing")
-    for epoch in range(teacher_epochs):
+    for epoch in range(epochs):
        model.train()
        total_loss = 0
 

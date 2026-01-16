@@ -292,3 +292,72 @@ class CrisisMMDHumanitarianImageDataset(Dataset):
             "image": image,
             "label": torch.tensor(label, dtype=torch.long)
         }
+    
+
+class CrisisMMDDataset_unpaired_random_text(Dataset):
+    def __init__(
+        self,
+        csv_file,
+        image_root,
+        tokenizer,
+        image_transform,
+        max_length=128,
+        label_map=None
+    ):
+        self.df = pd.read_csv(csv_file, sep="\t")
+        self.image_root = image_root
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+        self.image_transform = image_transform
+
+        if label_map is not None:
+            self.df["label"] = self.df["label"].map(label_map)
+
+        # ---- group indices by label ----
+        self.label_to_indices = {}
+        for idx, label in enumerate(self.df["label"]):
+            self.label_to_indices.setdefault(label, []).append(idx)
+
+        self.labels = list(self.label_to_indices.keys())
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        """
+        idx selects the IMAGE anchor
+        TEXT is randomly sampled from the same class
+        """
+
+        # ---- anchor row (IMAGE) ----
+        row_img = self.df.iloc[idx]
+        label = row_img["label"]
+
+        # ---- sample RANDOM TEXT with same label ----
+        text_idx = random.choice(self.label_to_indices[label])
+        row_text = self.df.iloc[text_idx]
+
+        # =====================
+        # Text
+        # =====================
+        encoding = self.tokenizer(
+            row_text["tweet_text"],
+            padding="max_length",
+            truncation=True,
+            max_length=self.max_length,
+            return_tensors="pt"
+        )
+
+        # =====================
+        # Image
+        # =====================
+        img_path = os.path.join(self.image_root, row_img["image"])
+        image = Image.open(img_path).convert("RGB")
+        image = self.image_transform(image)
+
+        return {
+            "input_ids": encoding["input_ids"].squeeze(0),
+            "attention_mask": encoding["attention_mask"].squeeze(0),
+            "image": image,
+            "label": torch.tensor(label, dtype=torch.long)
+        }
