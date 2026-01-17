@@ -44,6 +44,7 @@ class BertTeacher(nn.Module):
         )
 
         hidden_size = self.encoder.config.hidden_size
+        self.feature_dim = hidden_size
         self.classifier = nn.Linear(hidden_size, num_labels)
 
     def encode(self, input_ids, attention_mask):

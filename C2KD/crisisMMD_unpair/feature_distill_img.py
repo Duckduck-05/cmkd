@@ -67,13 +67,10 @@ def evaluate(model, dataloader, device):
 
     with torch.no_grad():
         for batch in dataloader:
-            input_ids = batch["input_ids"].to(device)
-            attention_mask = batch["attention_mask"].to(device)
             labels = batch["label"].to(device)
-
+            images = batch["image"].to(device)
             outputs = model(
-                input_ids=input_ids,
-                attention_mask=attention_mask,
+                images
             )
 
             loss = criterion(
@@ -124,10 +121,10 @@ def feature_distill_one_epoch(student_model, teacher_model, projector ,data_load
         labels = batch["label"].to(device)
         
         with torch.no_grad():
-            _, tea_f = teacher_model(images, return_feature = True) 
+            _, tea_f = teacher_model(input_ids, attention_mask, return_feature = True) 
 
         
-        stu_logits, stu_f = student_model(input_ids, attention_mask, return_feature = True)
+        stu_logits, stu_f = student_model(images, return_feature = True)
         ### adding projector
         stu_f = projector(stu_f)
 
@@ -158,7 +155,7 @@ def feature_distill_one_epoch(student_model, teacher_model, projector ,data_load
 
 def train():
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-    teacher_epochs = 20
+    teacher_epochs = 1
     print("pre-training bert teacher with epochs: ",teacher_epochs)
     teacher_model = get_pre_trained_teacher(epochs= teacher_epochs)
     print("frozen teacher model...")

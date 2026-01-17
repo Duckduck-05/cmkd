@@ -76,7 +76,8 @@ class MobileNetV2Student(nn.Module):
         )
 
         in_features = self.backbone.classifier[1].in_features
-        self.backbone.classifier = nn.Sequential(
+        self.feature_dim = in_features
+        self.classifier = nn.Sequential(
             nn.Dropout(p=0.2),
             nn.Linear(in_features, num_classes)
         )
@@ -102,7 +103,8 @@ class MobileNetV2Student(nn.Module):
         Shape: [B, 1280]
         """
         x = self.backbone.features(images)     # [B, 1280, H, W]
-        x = self.backbone.avgpool(x)            # [B, 1280, 1, 1]
+        # x = self.backbone.avgpool(x)            # [B, 1280, 1, 1]
+        x = F.adaptive_avg_pool2d(x, (1, 1))
         x = torch.flatten(x, 1)                 # [B, 1280]
         return x
 
