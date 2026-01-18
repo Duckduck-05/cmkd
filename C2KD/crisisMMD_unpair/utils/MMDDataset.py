@@ -53,7 +53,7 @@ class CrisisMMDDataset_paired(Dataset):
         )
 
         # ---- image ----
-        img_path = os.path.join(self.image_root, row["image_path"])
+        img_path = os.path.join(self.image_root, row["image"])
         image = Image.open(img_path).convert("RGB")
 
         if self.image_transform:
